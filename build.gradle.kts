@@ -43,7 +43,7 @@ subprojects {
             File("$module/src/$sourceSetName").takeIf { it.exists() }?.let {
                 sourceLink {
                     localDirectory.set(file("src/$sourceSetName/kotlin"))
-                    remoteUrl.set(uri("https://github.com/hfhbd/kotlinx-uuid/tree/main/$module/src/$sourceSetName/kotlin").toURL())
+                    remoteUrl.set(uri("https://github.com/hfhbd/kotlinx-serialization-csv/tree/main/$module/src/$sourceSetName/kotlin").toURL())
                     remoteLineSuffix.set("#L")
                 }
             }
@@ -73,7 +73,7 @@ allprojects {
             pom {
                 name.set("app.softwork UUID Library")
                 description.set("A multiplatform Kotlin CSV and FLF serialization library")
-                url.set("https://github.com/hfhbd/kotlinx-uuid")
+                url.set("https://github.com/hfhbd/kotlinx-serialization-csv")
                 licenses {
                     license {
                         name.set("The Apache License, Version 2.0")
