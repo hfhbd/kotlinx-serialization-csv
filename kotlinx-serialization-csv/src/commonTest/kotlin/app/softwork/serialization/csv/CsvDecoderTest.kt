@@ -180,4 +180,40 @@ class CsvDecoderTest {
             actual = CSVFormat.decodeFromString(ListSerializer(FooComplex.serializer()), csv)
         )
     }
+
+    @Test
+    fun moreAttributesTest() {
+        val csv = """
+            bar,foo,enum,instant,a
+            ,42,Three,1970-01-01T00:00:00Z,a
+            Something,42,Three,1970-01-01T00:00:01Z,a
+            ,42,Three,1970-01-01T00:00:02Z,a
+        """.trimIndent()
+
+        assertEquals(
+            expected = List(3) {
+                FooComplex(
+                    bar = if (it == 1) "Something" else null,
+                    inline = FooInline(42),
+                    enum = FooEnum.A.Three,
+                    instant = Instant.fromEpochSeconds(it.toLong())
+                )
+            },
+            actual = CSVFormat.decodeFromString(ListSerializer(FooComplex.serializer()), csv)
+        )
+    }
+
+    @Test
+    fun lessAttributesTest() {
+        val csv = """
+            bar,foo,enum
+            ,42,Three
+            Something,42,Three
+            ,42,Three
+        """.trimIndent()
+
+        assertFailsWith<IllegalStateException> {
+            CSVFormat.decodeFromString(ListSerializer(FooComplex.serializer()), csv)
+        }
+    }
 }
