@@ -3,7 +3,7 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>TooManyFunctions:CSVDecoder.kt$CSVDecoder : AbstractDecoder</ID>
-    <ID>TooManyFunctions:FixedLengthFormat.kt$FixedLengthEncoder : FailingPrimitiveEncoderCompositeEncoder</ID>
-    <ID>TooManyFunctions:FixedLengthFormat.kt$FixedLengthPrimitiveEncoder : Encoder</ID>
+    <ID>TooManyFunctions:FixedLengthEncoder.kt$FixedLengthEncoder : FailingPrimitiveEncoderCompositeEncoder</ID>
+    <ID>TooManyFunctions:FixedLengthPrimitiveEncoder.kt$FixedLengthPrimitiveEncoder : Encoder</ID>
   </CurrentIssues>
 </SmellBaseline>

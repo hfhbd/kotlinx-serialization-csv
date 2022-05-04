@@ -15,6 +15,7 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
             }
         }
 

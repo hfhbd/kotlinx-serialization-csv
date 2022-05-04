@@ -1,18 +1,21 @@
-public abstract interface annotation class app/softwork/FixedLength : java/lang/annotation/Annotation {
+public abstract interface annotation class app/softwork/serialization/flf/FixedLength : java/lang/annotation/Annotation {
 	public abstract fun length ()I
 }
 
-public final class app/softwork/FixedLength$Impl : app/softwork/FixedLength {
+public final class app/softwork/serialization/flf/FixedLength$Impl : app/softwork/serialization/flf/FixedLength {
 	public fun <init> (I)V
 	public final synthetic fun length ()I
 }
 
-public final class app/softwork/FixedLengthFormat : kotlinx/serialization/StringFormat {
-	public fun <init> ()V
-	public fun <init> (Lkotlinx/serialization/modules/SerializersModule;)V
-	public synthetic fun <init> (Lkotlinx/serialization/modules/SerializersModule;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+public abstract class app/softwork/serialization/flf/FixedLengthFormat : kotlinx/serialization/StringFormat {
+	public static final field Default Lapp/softwork/serialization/flf/FixedLengthFormat$Default;
+	public synthetic fun <init> (Lkotlinx/serialization/modules/SerializersModule;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun decodeFromString (Lkotlinx/serialization/DeserializationStrategy;Ljava/lang/String;)Ljava/lang/Object;
 	public fun encodeToString (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Ljava/lang/String;
 	public fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
+}
+
+public final class app/softwork/serialization/flf/FixedLengthFormat$Default : app/softwork/serialization/flf/FixedLengthFormat {
+	public final fun invoke (Lkotlinx/serialization/modules/SerializersModule;)Lapp/softwork/serialization/flf/FixedLengthFormat;
 }
 

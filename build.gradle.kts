@@ -1,5 +1,5 @@
-import org.jetbrains.dokka.gradle.*
 import io.gitlab.arturbosch.detekt.*
+import org.jetbrains.dokka.gradle.*
 
 plugins {
     kotlin("multiplatform") version "1.6.21" apply false
@@ -149,10 +149,12 @@ tasks {
     }
 }
 
-tasks.koverMergedVerify {
-    rule {
-        bound {
-            minValue = 85
+subprojects {
+    tasks.koverVerify {
+        rule {
+            bound {
+                minValue = 85
+            }
         }
     }
 }
