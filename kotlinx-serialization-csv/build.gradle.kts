@@ -5,6 +5,32 @@ plugins {
 
 kotlin {
     jvm()
+    js(IR)
+
+    linuxX64()
+    linuxArm32Hfp()
+    linuxArm64()
+
+    macosX64()
+    macosArm64()
+
+    iosArm64()
+    iosArm32()
+    iosX64()
+    iosSimulatorArm64()
+
+    watchosX86()
+    watchosX64()
+    watchosArm32()
+    watchosArm64()
+    watchosSimulatorArm64()
+
+    tvosArm64()
+    tvosX64()
+    tvosSimulatorArm64()
+
+    mingwX64()
+    mingwX86()
 
     sourceSets {
         commonMain {
