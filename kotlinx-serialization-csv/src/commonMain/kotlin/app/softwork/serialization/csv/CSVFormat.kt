@@ -22,18 +22,19 @@ public sealed class CSVFormat(
     }
 
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
+        deserializer.descriptor.checkForLists()
         val lines = string.split('\n')
         val data = lines.drop(1).map { it.split(separator) }
         return deserializer.deserialize(
             decoder = CSVDecoder(
                 data = data,
-                maxIndex = Iterable { deserializer.descriptor.flatNames }.count(),
                 serializersModule = serializersModule
             )
         )
     }
 
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String = buildString {
+        serializer.descriptor.checkForLists()
         var afterFirst = false
 
         serializer.descriptor.flatNames.forEach {

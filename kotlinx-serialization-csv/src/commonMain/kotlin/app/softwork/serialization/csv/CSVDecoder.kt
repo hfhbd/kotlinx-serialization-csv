@@ -8,43 +8,39 @@ import kotlinx.serialization.modules.*
 @ExperimentalSerializationApi
 internal class CSVDecoder(
     private val data: List<List<String>>,
-    private val maxIndex: Int,
     override val serializersModule: SerializersModule
 ) : AbstractDecoder() {
 
     private var index = 0
-    private var parentIndex = 0
-    private var currentIndex = 0
-    private var currentMaxIndex: Int? = null
+    private var level = 0
     private var currentRow = 0
 
     override fun beginStructure(descriptor: SerialDescriptor): CSVDecoder {
-        currentMaxIndex = Iterable { descriptor.flatNames }.count()
-        parentIndex = currentIndex
-        currentIndex = 0
+        if (descriptor.kind !is StructureKind.LIST) {
+            level += 1
+        }
         return this
     }
 
     override fun decodeNotNullMark(): Boolean = data[currentRow][index] != ""
 
     override fun endStructure(descriptor: SerialDescriptor) {
-        currentIndex = parentIndex
-        if (index == maxIndex) {
-            currentRow++
+        level -= 1
+        if (level == 0) {
+            currentRow += 1
             index = 0
         }
     }
 
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
-        if (currentIndex == currentMaxIndex) return CompositeDecoder.DECODE_DONE
-        return currentIndex++
+        error("Never called, because decodeSequentially returns true")
     }
 
     override fun decodeCollectionSize(descriptor: SerialDescriptor) = data.size
     override fun decodeSequentially(): Boolean = true
 
     override fun decodeNull(): Nothing? {
-        index++
+        index += 1
         return null
     }
 
@@ -64,8 +60,10 @@ internal class CSVDecoder(
 
     override fun decodeChar() = decodeString().single()
 
-    override fun decodeString() = data[currentRow][index].also {
-        index++
+    override fun decodeString(): String {
+        val value = data[currentRow].getOrNull(index) ?: error("Missing attribute at $index in line $currentRow")
+        index += 1
+        return value
     }
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor) = enumDescriptor.elementNames.indexOf(decodeString())
