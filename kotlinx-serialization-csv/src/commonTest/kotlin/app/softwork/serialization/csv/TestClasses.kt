@@ -1,5 +1,6 @@
 package app.softwork.serialization.csv
 
+import kotlinx.datetime.*
 import kotlinx.serialization.*
 
 @Serializable
@@ -33,4 +34,4 @@ data class FooEnum(val baz: Int?, val foo: A) {
 value class FooInline(val foo: Int)
 
 @Serializable
-data class FooComplex(val bar: String?, val inline: FooInline, val enum: FooEnum.A)
+data class FooComplex(val bar: String?, val inline: FooInline, val enum: FooEnum.A, val instant: Instant)
