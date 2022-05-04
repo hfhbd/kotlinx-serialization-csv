@@ -1,5 +1,6 @@
 package app.softwork.serialization.csv
 
+import kotlinx.datetime.*
 import kotlinx.serialization.*
 import kotlinx.serialization.builtins.*
 import kotlin.test.*
@@ -161,10 +162,10 @@ class CsvDecoderTest {
     @Test
     fun complexTest() {
         val csv = """
-            bar,foo,enum
-            ,42,Three
-            Something,42,Three
-            ,42,Three
+            bar,foo,enum,instant
+            ,42,Three,1970-01-01T00:00:00Z
+            Something,42,Three,1970-01-01T00:00:01Z
+            ,42,Three,1970-01-01T00:00:02Z
         """.trimIndent()
 
         assertEquals(
@@ -172,7 +173,8 @@ class CsvDecoderTest {
                 FooComplex(
                     bar = if (it == 1) "Something" else null,
                     inline = FooInline(42),
-                    enum = FooEnum.A.Three
+                    enum = FooEnum.A.Three,
+                    instant = Instant.fromEpochSeconds(it.toLong())
                 )
             },
             actual = CSVFormat.decodeFromString(ListSerializer(FooComplex.serializer()), csv)
