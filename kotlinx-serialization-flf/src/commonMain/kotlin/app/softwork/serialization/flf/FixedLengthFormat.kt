@@ -23,6 +23,7 @@ public sealed class FixedLengthFormat(
     }
 
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String = buildString {
+        serializer.descriptor.checkForLists()
         serializer.serialize(FixedLengthEncoder(this, serializersModule), value)
     }
 }
@@ -31,3 +32,13 @@ public sealed class FixedLengthFormat(
 internal fun SerialDescriptor.fixedLength(index: Int) =
     getElementAnnotations(index).filterIsInstance<FixedLength>().singleOrNull()?.length
         ?: error("${getElementName(index)} not annotated with @FixedLength")
+
+@ExperimentalSerializationApi
+internal fun SerialDescriptor.checkForLists() {
+    for (descriptor in elementDescriptors) {
+        if (descriptor.kind is StructureKind.LIST || descriptor.kind is StructureKind.MAP) {
+            error("List or Map are not yet supported")
+        }
+        descriptor.checkForLists()
+    }
+}

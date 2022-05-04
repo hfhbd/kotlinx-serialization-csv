@@ -81,3 +81,6 @@ data class Small(
 
 @Serializable
 data class Missing(val s: Int)
+
+@Serializable
+data class InnerList(val s: List<Int>)
