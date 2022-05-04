@@ -2,6 +2,7 @@ package app.softwork.serialization.csv
 
 import kotlinx.datetime.*
 import kotlinx.serialization.*
+import kotlin.jvm.*
 
 @Serializable
 data class Foo(val bar: Int)

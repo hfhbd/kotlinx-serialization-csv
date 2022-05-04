@@ -4,6 +4,7 @@ package app.softwork.serialization.flf
 
 import kotlinx.datetime.*
 import kotlinx.serialization.*
+import kotlin.jvm.*
 
 @Serializable
 data class Sample(
