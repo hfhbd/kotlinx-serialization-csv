@@ -27,7 +27,11 @@ subprojects {
 
     extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>("kotlin") {
         explicitApi()
-
+        targets.all {
+            compilations.all {
+                kotlinOptions.allWarningsAsErrors = true
+            }
+        }
         sourceSets {
             all {
                 languageSettings.progressiveMode = true

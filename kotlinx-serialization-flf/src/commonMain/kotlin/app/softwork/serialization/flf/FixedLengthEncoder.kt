@@ -126,8 +126,7 @@ internal class FixedLengthEncoder(
     @ExperimentalSerializationApi
     override fun encodeInline(inlineDescriptor: SerialDescriptor): Encoder {
         maybeAddLine()
-        val fixedLength = inlineDescriptor.annotations.filterIsInstance<FixedLength>().singleOrNull()
-            ?: error("${inlineDescriptor.serialName} is not marked with @FixedLength")
-        return FixedLengthPrimitiveEncoder(serializersModule, fixedLength.length, builder)
+        val fixedLength = inlineDescriptor.fixedLength
+        return FixedLengthPrimitiveEncoder(serializersModule, fixedLength, builder)
     }
 }
