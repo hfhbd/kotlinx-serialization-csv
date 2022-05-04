@@ -138,4 +138,11 @@ class FlfEncoderTest {
             FixedLengthFormat.encodeToString(Missing.serializer(), Missing(42))
         }
     }
+
+    @Test
+    fun innerList() {
+        assertFailsWith<IllegalStateException> {
+            FixedLengthFormat.encodeToString(InnerList.serializer(), InnerList(emptyList()))
+        }
+    }
 }
