@@ -19,7 +19,7 @@ jobs:
           distribution: 'adopt'
           java-version: 11
       - name: Generate Docs
-        run: ./gradlew dokkaMultiModuleHtml
+        run: ./gradlew dokkaHtmlMultimodule
       - name: Upload Docs
         uses: actions/upload-artifact@v3
         with:
