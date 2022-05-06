@@ -19,7 +19,8 @@ public sealed class FixedLengthFormat(
     }
 
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
-        TODO("Not yet implemented")
+        deserializer.descriptor.checkForLists()
+        return deserializer.deserialize(FixedLengthDecoder(string.split('\n'), serializersModule))
     }
 
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String = buildString {
@@ -32,6 +33,11 @@ public sealed class FixedLengthFormat(
 internal fun SerialDescriptor.fixedLength(index: Int) =
     getElementAnnotations(index).filterIsInstance<FixedLength>().singleOrNull()?.length
         ?: error("${getElementName(index)} not annotated with @FixedLength")
+
+@ExperimentalSerializationApi
+internal val SerialDescriptor.fixedLength get() =
+    annotations.filterIsInstance<FixedLength>().singleOrNull()?.length
+        ?: error("$serialName not annotated with @FixedLength")
 
 @ExperimentalSerializationApi
 internal fun SerialDescriptor.checkForLists() {

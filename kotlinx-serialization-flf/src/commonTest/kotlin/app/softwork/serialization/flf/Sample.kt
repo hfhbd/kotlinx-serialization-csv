@@ -1,11 +1,10 @@
-@file:OptIn(ExperimentalSerializationApi::class)
-
 package app.softwork.serialization.flf
 
 import kotlinx.datetime.*
 import kotlinx.serialization.*
 import kotlin.jvm.*
 
+@ExperimentalSerializationApi
 @Serializable
 data class Sample(
     @FixedLength(5) val shortString: String,
@@ -74,6 +73,7 @@ data class Sample(
     value class FooFloat(val int: Float)
 }
 
+@ExperimentalSerializationApi
 @Serializable
 data class Small(
     @FixedLength(1) val s: String?

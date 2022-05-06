@@ -16,9 +16,7 @@ internal class FixedLengthPrimitiveEncoder(
         builder.append(value.padEnd(length))
     }
 
-    override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
-        error("Not supported")
-    }
+    override fun beginStructure(descriptor: SerialDescriptor) = error("Not supported")
 
     override fun encodeBoolean(value: Boolean) {
         encode(value.toString(), length)
@@ -46,7 +44,7 @@ internal class FixedLengthPrimitiveEncoder(
     }
 
     @ExperimentalSerializationApi
-    override fun encodeInline(inlineDescriptor: SerialDescriptor): Encoder = this
+    override fun encodeInline(inlineDescriptor: SerialDescriptor) = this
 
     override fun encodeInt(value: Int) {
         encode(value.toString(), length)
