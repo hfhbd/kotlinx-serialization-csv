@@ -42,6 +42,7 @@ subprojects {
     tasks.getByName<DokkaTaskPartial>("dokkaHtmlPartial") {
         val module = project.name
         dokkaSourceSets.configureEach {
+            includes.from("$rootDir/README.md")
             reportUndocumented.set(true)
             val sourceSetName = name
             File("$module/src/$sourceSetName").takeIf { it.exists() }?.let {
