@@ -47,6 +47,94 @@ if(savedDarkMode === true){
   <div class="cover ">
     <div class="cover ">
       <h1 class="">Module kotlinx-serialization-csv</h1>
+      <p class="paragraph">Serialize and deserialize ordered CSV and Fixed Length Format Files with kotlinx-serialization.</p>
+      <ul>
+        <li>
+          <p class="paragraph"><a href="https://github.com/hfhbd/kotlinx-serialization-csv">Source code</a></p>
+        </li>
+        <li>
+          <p class="paragraph"><a href="https://csv.softwork.app">Docs</a></p>
+        </li>
+      </ul>
+      <h2 class=""> Install</h2>
+      <p class="paragraph">This package is uploaded to MavenCentral and supports JVM, JS(IR) and all native targets as well.</p>
+      <div class="sample-container">
+        <pre><code class="block lang-kotlin" theme="idea">repositories {<br>    mavenCentral()<br>}<br><br>dependencies {<br>    implementation(&quot;app.softwork:kotlinx-serialization-csv:LATEST&quot;)<br>    implementation(&quot;app.softwork:kotlinx-serialization-flf:LATEST&quot;)<br>}</code></pre>
+<span class="top-right-position"><span class="copy-icon"></span>
+          <div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div>
+        </span></div>
+      <h2 class=""> License</h2>
+      <p class="paragraph">Apache 2</p>
+      <h1 class=""> Package app.softwork.serialization.csv</h1>
+      <p class="paragraph">This package contains the <a href="https://datatracker.ietf.org/doc/html/rfc4180">CSV-Format</a>.</p>
+      <h2 class=""> Usage</h2>
+      <div class="sample-container">
+        <pre><code class="block lang-kotlin" theme="idea">FirstName,LastName<br>John,Doe</code></pre>
+<span class="top-right-position"><span class="copy-icon"></span>
+          <div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div>
+        </span></div>
+      <p class="paragraph">To decode from the given CSV string:</p>
+      <div class="sample-container">
+        <pre><code class="block lang-kotlin" theme="idea">@Serializable<br>data class Names(val firstName: String, val lastName: String)<br><br>CSVFormat.decodeFromString(Names.serializer(), csv)</code></pre>
+<span class="top-right-position"><span class="copy-icon"></span>
+          <div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div>
+        </span></div>
+      <p class="paragraph">And to encode:</p>
+      <div class="sample-container">
+        <pre><code class="block lang-kotlin" theme="idea">CSVFormat.encodeToString(Names.serializer(), Names(&quot;John&quot;, &quot;Doe&quot;))<br><br>&quot;&quot;&quot;<br>firstName,lastName<br>John,Doe<br>&quot;&quot;&quot;</code></pre>
+<span class="top-right-position"><span class="copy-icon"></span>
+          <div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div>
+        </span></div>
+      <h2 class=""> Limitations</h2>
+      <ul>
+        <li>
+          <p class="paragraph">The order of the properties of the class must be match the order of the header/fields!</p>
+        </li>
+        <li>
+          <p class="paragraph">The header is ignored.</p>
+        </li>
+        <li>
+          <p class="paragraph">Inner lists are not supported, eg. <code class="lang-kotlin">data class NotSupported(val innerList: List&lt;String&gt;)</code></p>
+        </li>
+      </ul>
+      <h1 class=""> Package app.softwork.serialization.flf</h1>
+      <p class="paragraph">This package contains the <a href="https://www.ibm.com/docs/en/psfa/7.2.1?topic=format-fixed-length-files">Fixed LengthFile Format</a>.</p>
+      <h2 class=""> Usage</h2>
+      <div class="sample-container">
+        <pre><code class="block lang-kotlin" theme="idea">John Doe  </code></pre>
+<span class="top-right-position"><span class="copy-icon"></span>
+          <div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div>
+        </span></div>
+      <p class="paragraph">To decode from the given Fixed-Length string you need to apply <code class="lang-kotlin">@FixedLength(length = n)</code>:</p>
+      <div class="sample-container">
+        <pre><code class="block lang-kotlin" theme="idea">@Serializable<br>data class Names(<br>    @FixedLength(5) val firstName: String,<br>    @FixedLength(5) val lastName: String<br>)<br><br>FixedLengthFormat.decodeFromString(Names.serializer(), flf)</code></pre>
+<span class="top-right-position"><span class="copy-icon"></span>
+          <div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div>
+        </span></div>
+      <p class="paragraph">And to encode:</p>
+      <div class="sample-container">
+        <pre><code class="block lang-kotlin" theme="idea">FixedLengthFormat.encodeToString(Names.serializer(), Names(&quot;John&quot;, &quot;Doe&quot;))<br><br>&quot;&quot;&quot;<br>John Doe  <br>&quot;&quot;&quot;</code></pre>
+<span class="top-right-position"><span class="copy-icon"></span>
+          <div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div>
+        </span></div>
+      <h2 class=""> Limitations</h2>
+      <ul>
+        <li>
+          <p class="paragraph">The order of the properties of the class must be match the order of the header/fields!</p>
+        </li>
+        <li>
+          <p class="paragraph">All whitespaces are trimmed.</p>
+        </li>
+        <li>
+          <p class="paragraph">Because this format does not have any delimiters, there is no check, if a given length is too long and consumes the   next value.</p>
+        </li>
+        <li>
+          <p class="paragraph">Because this format does not have any delimiters, it is not possible to decode/encode primitives. You must use a class   with <code class="lang-kotlin">@FixedLength</code> annotated properties.</p>
+        </li>
+        <li>
+          <p class="paragraph">Inner lists are not supported, eg. <code class="lang-kotlin">data class NotSupported(val innerList: List&lt;String&gt;)</code></p>
+        </li>
+      </ul>
     </div>
     <h2 class="">All modules:</h2>
     <div class="table"><a data-name="1381771258%2FMain%2F0" anchor-label="kotlinx-serialization-csv" id="1381771258%2FMain%2F0" data-filterable-set=""></a>
@@ -57,7 +145,9 @@ if(savedDarkMode === true){
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1381771258%2FMain%2F0"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div><span class="brief-comment"></span></div>
+          <div><span class="brief-comment">
+              <p class="paragraph">Serialize and deserialize ordered CSV and Fixed Length Format Files with kotlinx-serialization.</p>
+            </span></div>
         </div>
       </div>
 <a data-name="1979881184%2FMain%2F0" anchor-label="kotlinx-serialization-flf" id="1979881184%2FMain%2F0" data-filterable-set=""></a>
