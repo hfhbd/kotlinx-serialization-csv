@@ -5,7 +5,10 @@ plugins {
 
 kotlin {
     jvm()
-    js(IR)
+    js(IR) {
+        browser()
+        nodejs()
+    }
 
     linuxX64()
     linuxArm32Hfp()
