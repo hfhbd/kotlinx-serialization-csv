@@ -1,0 +1,7 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+module:kotlinx-serialization-csv
+app.softwork.serialization.csv
+module:kotlinx-serialization-flf
+app.softwork.serialization.flf
