@@ -95,7 +95,7 @@ John Doe
 
 ## Limitations
 
-- The order of the properties of the class must match the order of the header/fields!
+- The order of the properties of the class must match the order of the fields!
 - All whitespaces are trimmed.
 - Because this format does not have any delimiters, there is no check, if a given length is too long and consumes the
   next value.
