@@ -62,11 +62,15 @@ internal class FixedLengthDecoder(
         index: Int,
         deserializer: DeserializationStrategy<T>,
         previousValue: T?
-    ): T = if (descriptor.kind is StructureKind.LIST) {
-        deserializer.deserialize(this)
-    } else {
-        val data = decode(descriptor.fixedLength(index))
-        deserializer.deserialize(FixedLengthPrimitiveDecoder(serializersModule, data))
+    ): T {
+        val isInnerClass = level != 0 && deserializer.descriptor.kind is StructureKind.CLASS &&
+            !deserializer.descriptor.isInline
+        return if (descriptor.kind is StructureKind.LIST || isInnerClass) {
+            deserializer.deserialize(this)
+        } else {
+            val data = decode(descriptor.fixedLength(index))
+            deserializer.deserialize(FixedLengthPrimitiveDecoder(serializersModule, data))
+        }
     }
 
     @ExperimentalSerializationApi

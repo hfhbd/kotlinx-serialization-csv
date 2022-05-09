@@ -85,7 +85,9 @@ internal class FixedLengthEncoder(
         serializer: SerializationStrategy<T>,
         value: T
     ) {
-        if (descriptor.kind is StructureKind.LIST) {
+        val isInnerClass = level != 0 && serializer.descriptor.kind is StructureKind.CLASS &&
+            !serializer.descriptor.isInline
+        if (descriptor.kind is StructureKind.LIST || isInnerClass) {
             serializer.serialize(this, value)
         } else {
             serializer.serialize(
