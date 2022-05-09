@@ -23,6 +23,7 @@ data class Sample(
     @FixedLength(1) val inlineShort: FooShort,
     @FixedLength(3) val inlineFloat: FooFloat,
     @FixedLength(1) val inlineByte: FooByte,
+    val innerClass: Inner,
 
     @FixedLength(5) val boolean: Boolean,
     @FixedLength(4) val byte: Byte,
@@ -35,6 +36,11 @@ data class Sample(
     enum class Testing {
         One, Two, Three
     }
+
+    @Serializable
+    data class Inner(
+        @FixedLength(1) val s: Int
+    )
 
     @Serializable
     @JvmInline

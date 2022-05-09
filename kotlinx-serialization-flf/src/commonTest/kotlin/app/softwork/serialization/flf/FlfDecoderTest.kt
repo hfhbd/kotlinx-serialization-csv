@@ -11,7 +11,7 @@ class FlfDecoderTest {
     @Test
     fun normal() {
         val flf = """
-            ShortLong      42  42.3    1970-01-01T00:00:00ZTwo  1  foo4.0true0  f41.01false1   1   4.0 -1   
+            ShortLong      42  42.3    1970-01-01T00:00:00ZTwo  1  foo4.0true0  f41.018false1   1   4.0 -1   
         """.trimIndent()
 
         assertEquals(
@@ -32,6 +32,7 @@ class FlfDecoderTest {
                 inlineShort = Sample.FooShort(4.toShort()),
                 inlineFloat = Sample.FooFloat(1f),
                 inlineByte = Sample.FooByte(1.toByte()),
+                innerClass = Sample.Inner(8),
                 boolean = false,
                 byte = 1.toByte(),
                 short = 1.toShort(),
@@ -46,9 +47,9 @@ class FlfDecoderTest {
     @Test
     fun list() {
         val flf = """
-            ShortLong      0   42.3    1970-01-01T00:00:00ZTwo  0  foo4.0true0  f41.01false1   1   4.0 -1   
-            ShortLong      1   42.3    1970-01-01T00:00:00ZTwo  1  foo4.0true0  f41.01false1   1   4.0 -1   
-            ShortLong      2   42.3    1970-01-01T00:00:00ZTwo  2  foo4.0true0  f41.01false1   1   4.0 -1   
+            ShortLong      0   42.3    1970-01-01T00:00:00ZTwo  0  foo4.0true0  f41.018false1   1   4.0 -1   
+            ShortLong      1   42.3    1970-01-01T00:00:00ZTwo  1  foo4.0true0  f41.018false1   1   4.0 -1   
+            ShortLong      2   42.3    1970-01-01T00:00:00ZTwo  2  foo4.0true0  f41.018false1   1   4.0 -1   
         """.trimIndent()
 
         assertEquals(
@@ -70,6 +71,7 @@ class FlfDecoderTest {
                     inlineShort = Sample.FooShort(4.toShort()),
                     inlineFloat = Sample.FooFloat(1f),
                     inlineByte = Sample.FooByte(1.toByte()),
+                    innerClass = Sample.Inner(8),
                     boolean = false,
                     byte = 1.toByte(),
                     short = 1.toShort(),
