@@ -147,4 +147,22 @@ class FlfEncoderTest {
             FixedLengthFormat.encodeToString(InnerList.serializer(), InnerList(emptyList()))
         }
     }
+
+    @Test
+    fun sealed() {
+        val flf = FixedLengthFormat.encodeToString(
+            serializer = ListSerializer(Seal.serializer()),
+            value = listOf(
+                Seal.A(42, 1),
+                Seal.B("foo", 2)
+            )
+        )
+        assertEquals(
+            expected = """
+                A421   
+                Bfoo       2   
+            """.trimIndent(),
+            actual = flf
+        )
+    }
 }

@@ -90,3 +90,30 @@ data class Missing(val s: Int)
 
 @Serializable
 data class InnerList(val s: List<Int>)
+
+@ExperimentalSerializationApi
+@Serializable
+@FixedLengthSealedType(1)
+sealed class Seal {
+    abstract val s: Int
+
+    @SerialName("A")
+    @ExperimentalSerializationApi
+    @Serializable
+    data class A(
+        @FixedLength(2)
+        val a: Int,
+        @FixedLength(4)
+        override val s: Int
+    ) : Seal()
+
+    @SerialName("B")
+    @ExperimentalSerializationApi
+    @Serializable
+    data class B(
+        @FixedLength(10)
+        val b: String,
+        @FixedLength(4)
+        override val s: Int
+    ) : Seal()
+}
