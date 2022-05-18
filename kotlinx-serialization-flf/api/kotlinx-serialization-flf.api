@@ -19,3 +19,12 @@ public final class app/softwork/serialization/flf/FixedLengthFormat$Default : ap
 	public final fun invoke (Lkotlinx/serialization/modules/SerializersModule;)Lapp/softwork/serialization/flf/FixedLengthFormat;
 }
 
+public abstract interface annotation class app/softwork/serialization/flf/FixedLengthSealedType : java/lang/annotation/Annotation {
+	public abstract fun length ()I
+}
+
+public final class app/softwork/serialization/flf/FixedLengthSealedType$Impl : app/softwork/serialization/flf/FixedLengthSealedType {
+	public fun <init> (I)V
+	public final synthetic fun length ()I
+}
+

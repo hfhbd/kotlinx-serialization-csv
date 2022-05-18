@@ -14,7 +14,7 @@ internal class FixedLengthDecoder(
     private var index = 0
     private var currentRow = 0
 
-    private fun decode(length: Int, trim: Boolean = true): String {
+    internal fun decode(length: Int, trim: Boolean = true): String {
         val data = data[currentRow].substring(index, index + length)
         index += length
         return if (trim) data.trim() else data
@@ -65,7 +65,12 @@ internal class FixedLengthDecoder(
     ): T {
         val isInnerClass = level != 0 && deserializer.descriptor.kind is StructureKind.CLASS &&
             !deserializer.descriptor.isInline
-        return if (descriptor.kind is StructureKind.LIST || isInnerClass) {
+        return if (deserializer.descriptor.kind is PolymorphicKind.SEALED) {
+            val length = deserializer.descriptor.fixedLengthType
+            deserializer.deserialize(FixedLengthSealedDecoder(length, this))
+        } else if (descriptor.kind is PolymorphicKind.SEALED && index == 1) {
+            deserializer.deserialize(this)
+        } else if (descriptor.kind is StructureKind.LIST || isInnerClass) {
             deserializer.deserialize(this)
         } else {
             val data = decode(descriptor.fixedLength(index))

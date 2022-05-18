@@ -32,12 +32,17 @@ public sealed class FixedLengthFormat(
 @ExperimentalSerializationApi
 internal fun SerialDescriptor.fixedLength(index: Int) =
     getElementAnnotations(index).filterIsInstance<FixedLength>().singleOrNull()?.length
-        ?: error("${getElementName(index)} not annotated with @FixedLength")
+        ?: error("$serialName.${getElementName(index)} not annotated with @FixedLength")
 
 @ExperimentalSerializationApi
 internal val SerialDescriptor.fixedLength get() =
     annotations.filterIsInstance<FixedLength>().singleOrNull()?.length
         ?: error("$serialName not annotated with @FixedLength")
+
+@ExperimentalSerializationApi
+internal val SerialDescriptor.fixedLengthType get() =
+    annotations.filterIsInstance<FixedLengthSealedType>().singleOrNull()?.length
+        ?: error("$serialName not annotated with @FixedLengthSealedType")
 
 @ExperimentalSerializationApi
 internal fun SerialDescriptor.checkForLists() {

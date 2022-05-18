@@ -20,7 +20,7 @@ internal class FixedLengthEncoder(
         }
     }
 
-    private fun encode(value: String, length: Int) {
+    internal fun encode(value: String, length: Int) {
         require(value.length <= length) { "$value was longer as $length" }
         builder.append(value.padEnd(length))
         afterFirst = true
@@ -87,7 +87,18 @@ internal class FixedLengthEncoder(
     ) {
         val isInnerClass = level != 0 && serializer.descriptor.kind is StructureKind.CLASS &&
             !serializer.descriptor.isInline
-        if (descriptor.kind is StructureKind.LIST || isInnerClass) {
+        if (serializer.descriptor.kind is PolymorphicKind.SEALED) {
+            val length = serializer.descriptor.fixedLengthType
+            serializer.serialize(
+                FixedLengthSealedEncoder(
+                    length,
+                    this
+                ),
+                value
+            )
+        } else if (descriptor.kind is StructureKind.LIST || isInnerClass) {
+            serializer.serialize(this, value)
+        } else if (descriptor.kind is PolymorphicKind.SEALED && index == 1) {
             serializer.serialize(this, value)
         } else {
             serializer.serialize(
