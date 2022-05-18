@@ -145,4 +145,20 @@ class FlfDecoderTest {
             FixedLengthFormat.decodeFromString(Sample.FooShort.serializer(), "1")
         }
     }
+
+    @Test
+    fun sealed() {
+        val flf = """
+                A421   
+                Bfoo       2   
+        """.trimIndent()
+
+        assertEquals(
+            expected = listOf(
+                Seal.A(42, 1),
+                Seal.B("foo", 2)
+            ),
+            actual = FixedLengthFormat.decodeFromString(ListSerializer(Seal.serializer()), flf)
+        )
+    }
 }

@@ -120,13 +120,9 @@ internal class FixedLengthEncoder(
         encode(value, descriptor.fixedLength(index))
     }
 
-    internal fun beginStructure() {
+    override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
         maybeAddLine()
         level++
-    }
-
-    override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
-        beginStructure()
         return this
     }
 

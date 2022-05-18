@@ -15,7 +15,7 @@ internal class FixedLengthSealedEncoder(
     private var calledType = false
 
     override fun beginStructure(descriptor: SerialDescriptor): FixedLengthSealedEncoder {
-        originalEncoder.beginStructure()
+        originalEncoder.beginStructure(descriptor)
         return this
     }
 
