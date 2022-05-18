@@ -9,6 +9,7 @@ import kotlinx.serialization.modules.*
 internal class CSVEncoder(
     private val builder: StringBuilder,
     private val separator: String,
+    private val lineSeparator: String,
     override val serializersModule: SerializersModule
 ) : AbstractEncoder() {
     private var afterFirst = false
@@ -31,7 +32,7 @@ internal class CSVEncoder(
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
         if (level == 0) {
-            builder.appendLine()
+            builder.append(lineSeparator)
             afterFirst = false
         }
         level++
@@ -46,7 +47,7 @@ internal class CSVEncoder(
 
     override fun encodeInline(inlineDescriptor: SerialDescriptor): Encoder {
         if (level == 0) {
-            builder.appendLine()
+            builder.append(lineSeparator)
             afterFirst = false
         }
         return this

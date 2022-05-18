@@ -189,4 +189,17 @@ class CsvEncoderTest {
             actual = csv
         )
     }
+
+    @Test
+    fun custom() {
+        val csv = CSVFormat(separator = ";", lineSeparator = "\r\n").encodeToString(
+            FooNull.serializer(),
+            FooNull(bar = 42, baz = null)
+        )
+
+        assertEquals(
+            expected = "bar;baz\r\n42;",
+            actual = csv
+        )
+    }
 }

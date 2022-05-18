@@ -9,21 +9,26 @@ import kotlinx.serialization.modules.*
 @ExperimentalSerializationApi
 public sealed class CSVFormat(
     private val separator: String,
+    private val lineSeparator: String,
     override val serializersModule: SerializersModule
 ) : StringFormat {
-    private class Custom(separator: String, serializersModule: SerializersModule) :
-        CSVFormat(separator, serializersModule)
+    private class Custom(separator: String, lineSeparator: String, serializersModule: SerializersModule) :
+        CSVFormat(separator, lineSeparator, serializersModule)
 
     public companion object Default : CSVFormat(
-        ",", EmptySerializersModule
+        ",", "\n", EmptySerializersModule
     ) {
-        public operator fun invoke(separator: String, serializersModule: SerializersModule): CSVFormat =
-            Custom(separator, serializersModule)
+        public operator fun invoke(
+            separator: String = ",",
+            lineSeparator: String = "\n",
+            serializersModule: SerializersModule = EmptySerializersModule
+        ): CSVFormat =
+            Custom(separator, lineSeparator, serializersModule)
     }
 
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
         deserializer.descriptor.checkForLists()
-        val lines = string.split('\n')
+        val lines = string.split(lineSeparator)
         val data = lines.drop(1).map { it.split(separator) }
         return deserializer.deserialize(
             decoder = CSVDecoder(
@@ -46,7 +51,7 @@ public sealed class CSVFormat(
         }
 
         serializer.serialize(
-            encoder = CSVEncoder(this, separator, serializersModule),
+            encoder = CSVEncoder(this, separator, lineSeparator, serializersModule),
             value = value
         )
     }

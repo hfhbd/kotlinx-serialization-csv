@@ -216,4 +216,14 @@ class CsvDecoderTest {
             CSVFormat.decodeFromString(ListSerializer(FooComplex.serializer()), csv)
         }
     }
+
+    @Test
+    fun custom() {
+        val csv = "bar;baz\r\n42;"
+
+        assertEquals(
+            expected = FooNull(bar = 42, baz = null),
+            actual = CSVFormat(separator = ";", lineSeparator = "\r\n").decodeFromString(FooNull.serializer(), csv)
+        )
+    }
 }
