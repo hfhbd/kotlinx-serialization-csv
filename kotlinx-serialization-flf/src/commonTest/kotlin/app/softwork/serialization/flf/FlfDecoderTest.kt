@@ -126,13 +126,6 @@ class FlfDecoderTest {
     }
 
     @Test
-    fun innerList() {
-        assertFailsWith<IllegalStateException> {
-            FixedLengthFormat.decodeFromString(InnerList.serializer(), "")
-        }
-    }
-
-    @Test
     fun enumTest() {
         assertFailsWith<IllegalStateException> {
             FixedLengthFormat.decodeFromString(Sample.Testing.serializer(), "One")
@@ -160,5 +153,33 @@ class FlfDecoderTest {
             ),
             actual = FixedLengthFormat.decodeFromString(ListSerializer(Seal.serializer()), flf)
         )
+    }
+
+    @Test
+    fun innerList() {
+        val flf = """
+            2fooA421   Bfoo       2   
+        """.trimIndent()
+        assertEquals(
+            expected = InnerList(
+                2,
+                "foo",
+                listOf(
+                    Seal.A(42, 1),
+                    Seal.B("foo", 2)
+                )
+            ),
+            actual = FixedLengthFormat.decodeFromString(InnerList.serializer(), flf)
+        )
+    }
+
+    @Test
+    fun innerListFailing() {
+        val flf = """
+            fooA421   Bfoo       2   2
+        """.trimIndent()
+        assertFailsWith<IllegalStateException> {
+            FixedLengthFormat.decodeFromString(InnerListFailing.serializer(), flf)
+        }
     }
 }

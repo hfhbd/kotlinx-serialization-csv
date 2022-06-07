@@ -88,8 +88,21 @@ data class Small(
 @Serializable
 data class Missing(val s: Int)
 
+@ExperimentalSerializationApi
 @Serializable
-data class InnerList(val s: List<Int>)
+data class InnerList(
+    @FixedLength(1) val count: Int,
+    @FixedLength(3) val foo: String,
+    @FixedLengthList("count") val s: List<Seal>
+)
+
+@ExperimentalSerializationApi
+@Serializable
+data class InnerListFailing(
+    @FixedLength(3) val foo: String,
+    @FixedLengthList("count") val s: List<Seal>,
+    @FixedLength(1) val count: Int
+)
 
 @ExperimentalSerializationApi
 @Serializable
