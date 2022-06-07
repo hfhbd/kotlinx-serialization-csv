@@ -76,8 +76,8 @@ allprojects {
                 classifier = "javadoc"
             }
             pom {
-                name.set("app.softwork UUID Library")
-                description.set("A multiplatform Kotlin CSV and FLF serialization library")
+                name.set("app.softwork CSV and FLF kotlinx.serialization")
+                description.set("A multiplatform Kotlin CSV and FLF kotlinx.serialization library")
                 url.set("https://github.com/hfhbd/kotlinx-serialization-csv")
                 licenses {
                     license {

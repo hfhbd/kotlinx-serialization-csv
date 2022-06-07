@@ -9,14 +9,24 @@ public final class app/softwork/serialization/flf/FixedLength$Impl : app/softwor
 
 public abstract class app/softwork/serialization/flf/FixedLengthFormat : kotlinx/serialization/StringFormat {
 	public static final field Default Lapp/softwork/serialization/flf/FixedLengthFormat$Default;
-	public synthetic fun <init> (Lkotlinx/serialization/modules/SerializersModule;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlinx/serialization/modules/SerializersModule;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun decodeFromString (Lkotlinx/serialization/DeserializationStrategy;Ljava/lang/String;)Ljava/lang/Object;
 	public fun encodeToString (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Ljava/lang/String;
 	public fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
 }
 
 public final class app/softwork/serialization/flf/FixedLengthFormat$Default : app/softwork/serialization/flf/FixedLengthFormat {
-	public final fun invoke (Lkotlinx/serialization/modules/SerializersModule;)Lapp/softwork/serialization/flf/FixedLengthFormat;
+	public final fun invoke (Lkotlinx/serialization/modules/SerializersModule;Ljava/lang/String;)Lapp/softwork/serialization/flf/FixedLengthFormat;
+	public static synthetic fun invoke$default (Lapp/softwork/serialization/flf/FixedLengthFormat$Default;Lkotlinx/serialization/modules/SerializersModule;Ljava/lang/String;ILjava/lang/Object;)Lapp/softwork/serialization/flf/FixedLengthFormat;
+}
+
+public abstract interface annotation class app/softwork/serialization/flf/FixedLengthList : java/lang/annotation/Annotation {
+	public abstract fun parameterName ()Ljava/lang/String;
+}
+
+public final class app/softwork/serialization/flf/FixedLengthList$Impl : app/softwork/serialization/flf/FixedLengthList {
+	public fun <init> (Ljava/lang/String;)V
+	public final synthetic fun parameterName ()Ljava/lang/String;
 }
 
 public abstract interface annotation class app/softwork/serialization/flf/FixedLengthSealedType : java/lang/annotation/Annotation {

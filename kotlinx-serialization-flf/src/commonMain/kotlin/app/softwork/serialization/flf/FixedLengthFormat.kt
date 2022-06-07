@@ -9,23 +9,28 @@ import kotlinx.serialization.modules.*
  */
 @ExperimentalSerializationApi
 public sealed class FixedLengthFormat(
-    override val serializersModule: SerializersModule
+    override val serializersModule: SerializersModule,
+    private val lineSeparator: String
 ) : StringFormat {
 
-    private class Custom(serializersModule: SerializersModule) : FixedLengthFormat(serializersModule)
+    private class Custom(serializersModule: SerializersModule, lineSeparator: String) :
+        FixedLengthFormat(serializersModule, lineSeparator)
 
-    public companion object Default : FixedLengthFormat(EmptySerializersModule) {
-        public operator fun invoke(serializersModule: SerializersModule): FixedLengthFormat = Custom(serializersModule)
+    public companion object Default : FixedLengthFormat(EmptySerializersModule, lineSeparator = "\n") {
+        public operator fun invoke(
+            serializersModule: SerializersModule,
+            lineSeparator: String = "\n"
+        ): FixedLengthFormat = Custom(serializersModule, lineSeparator)
     }
 
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
-        deserializer.descriptor.checkForLists()
-        return deserializer.deserialize(FixedLengthDecoder(string.split('\n'), serializersModule))
+        deserializer.descriptor.checkForMaps()
+        return deserializer.deserialize(FixedLengthDecoder(string.split(lineSeparator), serializersModule))
     }
 
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String = buildString {
-        serializer.descriptor.checkForLists()
-        serializer.serialize(FixedLengthEncoder(this, serializersModule), value)
+        serializer.descriptor.checkForMaps()
+        serializer.serialize(FixedLengthEncoder(this, serializersModule, lineSeparator), value)
     }
 }
 
@@ -45,11 +50,16 @@ internal val SerialDescriptor.fixedLengthType get() =
         ?: error("$serialName not annotated with @FixedLengthSealedType")
 
 @ExperimentalSerializationApi
-internal fun SerialDescriptor.checkForLists() {
+internal val SerialDescriptor.fixedLengthList get() =
+    annotations.filterIsInstance<FixedLengthList>().singleOrNull()?.parameterName
+        ?: error("$serialName not annotated with @FixedLengthList")
+
+@ExperimentalSerializationApi
+internal fun SerialDescriptor.checkForMaps() {
     for (descriptor in elementDescriptors) {
-        if (descriptor.kind is StructureKind.LIST || descriptor.kind is StructureKind.MAP) {
-            error("List or Map are not yet supported")
+        if (descriptor.kind is StructureKind.MAP) {
+            error("Map are not yet supported: ${descriptor.serialName}")
         }
-        descriptor.checkForLists()
+        descriptor.checkForMaps()
     }
 }

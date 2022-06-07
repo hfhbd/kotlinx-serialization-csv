@@ -143,9 +143,23 @@ class FlfEncoderTest {
 
     @Test
     fun innerList() {
-        assertFailsWith<IllegalStateException> {
-            FixedLengthFormat.encodeToString(InnerList.serializer(), InnerList(emptyList()))
-        }
+        val flf = FixedLengthFormat.encodeToString(
+            InnerList.serializer(),
+            InnerList(
+                2,
+                "foo",
+                listOf(
+                    Seal.A(42, 1),
+                    Seal.B("foo", 2)
+                )
+            )
+        )
+        assertEquals(
+            expected = """
+            2fooA421   Bfoo       2   
+            """.trimIndent(),
+            actual = flf
+        )
     }
 
     @Test

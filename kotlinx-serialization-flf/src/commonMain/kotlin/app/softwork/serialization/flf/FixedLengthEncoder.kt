@@ -8,7 +8,8 @@ import kotlinx.serialization.modules.*
 @ExperimentalSerializationApi
 internal class FixedLengthEncoder(
     private val builder: StringBuilder,
-    override val serializersModule: SerializersModule
+    override val serializersModule: SerializersModule,
+    private val lineSeparator: String
 ) : FailingPrimitiveEncoder, CompositeEncoder {
 
     private var level = 0
@@ -16,7 +17,7 @@ internal class FixedLengthEncoder(
 
     private fun maybeAddLine() {
         if (level == 0 && afterFirst) {
-            builder.appendLine()
+            builder.append(lineSeparator)
         }
     }
 
@@ -96,7 +97,11 @@ internal class FixedLengthEncoder(
                 ),
                 value
             )
-        } else if (descriptor.kind is StructureKind.LIST || isInnerClass) {
+        } else if (
+            descriptor.kind is StructureKind.LIST ||
+            serializer.descriptor.kind is StructureKind.LIST ||
+            isInnerClass
+        ) {
             serializer.serialize(this, value)
         } else if (descriptor.kind is PolymorphicKind.SEALED && index == 1) {
             serializer.serialize(this, value)
