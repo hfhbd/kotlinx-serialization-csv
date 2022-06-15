@@ -10,7 +10,9 @@ public final class app/softwork/serialization/flf/FixedLength$Impl : app/softwor
 public abstract class app/softwork/serialization/flf/FixedLengthFormat : kotlinx/serialization/StringFormat {
 	public static final field Default Lapp/softwork/serialization/flf/FixedLengthFormat$Default;
 	public synthetic fun <init> (Lkotlinx/serialization/modules/SerializersModule;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun decodeAsSequence (Lkotlinx/serialization/DeserializationStrategy;Lkotlin/sequences/Sequence;)Lkotlin/sequences/Sequence;
 	public fun decodeFromString (Lkotlinx/serialization/DeserializationStrategy;Ljava/lang/String;)Ljava/lang/Object;
+	public final fun encodeAsSequence (Lkotlinx/serialization/SerializationStrategy;Lkotlin/sequences/Sequence;)Lkotlin/sequences/Sequence;
 	public fun encodeToString (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Ljava/lang/String;
 	public fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
 }

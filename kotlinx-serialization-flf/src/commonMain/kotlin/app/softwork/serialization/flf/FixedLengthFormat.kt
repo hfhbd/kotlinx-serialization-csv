@@ -28,10 +28,22 @@ public sealed class FixedLengthFormat(
         return deserializer.deserialize(FixedLengthDecoder(string.split(lineSeparator), serializersModule))
     }
 
+    public fun <T> decodeAsSequence(deserializer: DeserializationStrategy<T>, input: Sequence<String>): Sequence<T> {
+        deserializer.descriptor.checkForMaps()
+        return input.map {
+            deserializer.deserialize(FixedLengthDecoder(listOf(it), serializersModule))
+        }
+    }
+
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String = buildString {
         serializer.descriptor.checkForMaps()
         serializer.serialize(FixedLengthEncoder(this, serializersModule, lineSeparator), value)
     }
+
+    public fun <T> encodeAsSequence(serializer: SerializationStrategy<T>, value: Sequence<T>): Sequence<String> =
+        value.map {
+            encodeToString(serializer, it)
+        }
 }
 
 @ExperimentalSerializationApi
