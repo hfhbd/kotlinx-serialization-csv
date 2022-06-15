@@ -89,6 +89,48 @@ class FlfEncoderTest {
     }
 
     @Test
+    fun sequence() {
+        val flf = FixedLengthFormat.encodeAsSequence(
+            serializer = Sample.serializer(),
+            value = List(3) {
+                Sample(
+                    shortString = "Short",
+                    longString = "Long",
+                    int = it,
+                    double = 42.3,
+                    nil = null,
+                    date = Instant.fromEpochSeconds(0L),
+                    enum = Sample.Testing.Two,
+                    inline = Sample.Foo(it),
+                    inlineS = Sample.FooS("foo"),
+                    inlineD = Sample.FooD(4.2),
+                    inlineB = Sample.FooB(true),
+                    inlineL = Sample.FooL(0L),
+                    inlineChar = Sample.FooChar('f'),
+                    inlineShort = Sample.FooShort(4.toShort()),
+                    inlineFloat = Sample.FooFloat(1.1f),
+                    inlineByte = Sample.FooByte(1.toByte()),
+                    innerClass = Sample.Inner(8),
+                    boolean = false,
+                    byte = 1.toByte(),
+                    short = 1.toShort(),
+                    float = 4.2f,
+                    long = -1L,
+                    char = ' '
+                )
+            }.asSequence()
+        )
+        assertEquals(
+            expected = listOf(
+                "ShortLong      0   42.3    1970-01-01T00:00:00ZTwo  0  foo4.2true0  f41.118false1   1   4.2 -1   ",
+                "ShortLong      1   42.3    1970-01-01T00:00:00ZTwo  1  foo4.2true0  f41.118false1   1   4.2 -1   ",
+                "ShortLong      2   42.3    1970-01-01T00:00:00ZTwo  2  foo4.2true0  f41.118false1   1   4.2 -1   "
+            ),
+            actual = flf.toList()
+        )
+    }
+
+    @Test
     fun primitives() {
         assertFailsWith<IllegalStateException> {
             FixedLengthFormat.encodeToString(1)
