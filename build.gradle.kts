@@ -11,6 +11,7 @@ plugins {
     id("org.jetbrains.dokka") version "1.7.0"
     id("org.jetbrains.kotlinx.kover") version "0.5.1"
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
+    id("app.cash.licensee") version "1.4.1" apply false
 }
 
 repositories {
@@ -20,12 +21,13 @@ repositories {
 subprojects {
     plugins.apply("org.jetbrains.kotlin.multiplatform")
     plugins.apply("org.jetbrains.dokka")
+    plugins.apply("app.cash.licensee")
 
     repositories {
         mavenCentral()
     }
 
-    extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>("kotlin") {
+    the<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>().apply {
         explicitApi()
         targets.all {
             compilations.all {
@@ -37,6 +39,10 @@ subprojects {
                 languageSettings.progressiveMode = true
             }
         }
+    }
+
+    the<app.cash.licensee.LicenseeExtension>().apply {
+        allow("Apache-2.0")
     }
 
     tasks.getByName<DokkaTaskPartial>("dokkaHtmlPartial") {
