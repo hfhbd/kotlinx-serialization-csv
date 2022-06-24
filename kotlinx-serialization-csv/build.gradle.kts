@@ -36,21 +36,16 @@ kotlin {
     mingwX86()
 
     sourceSets {
+        val serialization = "1.3.3"
         commonMain {
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-core:$serialization")
             }
         }
         commonTest {
             dependencies {
                 implementation(kotlin("test"))
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.3")
-            }
-        }
-
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
             }
         }
     }
