@@ -32,6 +32,34 @@ data class Sample(
     @FixedLength(4) val long: Long,
     @FixedLength(1) val char: Char
 ) {
+    companion object {
+        val simple = Sample(
+            shortString = "Short",
+            longString = "Long",
+            int = 42,
+            double = 42.3,
+            nil = null,
+            date = Instant.fromEpochSeconds(0L),
+            enum = Sample.Testing.Two,
+            inline = Foo(1),
+            inlineS = FooS("foo"),
+            inlineD = FooD(4.2),
+            inlineB = FooB(true),
+            inlineL = FooL(0L),
+            inlineChar = FooChar('f'),
+            inlineShort = FooShort(4.toShort()),
+            inlineFloat = FooFloat(1.1f),
+            inlineByte = FooByte(1.toByte()),
+            innerClass = Inner(8),
+            boolean = false,
+            byte = 1.toByte(),
+            short = 1.toShort(),
+            float = 4.2f,
+            long = -1L,
+            char = ' '
+        )
+    }
+
     @Serializable
     enum class Testing {
         One, Two, Three
