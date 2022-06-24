@@ -11,7 +11,7 @@ class FlfDecoderTest {
     @Test
     fun normal() {
         val flf = """
-            ShortLong      42  42.3    1970-01-01T00:00:00ZTwo  1  foo4.0true0  f41.018false1   1   4.0 -1   
+            ShortLong      42  42.3    1970-01-01T00:00:00ZTwo  1  foo4.2true0  f41.118false1   1   4.2 -1   
         """.trimIndent()
 
         assertEquals(
