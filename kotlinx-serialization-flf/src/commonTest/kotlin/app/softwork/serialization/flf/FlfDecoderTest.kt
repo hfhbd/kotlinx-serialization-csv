@@ -15,31 +15,7 @@ class FlfDecoderTest {
         """.trimIndent()
 
         assertEquals(
-            expected = Sample(
-                shortString = "Short",
-                longString = "Long",
-                int = 42,
-                double = 42.3,
-                nil = null,
-                date = Instant.fromEpochSeconds(0L),
-                enum = Sample.Testing.Two,
-                inline = Sample.Foo(1),
-                inlineS = Sample.FooS("foo"),
-                inlineD = Sample.FooD(4.0),
-                inlineB = Sample.FooB(true),
-                inlineL = Sample.FooL(0L),
-                inlineChar = Sample.FooChar('f'),
-                inlineShort = Sample.FooShort(4.toShort()),
-                inlineFloat = Sample.FooFloat(1f),
-                inlineByte = Sample.FooByte(1.toByte()),
-                innerClass = Sample.Inner(8),
-                boolean = false,
-                byte = 1.toByte(),
-                short = 1.toShort(),
-                float = 4.0f,
-                long = -1L,
-                char = ' '
-            ),
+            expected = Sample.sample,
             actual = FixedLengthFormat.decodeFromString(Sample.serializer(), flf)
         )
     }
