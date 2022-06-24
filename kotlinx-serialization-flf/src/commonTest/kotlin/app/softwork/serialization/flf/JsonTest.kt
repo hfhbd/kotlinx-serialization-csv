@@ -9,14 +9,14 @@ class JsonTest {
     @Test
     fun interop() {
         val sampleFlf = """
-                ShortLong      42  42.3    1970-01-01T00:00:00ZTwo  1  foo4.2true0  f41.118false1   1   4.2 -1   
-            """.trimIndent()
+        ShortLong      42  42.3    1970-01-01T00:00:00ZTwo  1  foo4.2true0  f41.118false1   1   4.2 -1   
+        """.trimIndent()
         val decode = FixedLengthFormat.decodeFromString(
             deserializer = Sample.serializer(),
             string = sampleFlf
         )
         assertEquals(
-            Sample.sample,
+            Sample.simple,
             decode
         )
         val jsonString = Json { prettyPrint = true }.encodeToString(Sample.serializer(), decode)
@@ -55,7 +55,7 @@ class JsonTest {
         )
         val sampleJson = Json.decodeFromString(Sample.serializer(), jsonString)
         assertEquals(
-            Sample.sample,
+            Sample.simple,
             sampleJson
         )
         val flfString = FixedLengthFormat.encodeToString(

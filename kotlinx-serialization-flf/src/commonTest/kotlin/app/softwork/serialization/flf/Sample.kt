@@ -33,7 +33,7 @@ data class Sample(
     @FixedLength(1) val char: Char
 ) {
     companion object {
-        val sample = Sample(
+        val simple = Sample(
             shortString = "Short",
             longString = "Long",
             int = 42,

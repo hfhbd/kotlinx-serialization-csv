@@ -15,7 +15,7 @@ class FlfDecoderTest {
         """.trimIndent()
 
         assertEquals(
-            expected = Sample.sample,
+            expected = Sample.simple,
             actual = FixedLengthFormat.decodeFromString(Sample.serializer(), flf)
         )
     }

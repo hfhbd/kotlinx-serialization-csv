@@ -12,7 +12,7 @@ class FlfEncoderTest {
     fun normal() {
         val flf = FixedLengthFormat.encodeToString(
             serializer = Sample.serializer(),
-            value = Sample.sample
+            value = Sample.simple
         )
         assertEquals(
             expected = """
