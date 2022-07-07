@@ -164,7 +164,7 @@ internal class FixedLengthDecoder(
             if (descriptor.kind is StructureKind.LIST) {
                 val lengthName = getElementAnnotations(index).filterIsInstance<FixedLengthList>().singleOrNull()
                     ?: error("$serialName not annotated with @FixedLengthList")
-                return getElementIndex(lengthName.parameterName)
+                return getElementIndex(lengthName.serialName)
             }
         }
         return null

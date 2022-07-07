@@ -23,12 +23,12 @@ public final class app/softwork/serialization/flf/FixedLengthFormat$Default : ap
 }
 
 public abstract interface annotation class app/softwork/serialization/flf/FixedLengthList : java/lang/annotation/Annotation {
-	public abstract fun parameterName ()Ljava/lang/String;
+	public abstract fun serialName ()Ljava/lang/String;
 }
 
 public final class app/softwork/serialization/flf/FixedLengthList$Impl : app/softwork/serialization/flf/FixedLengthList {
 	public fun <init> (Ljava/lang/String;)V
-	public final synthetic fun parameterName ()Ljava/lang/String;
+	public final synthetic fun serialName ()Ljava/lang/String;
 }
 
 public abstract interface annotation class app/softwork/serialization/flf/FixedLengthSealedType : java/lang/annotation/Annotation {
