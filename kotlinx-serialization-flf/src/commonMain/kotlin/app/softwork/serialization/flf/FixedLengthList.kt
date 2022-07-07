@@ -5,4 +5,4 @@ import kotlinx.serialization.*
 @ExperimentalSerializationApi
 @Target(AnnotationTarget.PROPERTY)
 @SerialInfo
-public annotation class FixedLengthList(val parameterName: String)
+public annotation class FixedLengthList(val serialName: String)
