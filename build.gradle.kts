@@ -4,13 +4,14 @@ import org.jetbrains.dokka.gradle.*
 plugins {
     kotlin("multiplatform") version "1.7.10" apply false
     kotlin("plugin.serialization") version "1.7.10" apply false
-    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.10.1"
+    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.11.0"
     `maven-publish`
     signing
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("org.jetbrains.dokka") version "1.7.0"
+    id("org.jetbrains.dokka") version "1.7.10"
     id("org.jetbrains.kotlinx.kover") version "0.5.1"
-    id("io.gitlab.arturbosch.detekt") version "1.20.0"
+    id("io.gitlab.arturbosch.detekt") version "1.21.0"
+    id("app.cash.licensee") version "1.5.0" apply false
 }
 
 repositories {
@@ -20,12 +21,13 @@ repositories {
 subprojects {
     plugins.apply("org.jetbrains.kotlin.multiplatform")
     plugins.apply("org.jetbrains.dokka")
+    plugins.apply("app.cash.licensee")
 
     repositories {
         mavenCentral()
     }
 
-    extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>("kotlin") {
+    the<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>().apply {
         explicitApi()
         targets.all {
             compilations.all {
@@ -37,6 +39,10 @@ subprojects {
                 languageSettings.progressiveMode = true
             }
         }
+    }
+
+    the<app.cash.licensee.LicenseeExtension>().apply {
+        allow("Apache-2.0")
     }
 
     tasks.getByName<DokkaTaskPartial>("dokkaHtmlPartial") {
@@ -131,7 +137,7 @@ detekt {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
 }
 
 tasks {
