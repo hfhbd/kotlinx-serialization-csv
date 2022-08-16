@@ -158,3 +158,14 @@ sealed class Seal {
         override val s: Int
     ) : Seal()
 }
+
+@ExperimentalSerializationApi
+@Serializable
+data class SealedWithProperty(
+    @FixedLength(2)
+    val type: String,
+    @FixedLength(2)
+    val s: Int,
+    @FixedLengthSealedTypeProperty("type")
+    val sealed: Seal
+)
