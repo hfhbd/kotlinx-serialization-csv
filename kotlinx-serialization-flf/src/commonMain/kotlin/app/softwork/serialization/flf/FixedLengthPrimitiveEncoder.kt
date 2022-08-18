@@ -43,8 +43,7 @@ internal class FixedLengthPrimitiveEncoder(
         encode(value.toString(), length)
     }
 
-    @ExperimentalSerializationApi
-    override fun encodeInline(inlineDescriptor: SerialDescriptor) = this
+    override fun encodeInline(descriptor: SerialDescriptor) = this
 
     override fun encodeInt(value: Int) {
         encode(value.toString(), length)

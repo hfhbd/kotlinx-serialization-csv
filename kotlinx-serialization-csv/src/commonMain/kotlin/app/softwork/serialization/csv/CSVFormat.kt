@@ -16,12 +16,12 @@ public sealed class CSVFormat(
         CSVFormat(separator, lineSeparator, serializersModule)
 
     public companion object Default : CSVFormat(
-        ",", "\n", EmptySerializersModule
+        ",", "\n", EmptySerializersModule()
     ) {
         public operator fun invoke(
             separator: String = ",",
             lineSeparator: String = "\n",
-            serializersModule: SerializersModule = EmptySerializersModule
+            serializersModule: SerializersModule = EmptySerializersModule()
         ): CSVFormat =
             Custom(separator, lineSeparator, serializersModule)
     }

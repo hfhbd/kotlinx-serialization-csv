@@ -16,7 +16,7 @@ public sealed class FixedLengthFormat(
     private class Custom(serializersModule: SerializersModule, lineSeparator: String) :
         FixedLengthFormat(serializersModule, lineSeparator)
 
-    public companion object Default : FixedLengthFormat(EmptySerializersModule, lineSeparator = "\n") {
+    public companion object Default : FixedLengthFormat(EmptySerializersModule(), lineSeparator = "\n") {
         public operator fun invoke(
             serializersModule: SerializersModule,
             lineSeparator: String = "\n"
@@ -40,10 +40,14 @@ public sealed class FixedLengthFormat(
         serializer.serialize(FixedLengthEncoder(this, serializersModule, lineSeparator), value)
     }
 
-    public fun <T> encodeAsSequence(serializer: SerializationStrategy<T>, value: Sequence<T>): Sequence<String> =
-        value.map {
-            encodeToString(serializer, it)
+    public fun <T> encodeAsSequence(serializer: SerializationStrategy<T>, value: Sequence<T>): Sequence<String> {
+        serializer.descriptor.checkForMaps()
+        return value.map {
+            buildString {
+                serializer.serialize(FixedLengthEncoder(this, serializersModule, lineSeparator), it)
+            }
         }
+    }
 }
 
 @ExperimentalSerializationApi

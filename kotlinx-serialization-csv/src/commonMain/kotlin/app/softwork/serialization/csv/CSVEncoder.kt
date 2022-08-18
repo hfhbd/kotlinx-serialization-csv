@@ -45,7 +45,7 @@ internal class CSVEncoder(
         level--
     }
 
-    override fun encodeInline(inlineDescriptor: SerialDescriptor): Encoder {
+    override fun encodeInline(descriptor: SerialDescriptor): Encoder {
         if (level == 0) {
             builder.append(lineSeparator)
             afterFirst = false
