@@ -24,8 +24,7 @@ internal class FixedLengthPrimitiveDecoder(
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor) = enumDescriptor.getElementIndex(data)
 
-    @ExperimentalSerializationApi
-    override fun decodeInline(inlineDescriptor: SerialDescriptor) = this
+    override fun decodeInline(descriptor: SerialDescriptor) = this
 
     @ExperimentalSerializationApi
     override fun decodeNotNullMark() = data.isNotBlank()

@@ -29,7 +29,6 @@ internal class FixedLengthDecoder(
     override fun decodeFloatElement(descriptor: SerialDescriptor, index: Int) =
         decode(descriptor.fixedLength(index)).toFloat()
 
-    @ExperimentalSerializationApi
     override fun decodeInlineElement(descriptor: SerialDescriptor, index: Int) =
         decodeInline(descriptor.getElementDescriptor(index))
 
@@ -145,9 +144,8 @@ internal class FixedLengthDecoder(
         return enumDescriptor.elementNames.indexOf(decode(enumDescriptor.fixedLength(fixedLength)))
     }
 
-    @ExperimentalSerializationApi
-    override fun decodeInline(inlineDescriptor: SerialDescriptor): Decoder {
-        val fixedLength = inlineDescriptor.fixedLength
+    override fun decodeInline(descriptor: SerialDescriptor): Decoder {
+        val fixedLength = descriptor.fixedLength
         val data = decode(fixedLength)
         return FixedLengthPrimitiveDecoder(serializersModule, data)
     }

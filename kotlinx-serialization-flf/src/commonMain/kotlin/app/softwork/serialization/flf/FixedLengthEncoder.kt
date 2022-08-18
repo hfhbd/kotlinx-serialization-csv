@@ -47,7 +47,6 @@ internal class FixedLengthEncoder(
         encode(value.toString(), descriptor.fixedLength(index))
     }
 
-    @ExperimentalSerializationApi
     override fun encodeInlineElement(
         descriptor: SerialDescriptor,
         index: Int
@@ -141,10 +140,9 @@ internal class FixedLengthEncoder(
         encode(value, enumDescriptor.fixedLength(index))
     }
 
-    @ExperimentalSerializationApi
-    override fun encodeInline(inlineDescriptor: SerialDescriptor): Encoder {
+    override fun encodeInline(descriptor: SerialDescriptor): Encoder {
         maybeAddLine()
-        val fixedLength = inlineDescriptor.fixedLength
+        val fixedLength = descriptor.fixedLength
         return FixedLengthPrimitiveEncoder(serializersModule, fixedLength, builder)
     }
 }

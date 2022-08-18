@@ -36,7 +36,7 @@ kotlin {
     mingwX86()
 
     sourceSets {
-        val serialization = "1.3.3"
+        val serialization = "1.4.0"
         commonMain {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-serialization-core:$serialization")
