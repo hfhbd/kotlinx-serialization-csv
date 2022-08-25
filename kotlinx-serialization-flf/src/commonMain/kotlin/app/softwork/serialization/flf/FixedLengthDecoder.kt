@@ -75,9 +75,9 @@ internal class FixedLengthDecoder(
             !deserializer.descriptor.isInline
         return if (deserializer.descriptor.kind is PolymorphicKind.SEALED) {
             val property = descriptor.getElementAnnotations(index)
-                .filterIsInstance<FixedLengthSealedTypeProperty>().singleOrNull()
+                .filterIsInstance<FixedLengthSealedClassDiscriminator>().singleOrNull()
             val typeLength = if (property != null) {
-                val classDiscriminator = sealedClassClassDiscriminators[property.property]!!
+                val classDiscriminator = sealedClassClassDiscriminators[property.serialName]!!
                 SealedClassClassDiscriminator.Property(classDiscriminator)
             } else {
                 SealedClassClassDiscriminator.Length(deserializer.descriptor.fixedLengthType)
