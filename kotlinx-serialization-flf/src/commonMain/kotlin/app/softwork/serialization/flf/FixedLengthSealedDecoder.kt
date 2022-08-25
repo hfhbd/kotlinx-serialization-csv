@@ -7,12 +7,10 @@ import kotlinx.serialization.modules.*
 
 @ExperimentalSerializationApi
 internal class FixedLengthSealedDecoder(
-    private val typeLength: Int,
+    private val classDiscriminator: SealedClassClassDiscriminator,
     private val originalDecoder: FixedLengthDecoder
 ) : Decoder by originalDecoder, CompositeDecoder by originalDecoder {
     override val serializersModule: SerializersModule = originalDecoder.serializersModule
-
-    private var calledType = false
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         originalDecoder.beginStructure(descriptor)
@@ -20,12 +18,13 @@ internal class FixedLengthSealedDecoder(
     }
 
     override fun decodeStringElement(descriptor: SerialDescriptor, index: Int): String {
-        return if (calledType) {
-            originalDecoder.decodeStringElement(descriptor, index)
+        return if (index == 0) {
+            when (classDiscriminator) {
+                is SealedClassClassDiscriminator.Length -> originalDecoder.decode(classDiscriminator.length)
+                is SealedClassClassDiscriminator.Property -> classDiscriminator.classDiscriminator
+            }
         } else {
-            val value = originalDecoder.decode(typeLength)
-            calledType = true
-            value
+            originalDecoder.decodeStringElement(descriptor, index)
         }
     }
 }

@@ -199,4 +199,22 @@ class FlfDecoderTest {
             FixedLengthFormat.decodeFromString(InnerListFailing.serializer(), flf)
         }
     }
+
+    @Test
+    fun sealedProperty() {
+        val flf = FixedLengthFormat.decodeFromString(
+            deserializer = ListSerializer(SealedWithProperty.serializer()),
+            string = """
+                A 42421   
+                B 42foo       2   
+            """.trimIndent()
+        )
+        assertEquals(
+            expected = listOf(
+                SealedWithProperty(Seal.A.serializer().descriptor.serialName, 42, Seal.A(42, 1)),
+                SealedWithProperty(Seal.B.serializer().descriptor.serialName, 42, Seal.B("foo", 2))
+            ),
+            actual = flf
+        )
+    }
 }

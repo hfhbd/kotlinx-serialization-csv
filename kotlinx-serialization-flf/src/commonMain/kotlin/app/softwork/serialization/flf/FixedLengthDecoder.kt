@@ -17,6 +17,8 @@ internal class FixedLengthDecoder(
     private var lengthIndex: Int? = null
     private var currentLength: Int? = null
 
+    private val sealedClassClassDiscriminators = mutableMapOf<String, String>()
+
     internal fun decode(length: Int, trim: Boolean = true): String {
         val data = data[currentRow].substring(index, index + length)
         index += length
@@ -72,10 +74,15 @@ internal class FixedLengthDecoder(
         val isInnerClass = level != 0 && deserializer.descriptor.kind is StructureKind.CLASS &&
             !deserializer.descriptor.isInline
         return if (deserializer.descriptor.kind is PolymorphicKind.SEALED) {
-            val length = deserializer.descriptor.fixedLengthType
-            deserializer.deserialize(FixedLengthSealedDecoder(length, this))
-        } else if (descriptor.kind is PolymorphicKind.SEALED && index == 1) {
-            deserializer.deserialize(this)
+            val property = descriptor.getElementAnnotations(index)
+                .filterIsInstance<FixedLengthSealedTypeProperty>().singleOrNull()
+            val typeLength = if (property != null) {
+                val classDiscriminator = sealedClassClassDiscriminators[property.property]!!
+                SealedClassClassDiscriminator.Property(classDiscriminator)
+            } else {
+                SealedClassClassDiscriminator.Length(deserializer.descriptor.fixedLengthType)
+            }
+            deserializer.deserialize(FixedLengthSealedDecoder(typeLength, this))
         } else if (
             descriptor.kind is StructureKind.LIST ||
             deserializer.descriptor.kind is StructureKind.LIST ||
@@ -99,8 +106,13 @@ internal class FixedLengthDecoder(
     override fun decodeShortElement(descriptor: SerialDescriptor, index: Int) =
         decode(descriptor.fixedLength(index)).toShort()
 
-    override fun decodeStringElement(descriptor: SerialDescriptor, index: Int) =
-        decode(descriptor.fixedLength(index))
+    override fun decodeStringElement(descriptor: SerialDescriptor, index: Int): String {
+        val value = decode(descriptor.fixedLength(index))
+        if (descriptor.hasSealedTypeProperty) {
+            sealedClassClassDiscriminators[descriptor.getElementName(index)] = value
+        }
+        return value
+    }
 
     override fun endStructure(descriptor: SerialDescriptor) {
         level -= 1
