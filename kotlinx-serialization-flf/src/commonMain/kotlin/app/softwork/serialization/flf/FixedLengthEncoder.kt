@@ -88,7 +88,10 @@ internal class FixedLengthEncoder(
         val isInnerClass = level != 0 && serializer.descriptor.kind is StructureKind.CLASS &&
             !serializer.descriptor.isInline
         if (serializer.descriptor.kind is PolymorphicKind.SEALED) {
-            val length = serializer.descriptor.fixedLengthType
+            val length = if (descriptor.getElementAnnotations(index)
+                .filterIsInstance<FixedLengthSealedClassDiscriminator>()
+                .isNotEmpty()
+            ) null else serializer.descriptor.fixedLengthType
             serializer.serialize(
                 FixedLengthSealedEncoder(
                     length,
@@ -101,8 +104,6 @@ internal class FixedLengthEncoder(
             serializer.descriptor.kind is StructureKind.LIST ||
             isInnerClass
         ) {
-            serializer.serialize(this, value)
-        } else if (descriptor.kind is PolymorphicKind.SEALED && index == 1) {
             serializer.serialize(this, value)
         } else {
             serializer.serialize(

@@ -61,8 +61,18 @@ internal val SerialDescriptor.fixedLength get() =
         ?: error("$serialName not annotated with @FixedLength")
 
 @ExperimentalSerializationApi
+internal val SerialDescriptor.hasSealedTypeProperty: Boolean get() {
+    for (index in 0 until elementsCount) {
+        if (getElementAnnotations(index).filterIsInstance<FixedLengthSealedClassDiscriminator>().isNotEmpty()) {
+            return true
+        }
+    }
+    return false
+}
+
+@ExperimentalSerializationApi
 internal val SerialDescriptor.fixedLengthType get() =
-    annotations.filterIsInstance<FixedLengthSealedType>().singleOrNull()?.length
+    annotations.filterIsInstance<FixedLengthSealedClassDiscriminatorLength>().singleOrNull()?.length
         ?: error("$serialName not annotated with @FixedLengthSealedType")
 
 @ExperimentalSerializationApi

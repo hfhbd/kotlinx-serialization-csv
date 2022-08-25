@@ -1,5 +1,6 @@
 package app.softwork.serialization.flf
 
+import app.softwork.serialization.flf.Seal.*
 import kotlinx.datetime.*
 import kotlinx.serialization.*
 import kotlinx.serialization.builtins.*
@@ -167,8 +168,8 @@ class FlfEncoderTest {
                 2,
                 "foo",
                 listOf(
-                    Seal.A(42, 1),
-                    Seal.B("foo", 2)
+                    A(42, 1),
+                    B("foo", 2)
                 )
             )
         )
@@ -185,14 +186,32 @@ class FlfEncoderTest {
         val flf = FixedLengthFormat.encodeToString(
             serializer = ListSerializer(Seal.serializer()),
             value = listOf(
-                Seal.A(42, 1),
-                Seal.B("foo", 2)
+                A(42, 1),
+                B("foo", 2)
             )
         )
         assertEquals(
             expected = """
                 A421   
                 Bfoo       2   
+            """.trimIndent(),
+            actual = flf
+        )
+    }
+
+    @Test
+    fun sealedProperty() {
+        val flf = FixedLengthFormat.encodeToString(
+            serializer = ListSerializer(SealedWithProperty.serializer()),
+            value = listOf(
+                SealedWithProperty(A.serializer().descriptor.serialName, 42, A(42, 1)),
+                SealedWithProperty(B.serializer().descriptor.serialName, 42, B("foo", 2))
+            )
+        )
+        assertEquals(
+            expected = """
+                A 42421   
+                B 42foo       2   
             """.trimIndent(),
             actual = flf
         )

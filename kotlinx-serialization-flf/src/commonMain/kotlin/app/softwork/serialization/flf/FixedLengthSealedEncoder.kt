@@ -7,12 +7,10 @@ import kotlinx.serialization.modules.*
 
 @ExperimentalSerializationApi
 internal class FixedLengthSealedEncoder(
-    private val typeLength: Int,
+    private val typeLength: Int?,
     private val originalEncoder: FixedLengthEncoder
 ) : Encoder by originalEncoder, CompositeEncoder by originalEncoder {
     override val serializersModule: SerializersModule = originalEncoder.serializersModule
-
-    private var calledType = false
 
     override fun beginStructure(descriptor: SerialDescriptor): FixedLengthSealedEncoder {
         originalEncoder.beginStructure(descriptor)
@@ -20,11 +18,12 @@ internal class FixedLengthSealedEncoder(
     }
 
     override fun encodeStringElement(descriptor: SerialDescriptor, index: Int, value: String) {
-        if (calledType) {
-            originalEncoder.encodeStringElement(descriptor, index, value)
+        if (index == 0) {
+            if (typeLength != null) {
+                originalEncoder.encode(value, typeLength)
+            }
         } else {
-            originalEncoder.encode(value, typeLength)
-            calledType = true
+            originalEncoder.encodeStringElement(descriptor, index, value)
         }
     }
 }

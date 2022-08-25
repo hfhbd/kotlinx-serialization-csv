@@ -121,20 +121,20 @@ data class Missing(val s: Int)
 data class InnerList(
     @FixedLength(1) val count: Int,
     @FixedLength(3) val foo: String,
-    @FixedLengthList("count") val s: List<Seal>
+    @FixedLengthList(serialName = "count") val s: List<Seal>
 )
 
 @ExperimentalSerializationApi
 @Serializable
 data class InnerListFailing(
     @FixedLength(3) val foo: String,
-    @FixedLengthList("count") val s: List<Seal>,
+    @FixedLengthList(serialName = "count") val s: List<Seal>,
     @FixedLength(1) val count: Int
 )
 
 @ExperimentalSerializationApi
 @Serializable
-@FixedLengthSealedType(1)
+@FixedLengthSealedClassDiscriminatorLength(1)
 sealed class Seal {
     abstract val s: Int
 
@@ -158,3 +158,14 @@ sealed class Seal {
         override val s: Int
     ) : Seal()
 }
+
+@ExperimentalSerializationApi
+@Serializable
+data class SealedWithProperty(
+    @FixedLength(2)
+    val type: String,
+    @FixedLength(2)
+    val s: Int,
+    @FixedLengthSealedClassDiscriminator(serialName = "type")
+    val sealed: Seal
+)

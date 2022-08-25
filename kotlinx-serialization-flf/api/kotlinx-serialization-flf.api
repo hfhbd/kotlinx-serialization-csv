@@ -31,11 +31,20 @@ public final class app/softwork/serialization/flf/FixedLengthList$Impl : app/sof
 	public final synthetic fun serialName ()Ljava/lang/String;
 }
 
-public abstract interface annotation class app/softwork/serialization/flf/FixedLengthSealedType : java/lang/annotation/Annotation {
+public abstract interface annotation class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminator : java/lang/annotation/Annotation {
+	public abstract fun serialName ()Ljava/lang/String;
+}
+
+public final class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminator$Impl : app/softwork/serialization/flf/FixedLengthSealedClassDiscriminator {
+	public fun <init> (Ljava/lang/String;)V
+	public final synthetic fun serialName ()Ljava/lang/String;
+}
+
+public abstract interface annotation class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength : java/lang/annotation/Annotation {
 	public abstract fun length ()I
 }
 
-public final class app/softwork/serialization/flf/FixedLengthSealedType$Impl : app/softwork/serialization/flf/FixedLengthSealedType {
+public final class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength$Impl : app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength {
 	public fun <init> (I)V
 	public final synthetic fun length ()I
 }
