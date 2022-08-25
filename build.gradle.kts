@@ -22,6 +22,7 @@ subprojects {
     plugins.apply("org.jetbrains.kotlin.multiplatform")
     plugins.apply("org.jetbrains.dokka")
     plugins.apply("app.cash.licensee")
+    plugins.apply("org.jetbrains.kotlinx.kover")
 
     repositories {
         mavenCentral()
@@ -58,7 +59,7 @@ subprojects {
                     remoteLineSuffix.set("#L")
                 }
             }
-            externalDocumentationLink("https://kotlin.github.io/kotlinx.serialization/")
+            externalDocumentationLink("https://kotlinlang.org/api/kotlinx.serialization/")
         }
     }
 }
@@ -160,8 +161,10 @@ tasks {
     }
 }
 
-subprojects {
-    tasks.koverVerify {
+koverMerged {
+    enable()
+    verify {
+        onCheck.set(true)
         rule {
             bound {
                 minValue = 85
