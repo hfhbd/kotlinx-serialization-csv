@@ -9,7 +9,7 @@ plugins {
     signing
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     id("org.jetbrains.dokka") version "1.7.10"
-    id("org.jetbrains.kotlinx.kover") version "0.5.1"
+    id("org.jetbrains.kotlinx.kover") version "0.6.0"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("app.cash.licensee") version "1.5.0" apply false
 }
@@ -22,6 +22,7 @@ subprojects {
     plugins.apply("org.jetbrains.kotlin.multiplatform")
     plugins.apply("org.jetbrains.dokka")
     plugins.apply("app.cash.licensee")
+    plugins.apply("org.jetbrains.kotlinx.kover")
 
     repositories {
         mavenCentral()
@@ -58,7 +59,7 @@ subprojects {
                     remoteLineSuffix.set("#L")
                 }
             }
-            externalDocumentationLink("https://kotlin.github.io/kotlinx.serialization/")
+            externalDocumentationLink("https://kotlinlang.org/api/kotlinx.serialization/")
         }
     }
 }
@@ -160,8 +161,10 @@ tasks {
     }
 }
 
-subprojects {
-    tasks.koverVerify {
+koverMerged {
+    enable()
+    verify {
+        onCheck.set(true)
         rule {
             bound {
                 minValue = 85

@@ -11,8 +11,6 @@ kotlin {
     }
 
     linuxX64()
-    linuxArm32Hfp()
-    linuxArm64()
 
     macosX64()
     macosArm64()
@@ -33,7 +31,6 @@ kotlin {
     tvosSimulatorArm64()
 
     mingwX64()
-    mingwX86()
 
     sourceSets {
         val serialization = "1.4.0"
