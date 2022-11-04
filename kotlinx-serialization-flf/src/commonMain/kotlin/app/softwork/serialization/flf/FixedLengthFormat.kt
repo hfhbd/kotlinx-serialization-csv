@@ -31,16 +31,16 @@ public sealed class FixedLengthFormat(
 
     public fun <T> decodeAsSequence(deserializer: DeserializationStrategy<T>, input: Sequence<String>): Sequence<T> {
         deserializer.descriptor.checkForMaps()
-        val iterator = input.iterator()
-        return if (iterator.hasNext()) {
-            sequence {
-                val decoder = FixedLengthDecoder(iterator, serializersModule, size = -1)
-                while (iterator.hasNext()) {
-                    yield(deserializer.deserialize(decoder))
-                }
+        return sequence {
+            val iterator = input.iterator()
+            if (!iterator.hasNext()) {
+                return@sequence
             }
-        } else {
-            emptySequence()
+
+            val decoder = FixedLengthDecoder(iterator, serializersModule, size = -1)
+            while (iterator.hasNext()) {
+                yield(deserializer.deserialize(decoder))
+            }
         }
     }
 
@@ -51,20 +51,20 @@ public sealed class FixedLengthFormat(
 
     public fun <T> encodeAsSequence(serializer: SerializationStrategy<T>, value: Sequence<T>): Sequence<String> {
         serializer.descriptor.checkForMaps()
-        val iterator = value.iterator()
-        return if (iterator.hasNext()) {
-            sequence {
-                val stringBuilder = StringBuilder()
-                val encoder = FixedLengthEncoder(stringBuilder, serializersModule, lineSeparator)
-                while (iterator.hasNext()) {
-                    serializer.serialize(encoder, iterator.next())
-                    yield(stringBuilder.toString())
-                    stringBuilder.setLength(0)
-                    encoder.afterFirst = false
-                }
+        return sequence {
+            val iterator = value.iterator()
+            if (!iterator.hasNext()) {
+                return@sequence
             }
-        } else {
-            emptySequence()
+
+            val stringBuilder = StringBuilder()
+            val encoder = FixedLengthEncoder(stringBuilder, serializersModule, lineSeparator)
+            while (iterator.hasNext()) {
+                serializer.serialize(encoder, iterator.next())
+                yield(stringBuilder.toString())
+                stringBuilder.setLength(0)
+                encoder.afterFirst = false
+            }
         }
     }
 }
@@ -80,7 +80,6 @@ public fun <T> Sequence<String>.decode(
     deserializationStrategy: DeserializationStrategy<T>,
     format: FixedLengthFormat = FixedLengthFormat
 ): Sequence<T> = format.decodeAsSequence(deserializationStrategy, this)
-
 
 @ExperimentalSerializationApi
 internal fun SerialDescriptor.fixedLength(index: Int) =

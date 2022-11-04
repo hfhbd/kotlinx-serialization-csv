@@ -93,7 +93,7 @@ class FlfEncoderTest {
                 long = -1L,
                 char = ' '
             )
-        }.encode(Sample.serializer())
+        }.take(3).constrainOnce()
 
         assertEquals(
             expected = listOf(
@@ -101,8 +101,13 @@ class FlfEncoderTest {
                 "ShortLong      1   42.3    1970-01-01T00:00:00ZTwo  1  foo4.2true0  f41.118false1   1   4.2 -1   ",
                 "ShortLong      2   42.3    1970-01-01T00:00:00ZTwo  2  foo4.2true0  f41.118false1   1   4.2 -1   "
             ),
-            actual = flf.take(3).toList()
+            actual = flf.encode(Sample.serializer()).toList()
         )
+
+        val constrainOnce = assertFailsWith<IllegalStateException> {
+            flf.encode(Sample.serializer()).count()
+        }
+        assertEquals("This sequence can be consumed only once.", constrainOnce.message!!)
     }
 
     @Test
