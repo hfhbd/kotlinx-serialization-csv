@@ -51,6 +51,19 @@ public sealed class FixedLengthFormat(
 }
 
 @ExperimentalSerializationApi
+public fun <T> Sequence<T>.encode(
+    serializationStrategy: SerializationStrategy<T>,
+    format: FixedLengthFormat = FixedLengthFormat
+): Sequence<String> = format.encodeAsSequence(serializationStrategy, this)
+
+@ExperimentalSerializationApi
+public fun <T> Sequence<String>.decode(
+    deserializationStrategy: DeserializationStrategy<T>,
+    format: FixedLengthFormat = FixedLengthFormat
+): Sequence<T> = format.decodeAsSequence(deserializationStrategy, this)
+
+
+@ExperimentalSerializationApi
 internal fun SerialDescriptor.fixedLength(index: Int) =
     getElementAnnotations(index).filterIsInstance<FixedLength>().singleOrNull()?.length
         ?: error("$serialName.${getElementName(index)} not annotated with @FixedLength")

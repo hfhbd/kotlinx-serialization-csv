@@ -67,7 +67,7 @@ class FlfDecoderTest {
             yield("ShortLong      1   42.3    1970-01-01T00:00:00ZTwo  1  foo4.0true0  f41.018false1   1   4.0 -1   ")
             yield("ShortLong      2   42.3    1970-01-01T00:00:00ZTwo  2  foo4.0true0  f41.018false1   1   4.0 -1   ")
         }
-        val actual = FixedLengthFormat.decodeAsSequence(Sample.serializer(), flf)
+        val actual = flf.decode(Sample.serializer())
 
         assertEquals(
             expected = List(3) {
