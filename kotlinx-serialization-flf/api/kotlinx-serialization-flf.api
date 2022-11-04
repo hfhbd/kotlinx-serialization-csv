@@ -22,6 +22,13 @@ public final class app/softwork/serialization/flf/FixedLengthFormat$Default : ap
 	public static synthetic fun invoke$default (Lapp/softwork/serialization/flf/FixedLengthFormat$Default;Lkotlinx/serialization/modules/SerializersModule;Ljava/lang/String;ILjava/lang/Object;)Lapp/softwork/serialization/flf/FixedLengthFormat;
 }
 
+public final class app/softwork/serialization/flf/FixedLengthFormatKt {
+	public static final fun decode (Lkotlin/sequences/Sequence;Lkotlinx/serialization/DeserializationStrategy;Lapp/softwork/serialization/flf/FixedLengthFormat;)Lkotlin/sequences/Sequence;
+	public static synthetic fun decode$default (Lkotlin/sequences/Sequence;Lkotlinx/serialization/DeserializationStrategy;Lapp/softwork/serialization/flf/FixedLengthFormat;ILjava/lang/Object;)Lkotlin/sequences/Sequence;
+	public static final fun encode (Lkotlin/sequences/Sequence;Lkotlinx/serialization/SerializationStrategy;Lapp/softwork/serialization/flf/FixedLengthFormat;)Lkotlin/sequences/Sequence;
+	public static synthetic fun encode$default (Lkotlin/sequences/Sequence;Lkotlinx/serialization/SerializationStrategy;Lapp/softwork/serialization/flf/FixedLengthFormat;ILjava/lang/Object;)Lkotlin/sequences/Sequence;
+}
+
 public abstract interface annotation class app/softwork/serialization/flf/FixedLengthList : java/lang/annotation/Annotation {
 	public abstract fun serialName ()Ljava/lang/String;
 }
@@ -47,5 +54,12 @@ public abstract interface annotation class app/softwork/serialization/flf/FixedL
 public final class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength$Impl : app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength {
 	public fun <init> (I)V
 	public final synthetic fun length ()I
+}
+
+public final class app/softwork/serialization/flf/SequenceWriteLinesKt {
+	public static final fun appendLines (Lkotlin/sequences/Sequence;Ljava/io/File;Ljava/nio/charset/Charset;Ljava/lang/String;)V
+	public static synthetic fun appendLines$default (Lkotlin/sequences/Sequence;Ljava/io/File;Ljava/nio/charset/Charset;Ljava/lang/String;ILjava/lang/Object;)V
+	public static final fun writeLines (Lkotlin/sequences/Sequence;Ljava/io/File;Ljava/nio/charset/Charset;Ljava/lang/String;)V
+	public static synthetic fun writeLines$default (Lkotlin/sequences/Sequence;Ljava/io/File;Ljava/nio/charset/Charset;Ljava/lang/String;ILjava/lang/Object;)V
 }
 

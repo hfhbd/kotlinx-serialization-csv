@@ -13,7 +13,7 @@ internal class FixedLengthEncoder(
 ) : FailingPrimitiveEncoder, CompositeEncoder {
 
     private var level = 0
-    private var afterFirst = false
+    internal var afterFirst = false
 
     private fun maybeAddLine() {
         if (level == 0 && afterFirst) {
