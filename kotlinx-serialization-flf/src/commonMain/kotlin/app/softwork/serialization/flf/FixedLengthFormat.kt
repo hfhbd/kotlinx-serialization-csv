@@ -25,13 +25,22 @@ public sealed class FixedLengthFormat(
 
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
         deserializer.descriptor.checkForMaps()
-        return deserializer.deserialize(FixedLengthDecoder(string.split(lineSeparator), serializersModule))
+        val data = string.split(lineSeparator)
+        return deserializer.deserialize(FixedLengthDecoder(data.iterator(), serializersModule, data.size))
     }
 
     public fun <T> decodeAsSequence(deserializer: DeserializationStrategy<T>, input: Sequence<String>): Sequence<T> {
         deserializer.descriptor.checkForMaps()
-        return input.map {
-            deserializer.deserialize(FixedLengthDecoder(listOf(it), serializersModule))
+        val iterator = input.iterator()
+        return if (iterator.hasNext()) {
+            val decoder = FixedLengthDecoder(iterator, serializersModule, size = -1)
+            sequence {
+                while (iterator.hasNext()) {
+                    yield(deserializer.deserialize(decoder))
+                }
+            }
+        } else {
+            emptySequence()
         }
     }
 

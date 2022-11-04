@@ -160,7 +160,7 @@ class FlfDecoderTest {
     fun sealed() {
         val flf = """
                 A421   
-                Bfoo       2   
+                Bfoo       2
         """.trimIndent()
 
         assertEquals(

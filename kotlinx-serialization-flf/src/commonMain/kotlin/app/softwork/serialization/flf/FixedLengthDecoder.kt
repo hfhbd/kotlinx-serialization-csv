@@ -4,15 +4,17 @@ import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 import kotlinx.serialization.modules.*
+import kotlin.math.*
 
 @ExperimentalSerializationApi
 internal class FixedLengthDecoder(
-    private val data: List<String>,
-    override val serializersModule: SerializersModule
+    private val data: Iterator<String>,
+    override val serializersModule: SerializersModule,
+    private val size: Int
 ) : FailingPrimitiveDecoder, CompositeDecoder {
     private var level = 0
     private var index = 0
-    private var currentRow = 0
+    private var currentRow = ""
 
     private var lengthIndex: Int? = null
     private var currentLength: Int? = null
@@ -20,7 +22,7 @@ internal class FixedLengthDecoder(
     private val sealedClassClassDiscriminators = mutableMapOf<String, String>()
 
     internal fun decode(length: Int, trim: Boolean = true): String {
-        val data = data[currentRow].substring(index, index + length)
+        val data = currentRow.substring(index, min(index + length, currentRow.length))
         index += length
         return if (trim) data.trim() else data
     }
@@ -99,7 +101,7 @@ internal class FixedLengthDecoder(
     override fun <T : Any> decodeNullableSerializableValue(deserializer: DeserializationStrategy<T?>): T? {
         val isNullabilitySupported = deserializer.descriptor.isNullable
         val length = deserializer.descriptor.fixedLength
-        val value = data[currentRow].substring(index, index + length)
+        val value = currentRow.substring(index, min(index + length, currentRow.length))
         return if (isNullabilitySupported || value.isNotBlank()) decodeSerializableValue(deserializer) else decodeNull()
     }
 
@@ -117,7 +119,6 @@ internal class FixedLengthDecoder(
     override fun endStructure(descriptor: SerialDescriptor) {
         level -= 1
         if (level == 0) {
-            currentRow += 1
             index = 0
         }
     }
@@ -132,9 +133,8 @@ internal class FixedLengthDecoder(
         decode(descriptor.fixedLength(index), trim = false).single()
 
     override fun decodeCollectionSize(descriptor: SerialDescriptor) = when (level) {
-        0 -> data.size
-        else ->
-            currentLength ?: error("${descriptor.fixedLengthList} was not seen before this list: $descriptor")
+        0 -> size
+        else -> currentLength ?: error("${descriptor.fixedLengthList} was not seen before this list: $descriptor")
     }
 
     override fun decodeDoubleElement(descriptor: SerialDescriptor, index: Int) =
@@ -146,6 +146,9 @@ internal class FixedLengthDecoder(
             lengthIndex = hasInnerList
         }
         if (descriptor.kind !is StructureKind.LIST) {
+            if (level == 0) {
+                currentRow = data.next()
+            }
             level += 1
         }
         return this
