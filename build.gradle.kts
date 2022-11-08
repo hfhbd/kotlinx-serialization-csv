@@ -2,7 +2,7 @@ import io.gitlab.arturbosch.detekt.*
 import org.jetbrains.dokka.gradle.*
 
 plugins {
-    kotlin("multiplatform") version "1.7.20" apply false
+    kotlin("multiplatform") version "1.7.21" apply false
     kotlin("plugin.serialization") version "1.7.20" apply false
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.12.1"
     `maven-publish`
