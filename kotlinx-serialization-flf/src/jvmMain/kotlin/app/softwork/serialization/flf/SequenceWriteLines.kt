@@ -1,5 +1,6 @@
 package app.softwork.serialization.flf
 
+import kotlinx.serialization.*
 import java.io.*
 import java.nio.charset.*
 
@@ -19,4 +20,13 @@ public fun Sequence<String>.writeLines(file: File, charset: Charset = Charsets.U
             writer.write(lineSeparator)
         }
     }
+}
+
+@ExperimentalSerializationApi
+public fun <T> Appendable.append(
+    serializer: SerializationStrategy<T>,
+    value: T,
+    format: FixedLengthFormat = FixedLengthFormat
+) {
+    appendLine(format.encodeToString(serializer, value))
 }
