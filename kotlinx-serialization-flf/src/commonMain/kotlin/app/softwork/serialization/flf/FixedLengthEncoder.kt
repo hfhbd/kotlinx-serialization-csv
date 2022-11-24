@@ -91,7 +91,7 @@ internal class FixedLengthEncoder(
             val length = if (descriptor.getElementAnnotations(index)
                 .filterIsInstance<FixedLengthSealedClassDiscriminator>()
                 .isNotEmpty()
-            ) null else serializer.descriptor.fixedLengthType
+            ) { null } else { serializer.descriptor.fixedLengthType }
             serializer.serialize(
                 FixedLengthSealedEncoder(
                     length,
