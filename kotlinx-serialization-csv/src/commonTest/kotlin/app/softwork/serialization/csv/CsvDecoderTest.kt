@@ -116,7 +116,8 @@ class CsvDecoderTest {
                 )
             },
             actual = CSVFormat.decodeFromString(
-                ListSerializer(FooNested.serializer()), csv
+                deserializer = ListSerializer(FooNested.serializer()),
+                string = csv
             )
         )
     }

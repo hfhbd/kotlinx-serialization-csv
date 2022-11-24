@@ -12,11 +12,16 @@ public sealed class CSVFormat(
     private val lineSeparator: String,
     override val serializersModule: SerializersModule
 ) : StringFormat {
-    private class Custom(separator: String, lineSeparator: String, serializersModule: SerializersModule) :
-        CSVFormat(separator, lineSeparator, serializersModule)
+    private class Custom(
+        separator: String,
+        lineSeparator: String,
+        serializersModule: SerializersModule
+    ) : CSVFormat(separator, lineSeparator, serializersModule)
 
     public companion object Default : CSVFormat(
-        ",", "\n", EmptySerializersModule()
+        separator = ",",
+        lineSeparator = "\n",
+        serializersModule = EmptySerializersModule()
     ) {
         public operator fun invoke(
             separator: String = ",",

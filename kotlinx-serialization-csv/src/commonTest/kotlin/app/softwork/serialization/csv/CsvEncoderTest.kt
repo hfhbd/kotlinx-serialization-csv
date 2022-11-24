@@ -139,7 +139,8 @@ class CsvEncoderTest {
         val csv = CSVFormat.encodeToString(
             serializer = FooEnum.serializer(),
             value = FooEnum(
-                baz = null, foo = FooEnum.A.One
+                baz = null,
+                foo = FooEnum.A.One
             )
         )
 
