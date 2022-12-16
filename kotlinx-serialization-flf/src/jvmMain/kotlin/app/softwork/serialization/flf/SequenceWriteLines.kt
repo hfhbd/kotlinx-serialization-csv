@@ -3,6 +3,8 @@ package app.softwork.serialization.flf
 import kotlinx.serialization.*
 import java.io.*
 import java.nio.charset.*
+import java.util.stream.*
+import kotlin.streams.*
 
 public fun Sequence<String>.appendLines(file: File, charset: Charset = Charsets.UTF_8, lineSeparator: String = "\n") {
     FileOutputStream(file, true).bufferedWriter(charset).use { writer ->
@@ -20,6 +22,16 @@ public fun Sequence<String>.writeLines(file: File, charset: Charset = Charsets.U
             writer.write(lineSeparator)
         }
     }
+}
+
+@ExperimentalSerializationApi
+@JvmOverloads
+public fun <T> decodeStream(
+    lines: Stream<String>,
+    serializer: DeserializationStrategy<T>,
+    format: FixedLengthFormat = FixedLengthFormat
+): Iterable<T> {
+    return Iterable { lines.asSequence().decode(serializer, format).iterator() }
 }
 
 @ExperimentalSerializationApi
