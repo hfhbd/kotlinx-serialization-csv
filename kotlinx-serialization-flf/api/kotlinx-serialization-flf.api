@@ -61,6 +61,9 @@ public final class app/softwork/serialization/flf/SequenceWriteLinesKt {
 	public static synthetic fun append$default (Ljava/lang/Appendable;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;Lapp/softwork/serialization/flf/FixedLengthFormat;ILjava/lang/Object;)V
 	public static final fun appendLines (Lkotlin/sequences/Sequence;Ljava/io/File;Ljava/nio/charset/Charset;Ljava/lang/String;)V
 	public static synthetic fun appendLines$default (Lkotlin/sequences/Sequence;Ljava/io/File;Ljava/nio/charset/Charset;Ljava/lang/String;ILjava/lang/Object;)V
+	public static final fun decodeStream (Ljava/util/stream/Stream;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Iterable;
+	public static final fun decodeStream (Ljava/util/stream/Stream;Lkotlinx/serialization/DeserializationStrategy;Lapp/softwork/serialization/flf/FixedLengthFormat;)Ljava/lang/Iterable;
+	public static synthetic fun decodeStream$default (Ljava/util/stream/Stream;Lkotlinx/serialization/DeserializationStrategy;Lapp/softwork/serialization/flf/FixedLengthFormat;ILjava/lang/Object;)Ljava/lang/Iterable;
 	public static final fun writeLines (Lkotlin/sequences/Sequence;Ljava/io/File;Ljava/nio/charset/Charset;Ljava/lang/String;)V
 	public static synthetic fun writeLines$default (Lkotlin/sequences/Sequence;Ljava/io/File;Ljava/nio/charset/Charset;Ljava/lang/String;ILjava/lang/Object;)V
 }

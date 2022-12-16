@@ -2,6 +2,7 @@ package app.softwork.serialization.flf
 
 import kotlinx.serialization.*
 import java.io.*
+import java.util.stream.*
 import kotlin.test.*
 
 class JvmExtensionsTest {
@@ -27,5 +28,12 @@ class JvmExtensionsTest {
                 )
             }
         )
+    }
+
+    @ExperimentalSerializationApi
+    @Test
+    fun stream() {
+        val stream = Stream.of("a", "b")
+        assertEquals(listOf(Small("a"), Small("b")), decodeStream(stream, Small.serializer()).toList())
     }
 }
