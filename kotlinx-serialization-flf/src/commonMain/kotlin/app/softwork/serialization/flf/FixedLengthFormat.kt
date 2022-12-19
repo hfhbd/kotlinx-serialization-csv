@@ -3,6 +3,7 @@ package app.softwork.serialization.flf
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.modules.*
+import kotlin.jvm.*
 
 /**
  * [Fixed Length Files](https://www.ibm.com/docs/en/psfa/latest?topic=format-fixed-length-files)
@@ -17,6 +18,7 @@ public sealed class FixedLengthFormat(
         FixedLengthFormat(serializersModule, lineSeparator)
 
     public companion object Default : FixedLengthFormat(EmptySerializersModule(), lineSeparator = "\n") {
+        @JvmOverloads
         public operator fun invoke(
             serializersModule: SerializersModule,
             lineSeparator: String = "\n"
@@ -70,12 +72,14 @@ public sealed class FixedLengthFormat(
 }
 
 @ExperimentalSerializationApi
+@JvmOverloads
 public fun <T> Sequence<T>.encode(
     serializationStrategy: SerializationStrategy<T>,
     format: FixedLengthFormat = FixedLengthFormat
 ): Sequence<String> = format.encodeAsSequence(serializationStrategy, this)
 
 @ExperimentalSerializationApi
+@JvmOverloads
 public fun <T> Sequence<String>.decode(
     deserializationStrategy: DeserializationStrategy<T>,
     format: FixedLengthFormat = FixedLengthFormat

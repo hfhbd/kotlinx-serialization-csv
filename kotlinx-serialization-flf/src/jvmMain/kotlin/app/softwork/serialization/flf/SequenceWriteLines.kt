@@ -6,6 +6,7 @@ import java.nio.charset.*
 import java.util.stream.*
 import kotlin.streams.*
 
+@JvmOverloads
 public fun Sequence<String>.appendLines(file: File, charset: Charset = Charsets.UTF_8, lineSeparator: String = "\n") {
     FileOutputStream(file, true).bufferedWriter(charset).use { writer ->
         for (line in this) {
@@ -15,6 +16,7 @@ public fun Sequence<String>.appendLines(file: File, charset: Charset = Charsets.
     }
 }
 
+@JvmOverloads
 public fun Sequence<String>.writeLines(file: File, charset: Charset = Charsets.UTF_8, lineSeparator: String = "\n") {
     FileOutputStream(file, false).bufferedWriter(charset).use { writer ->
         for (line in this) {
@@ -35,6 +37,7 @@ public fun <T> decodeStream(
 }
 
 @ExperimentalSerializationApi
+@JvmOverloads
 public fun <T> Appendable.append(
     serializer: SerializationStrategy<T>,
     value: T,
