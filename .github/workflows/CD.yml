@@ -23,8 +23,9 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
+      - uses: gradle/gradle-build-action@v2
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build -Pversion=$version
       - name: Publish
         run: ./gradlew -Pversion=$version -Dorg.gradle.parallel=false publish closeAndReleaseStagingRepository
         env:
