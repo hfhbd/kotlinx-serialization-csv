@@ -3,7 +3,7 @@ import org.jetbrains.dokka.gradle.*
 
 plugins {
     kotlin("multiplatform") version "1.7.22" apply false
-    kotlin("plugin.serialization") version "1.7.22" apply false
+    kotlin("plugin.serialization") version "1.8.0" apply false
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.12.1"
     `maven-publish`
     signing
