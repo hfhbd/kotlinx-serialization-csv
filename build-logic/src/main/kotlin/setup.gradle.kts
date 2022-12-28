@@ -11,7 +11,7 @@ licensee {
     allow("Apache-2.0")
 }
 
-tasks.getByName<DokkaTaskPartial>("dokkaHtmlPartial") {
+tasks.named<DokkaTaskPartial>("dokkaHtmlPartial") {
     val module = project.name
     dokkaSourceSets.configureEach {
         includes.from("$rootDir/README.md")

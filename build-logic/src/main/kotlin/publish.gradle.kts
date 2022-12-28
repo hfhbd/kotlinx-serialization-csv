@@ -3,10 +3,10 @@ plugins {
     signing
 }
 
-val emptyJar by tasks.creating(Jar::class) { }
+val emptyJar by tasks.registering(Jar::class) { }
 
 publishing {
-    publications.all {
+    publications.configureEach {
         this as MavenPublication
         artifact(emptyJar) {
             classifier = "javadoc"
