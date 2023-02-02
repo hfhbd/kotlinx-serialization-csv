@@ -39,7 +39,9 @@ class JvmExtensionsTest {
         val parallelStream = Stream.of("a", "b").parallel()
         assertEquals(
             listOf("a", "b"),
-            parallelStream.decodeStream(Small.serializer()).encodeStream(Small.serializer()).collect(Collectors.toList())
+            parallelStream.decodeStream(Small.serializer()).encodeStream(Small.serializer()).collect(
+                Collectors.toList()
+            )
         )
     }
 }

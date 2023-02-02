@@ -2,6 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>MagicNumber:MPP.kt$MPP$8</ID>
     <ID>TooManyFunctions:CSVDecoder.kt$CSVDecoder : AbstractDecoder</ID>
     <ID>TooManyFunctions:FixedLengthDecoder.kt$FixedLengthDecoder : FailingPrimitiveDecoderCompositeDecoder</ID>
     <ID>TooManyFunctions:FixedLengthEncoder.kt$FixedLengthEncoder : FailingPrimitiveEncoderCompositeEncoder</ID>
