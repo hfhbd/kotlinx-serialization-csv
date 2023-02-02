@@ -5,6 +5,7 @@ class MPP : Plugin<Project> {
     override fun apply(project: Project) {
         project.plugins.apply("org.jetbrains.kotlin.multiplatform")
         project.extensions.configure<KotlinMultiplatformExtension>("kotlin") {
+            jvmToolchain(8)
             explicitApi()
             targets.configureEach {
                 compilations.configureEach {
