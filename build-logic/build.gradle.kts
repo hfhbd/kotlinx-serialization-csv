@@ -25,3 +25,7 @@ gradlePlugin {
         }
     }
 }
+
+kotlin.jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(11))
+}

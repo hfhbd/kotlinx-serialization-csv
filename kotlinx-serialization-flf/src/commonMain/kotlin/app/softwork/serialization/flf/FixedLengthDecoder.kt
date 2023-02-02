@@ -8,7 +8,7 @@ import kotlin.math.*
 
 @ExperimentalSerializationApi
 internal class FixedLengthDecoder(
-    private val data: Iterator<String>,
+    private val next: () -> String,
     override val serializersModule: SerializersModule,
     private val size: Int
 ) : FailingPrimitiveDecoder, CompositeDecoder {
@@ -147,7 +147,7 @@ internal class FixedLengthDecoder(
         }
         if (descriptor.kind !is StructureKind.LIST) {
             if (level == 0) {
-                currentRow = data.next()
+                currentRow = next()
             }
             level += 1
         }

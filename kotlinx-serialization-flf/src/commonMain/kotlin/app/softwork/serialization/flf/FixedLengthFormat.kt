@@ -28,7 +28,7 @@ public sealed class FixedLengthFormat(
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
         deserializer.descriptor.checkForMaps()
         val data = string.split(lineSeparator)
-        return deserializer.deserialize(FixedLengthDecoder(data.iterator(), serializersModule, data.size))
+        return deserializer.deserialize(FixedLengthDecoder(data.iterator()::next, serializersModule, data.size))
     }
 
     public fun <T> decodeAsSequence(deserializer: DeserializationStrategy<T>, input: Sequence<String>): Sequence<T> {
@@ -39,7 +39,7 @@ public sealed class FixedLengthFormat(
                 return@sequence
             }
 
-            val decoder = FixedLengthDecoder(iterator, serializersModule, size = -1)
+            val decoder = FixedLengthDecoder(iterator::next, serializersModule, size = -1)
             while (iterator.hasNext()) {
                 yield(deserializer.deserialize(decoder))
             }
@@ -60,12 +60,11 @@ public sealed class FixedLengthFormat(
             }
 
             val stringBuilder = StringBuilder()
-            val encoder = FixedLengthEncoder(stringBuilder, serializersModule, lineSeparator)
+            val encoder = FixedLengthEncoder(stringBuilder, serializersModule, lineSeparator = "")
             while (iterator.hasNext()) {
                 serializer.serialize(encoder, iterator.next())
                 yield(stringBuilder.toString())
                 stringBuilder.setLength(0)
-                encoder.afterFirst = false
             }
         }
     }
