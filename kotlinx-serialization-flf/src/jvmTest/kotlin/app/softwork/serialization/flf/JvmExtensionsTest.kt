@@ -34,6 +34,12 @@ class JvmExtensionsTest {
     @Test
     fun stream() {
         val stream = Stream.of("a", "b")
-        assertEquals(listOf(Small("a"), Small("b")), decodeStream(stream, Small.serializer()).toList())
+        assertEquals(listOf(Small("a"), Small("b")), stream.decode(Small.serializer()).toList())
+
+        val parallelStream = Stream.of("a", "b").parallel()
+        assertEquals(
+            listOf("a", "b"),
+            parallelStream.decodeStream(Small.serializer()).encodeStream(Small.serializer()).toList()
+        )
     }
 }

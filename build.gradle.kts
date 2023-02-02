@@ -5,6 +5,7 @@ plugins {
     org.jetbrains.kotlinx.kover
     org.jetbrains.dokka
     io.gitlab.arturbosch.detekt
+    org.jetbrains.kotlinx.`binary-compatibility-validator`
 }
 
 tasks.dokkaHtmlMultiModule.configure {
