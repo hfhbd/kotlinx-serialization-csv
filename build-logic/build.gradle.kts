@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    val kotlin = "1.8.0"
+    val kotlin = "1.8.10"
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin")
     implementation("org.jetbrains.kotlin:kotlin-serialization:$kotlin")
     implementation("app.cash.licensee:licensee-gradle-plugin:1.6.0")
