@@ -1,7 +1,7 @@
 import io.gitlab.arturbosch.detekt.*
 
 plugins {
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("io.github.gradle-nexus.publish-plugin") version "1.2.0"
     org.jetbrains.kotlinx.kover
     org.jetbrains.dokka
     io.gitlab.arturbosch.detekt
