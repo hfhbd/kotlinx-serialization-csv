@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     sourceSets {
-        val serialization = "1.4.1"
+        val serialization = "1.5.0"
         commonMain {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-serialization-core:$serialization")
