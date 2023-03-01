@@ -9,11 +9,25 @@ import kotlinx.serialization.modules.*
 internal class FixedLengthPrimitiveEncoder(
     override val serializersModule: SerializersModule,
     private val length: Int,
-    private val builder: StringBuilder
+    private val builder: StringBuilder,
+    private val fillLeadingZero: Boolean,
+    private val ebcdic: Ebcdic?
 ) : Encoder {
     private fun encode(value: String, length: Int) {
         require(value.length <= length) { "$value was longer as $length" }
         builder.append(value.padEnd(length))
+    }
+    private fun encodeNumber(value: String, length: Int) {
+        if (fillLeadingZero) {
+            val sign = value.startsWith("-")
+            if (sign) {
+                encode("-" + value.drop(1).padStart(length -1, '0'), length)
+            } else {
+                encode(value.padStart(length, '0'), length)
+            }
+        } else {
+            encode(value, length)
+        }
     }
 
     override fun beginStructure(descriptor: SerialDescriptor) = error("Not supported")
@@ -23,7 +37,7 @@ internal class FixedLengthPrimitiveEncoder(
     }
 
     override fun encodeByte(value: Byte) {
-        encode(value.toString(), length)
+        encodeNumber(value.toString(), length)
     }
 
     override fun encodeChar(value: Char) {
@@ -31,7 +45,7 @@ internal class FixedLengthPrimitiveEncoder(
     }
 
     override fun encodeDouble(value: Double) {
-        encode(value.toString(), length)
+        encodeNumber(value.toString(), length)
     }
 
     override fun encodeEnum(enumDescriptor: SerialDescriptor, index: Int) {
@@ -40,17 +54,19 @@ internal class FixedLengthPrimitiveEncoder(
     }
 
     override fun encodeFloat(value: Float) {
-        encode(value.toString(), length)
+        encodeNumber(value.toString(), length)
     }
 
     override fun encodeInline(descriptor: SerialDescriptor) = this
 
     override fun encodeInt(value: Int) {
-        encode(value.toString(), length)
+        val stringValue = ebcdic?.format?.toString(value) ?: value.toString()
+        encodeNumber(stringValue, length)
     }
 
     override fun encodeLong(value: Long) {
-        encode(value.toString(), length)
+        val stringValue = ebcdic?.format?.toString(value) ?: value.toString()
+        encodeNumber(stringValue, length)
     }
 
     @ExperimentalSerializationApi
@@ -59,7 +75,7 @@ internal class FixedLengthPrimitiveEncoder(
     }
 
     override fun encodeShort(value: Short) {
-        encode(value.toString(), length)
+        encodeNumber(value.toString(), length)
     }
 
     override fun encodeString(value: String) {

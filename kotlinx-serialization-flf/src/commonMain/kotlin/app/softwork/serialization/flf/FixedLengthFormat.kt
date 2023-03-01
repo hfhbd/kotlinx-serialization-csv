@@ -11,18 +11,27 @@ import kotlin.jvm.*
 @ExperimentalSerializationApi
 public sealed class FixedLengthFormat(
     override val serializersModule: SerializersModule,
-    private val lineSeparator: String
+    private val lineSeparator: String,
+    internal val fillLeadingZeros: Boolean
 ) : StringFormat {
 
-    private class Custom(serializersModule: SerializersModule, lineSeparator: String) :
-        FixedLengthFormat(serializersModule, lineSeparator)
+    private class Custom(
+        serializersModule: SerializersModule,
+        lineSeparator: String,
+        fillLeadingZeros: Boolean
+    ) : FixedLengthFormat(serializersModule, lineSeparator, fillLeadingZeros)
 
-    public companion object Default : FixedLengthFormat(EmptySerializersModule(), lineSeparator = "\n") {
+    public companion object Default : FixedLengthFormat(
+        serializersModule = EmptySerializersModule(),
+        lineSeparator = "\n",
+        fillLeadingZeros = true
+    ) {
         @JvmOverloads
         public operator fun invoke(
             serializersModule: SerializersModule,
-            lineSeparator: String = "\n"
-        ): FixedLengthFormat = Custom(serializersModule, lineSeparator)
+            lineSeparator: String = "\n",
+            fillLeadingZeros: Boolean = true
+        ): FixedLengthFormat = Custom(serializersModule, lineSeparator, fillLeadingZeros)
     }
 
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
@@ -48,7 +57,7 @@ public sealed class FixedLengthFormat(
 
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String = buildString {
         serializer.descriptor.checkForMaps()
-        serializer.serialize(FixedLengthEncoder(this, serializersModule, lineSeparator), value)
+        serializer.serialize(FixedLengthEncoder(this, serializersModule, lineSeparator, fillLeadingZeros), value)
     }
 
     public fun <T> encodeAsSequence(serializer: SerializationStrategy<T>, value: Sequence<T>): Sequence<String> {
@@ -60,7 +69,7 @@ public sealed class FixedLengthFormat(
             }
 
             val stringBuilder = StringBuilder()
-            val encoder = FixedLengthEncoder(stringBuilder, serializersModule, lineSeparator = "")
+            val encoder = FixedLengthEncoder(stringBuilder, serializersModule, lineSeparator = "", fillLeadingZeros)
             while (iterator.hasNext()) {
                 serializer.serialize(encoder, iterator.next())
                 yield(stringBuilder.toString())
@@ -85,45 +94,85 @@ public fun <T> Sequence<String>.decode(
 ): Sequence<T> = format.decodeAsSequence(deserializationStrategy, this)
 
 @ExperimentalSerializationApi
-internal fun SerialDescriptor.fixedLength(index: Int) =
-    getElementAnnotations(index).filterIsInstance<FixedLength>().singleOrNull()?.length
-        ?: error("$serialName.${getElementName(index)} not annotated with @FixedLength")
+internal fun SerialDescriptor.fixedLength(index: Int): Int {
+    for (anno in getElementAnnotations(index)) {
+        if (anno is FixedLength) {
+            return anno.length
+        }
+    }
+    error("$serialName.${getElementName(index)} not annotated with @FixedLength")
+}
 
 @ExperimentalSerializationApi
-internal val SerialDescriptor.fixedLength
-    get() =
-        annotations.filterIsInstance<FixedLength>().singleOrNull()?.length
-            ?: error("$serialName not annotated with @FixedLength")
+internal val SerialDescriptor.fixedLength: Int
+    get() {
+        for (anno in annotations) {
+            if (anno is FixedLength) return anno.length
+        }
+        error("$serialName not annotated with @FixedLength")
+    }
 
 @ExperimentalSerializationApi
 internal val SerialDescriptor.hasSealedTypeProperty: Boolean
     get() {
         for (index in 0 until elementsCount) {
-            if (getElementAnnotations(index).filterIsInstance<FixedLengthSealedClassDiscriminator>().isNotEmpty()) {
-                return true
+            for (anno in getElementAnnotations(index)) {
+                if (anno is FixedLengthSealedClassDiscriminator) {
+                    return true
+                }
             }
         }
         return false
     }
 
 @ExperimentalSerializationApi
-internal val SerialDescriptor.fixedLengthType
-    get() =
-        annotations.filterIsInstance<FixedLengthSealedClassDiscriminatorLength>().singleOrNull()?.length
-            ?: error("$serialName not annotated with @FixedLengthSealedType")
+internal val SerialDescriptor.fixedLengthType: Int
+    get() {
+        for (anno in annotations) {
+            if (anno is FixedLengthSealedClassDiscriminatorLength)
+                return anno.length
+        }
+        error("$serialName not annotated with @FixedLengthSealedType")
+    }
 
 @ExperimentalSerializationApi
-internal val SerialDescriptor.fixedLengthList
-    get() =
-        annotations.filterIsInstance<FixedLengthList>().singleOrNull()?.serialName
-            ?: error("$serialName not annotated with @FixedLengthList")
+internal val SerialDescriptor.fixedLengthList: String
+    get() {
+        for (anno in annotations) {
+            if (anno is FixedLengthList) {
+                return anno.serialName
+            }
+        }
+        error("$serialName not annotated with @FixedLengthList")
+    }
 
 @ExperimentalSerializationApi
 internal fun SerialDescriptor.checkForMaps() {
     for (descriptor in elementDescriptors) {
         if (descriptor.kind is StructureKind.MAP) {
-            error("Map are not yet supported: ${descriptor.serialName}")
+            error("Map is not yet supported: ${descriptor.serialName}")
         }
         descriptor.checkForMaps()
     }
 }
+
+@ExperimentalSerializationApi
+internal fun SerialDescriptor.ebcdic(index: Int): Ebcdic? {
+    for (anno in getElementAnnotations(index)) {
+        if (anno is Ebcdic) {
+            return anno
+        }
+    }
+    return null
+}
+
+@ExperimentalSerializationApi
+internal val SerialDescriptor.ebcdic: Ebcdic?
+    get() {
+        for (anno in annotations) {
+            if (anno is Ebcdic) {
+                return anno
+            }
+        }
+        return null
+    } 

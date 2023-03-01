@@ -36,15 +36,19 @@ internal class FixedLengthDecoder(
     override fun decodeInlineElement(descriptor: SerialDescriptor, index: Int) =
         decodeInline(descriptor.getElementDescriptor(index))
 
-    override fun decodeIntElement(descriptor: SerialDescriptor, index: Int) =
-        decode(descriptor.fixedLength(index)).toInt().also {
+    override fun decodeIntElement(descriptor: SerialDescriptor, index: Int): Int {
+        val decoded = decode(descriptor.fixedLength(index))
+        return (descriptor.ebcdic(index)?.format?.toInt(decoded) ?: decoded.toInt()).also {
             if (index == lengthIndex) {
                 currentLength = it
             }
         }
+    }
 
-    override fun decodeLongElement(descriptor: SerialDescriptor, index: Int) =
-        decode(descriptor.fixedLength(index)).toLong()
+    override fun decodeLongElement(descriptor: SerialDescriptor, index: Int): Long {
+        val decoded = decode(descriptor.fixedLength(index))
+        return descriptor.ebcdic(index)?.format?.toLong(decoded) ?: decoded.toLong()
+    }
 
     @ExperimentalSerializationApi
     override fun <T : Any> decodeNullableSerializableElement(
@@ -56,7 +60,8 @@ internal class FixedLengthDecoder(
         val data = decode(descriptor.fixedLength(index))
         val decoder = FixedLengthPrimitiveDecoder(
             serializersModule,
-            data
+            data,
+            ebcdic = descriptor.ebcdic(index)
         )
         return if (data.isBlank()) {
             decoder.decodeNull()
@@ -74,12 +79,17 @@ internal class FixedLengthDecoder(
         previousValue: T?
     ): T {
         val isInnerClass = level != 0 && deserializer.descriptor.kind is StructureKind.CLASS &&
-            !deserializer.descriptor.isInline
+                !deserializer.descriptor.isInline
         return if (deserializer.descriptor.kind is PolymorphicKind.SEALED) {
-            val property = descriptor.getElementAnnotations(index)
-                .filterIsInstance<FixedLengthSealedClassDiscriminator>().singleOrNull()
+            var property: String? = null
+            for (anno in descriptor.getElementAnnotations(index)) {
+                if (anno is FixedLengthSealedClassDiscriminator) {
+                    property = anno.serialName
+                    break
+                }
+            }
             val typeLength = if (property != null) {
-                val classDiscriminator = sealedClassClassDiscriminators[property.serialName]!!
+                val classDiscriminator = sealedClassClassDiscriminators[property]!!
                 SealedClassClassDiscriminator.Property(classDiscriminator)
             } else {
                 SealedClassClassDiscriminator.Length(deserializer.descriptor.fixedLengthType)
@@ -93,7 +103,7 @@ internal class FixedLengthDecoder(
             deserializer.deserialize(this)
         } else {
             val data = decode(descriptor.fixedLength(index))
-            deserializer.deserialize(FixedLengthPrimitiveDecoder(serializersModule, data))
+            deserializer.deserialize(FixedLengthPrimitiveDecoder(serializersModule, data, descriptor.ebcdic(index)))
         }
     }
 
@@ -162,7 +172,7 @@ internal class FixedLengthDecoder(
     override fun decodeInline(descriptor: SerialDescriptor): Decoder {
         val fixedLength = descriptor.fixedLength
         val data = decode(fixedLength)
-        return FixedLengthPrimitiveDecoder(serializersModule, data)
+        return FixedLengthPrimitiveDecoder(serializersModule, data, descriptor.ebcdic)
     }
 
     @ExperimentalSerializationApi
@@ -175,9 +185,12 @@ internal class FixedLengthDecoder(
             val index = getElementIndex(element)
             val descriptor = getElementDescriptor(index)
             if (descriptor.kind is StructureKind.LIST) {
-                val lengthName = getElementAnnotations(index).filterIsInstance<FixedLengthList>().singleOrNull()
-                    ?: error("$serialName not annotated with @FixedLengthList")
-                return getElementIndex(lengthName.serialName)
+                for (anno in getElementAnnotations(index)) {
+                    if (anno is FixedLengthList) {
+                        return getElementIndex(anno.serialName)
+                    }
+                }
+                error("$serialName not annotated with @FixedLengthList")
             }
         }
         return null

@@ -8,7 +8,8 @@ import kotlinx.serialization.modules.*
 @ExperimentalSerializationApi
 internal class FixedLengthPrimitiveDecoder(
     override val serializersModule: SerializersModule,
-    private val data: String
+    private val data: String,
+    private val ebcdic: Ebcdic?
 ) : Decoder {
     override fun beginStructure(descriptor: SerialDescriptor) = error("Not supported")
 
@@ -17,8 +18,8 @@ internal class FixedLengthPrimitiveDecoder(
     override fun decodeChar() = data.single()
     override fun decodeDouble() = data.toDouble()
     override fun decodeFloat() = data.toFloat()
-    override fun decodeInt() = data.toInt()
-    override fun decodeLong(): Long = data.toLong()
+    override fun decodeInt() = ebcdic?.format?.toInt(data) ?: data.toInt()
+    override fun decodeLong(): Long = ebcdic?.format?.toLong(data) ?: data.toLong()
     override fun decodeShort() = data.toShort()
     override fun decodeString() = data
 

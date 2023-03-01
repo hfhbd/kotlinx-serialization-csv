@@ -9,11 +9,12 @@ import kotlinx.serialization.modules.*
 internal class FixedLengthEncoder(
     private val builder: StringBuilder,
     override val serializersModule: SerializersModule,
-    private val lineSeparator: String
+    private val lineSeparator: String,
+    private val fillLeadingZero: Boolean
 ) : FailingPrimitiveEncoder, CompositeEncoder {
 
     private var level = 0
-    internal var afterFirst = false
+    private var afterFirst = false
 
     private fun maybeAddLine() {
         if (level == 0 && afterFirst) {
@@ -26,13 +27,26 @@ internal class FixedLengthEncoder(
         builder.append(value.padEnd(length))
         afterFirst = true
     }
+    
+    private fun encodeNumber(value: String, length: Int) {
+        if (fillLeadingZero) {
+            val sign = value.startsWith("-")
+            if (sign) {
+                encode("-" + value.drop(1).padStart(length -1, '0'), length)
+            } else {
+                encode(value.padStart(length, '0'), length)
+            }
+        } else {
+            encode(value, length)
+        }
+    }
 
     override fun encodeBooleanElement(descriptor: SerialDescriptor, index: Int, value: Boolean) {
         encode(value.toString(), descriptor.fixedLength(index))
     }
 
     override fun encodeByteElement(descriptor: SerialDescriptor, index: Int, value: Byte) {
-        encode(value.toString(), descriptor.fixedLength(index))
+        encodeNumber(value.toString(), descriptor.fixedLength(index))
     }
 
     override fun encodeCharElement(descriptor: SerialDescriptor, index: Int, value: Char) {
@@ -40,11 +54,11 @@ internal class FixedLengthEncoder(
     }
 
     override fun encodeDoubleElement(descriptor: SerialDescriptor, index: Int, value: Double) {
-        encode(value.toString(), descriptor.fixedLength(index))
+        encodeNumber(value.toString(), descriptor.fixedLength(index))
     }
 
     override fun encodeFloatElement(descriptor: SerialDescriptor, index: Int, value: Float) {
-        encode(value.toString(), descriptor.fixedLength(index))
+        encodeNumber(value.toString(), descriptor.fixedLength(index))
     }
 
     override fun encodeInlineElement(
@@ -53,11 +67,13 @@ internal class FixedLengthEncoder(
     ): Encoder = encodeInline(descriptor.getElementDescriptor(index))
 
     override fun encodeIntElement(descriptor: SerialDescriptor, index: Int, value: Int) {
-        encode(value.toString(), descriptor.fixedLength(index))
+        val stringValue = descriptor.ebcdic(index)?.format?.toString(value) ?: value.toString()
+        encodeNumber(stringValue, descriptor.fixedLength(index))
     }
 
     override fun encodeLongElement(descriptor: SerialDescriptor, index: Int, value: Long) {
-        encode(value.toString(), descriptor.fixedLength(index))
+        val stringValue = descriptor.ebcdic(index)?.format?.toString(value) ?: value.toString()
+        encodeNumber(stringValue, descriptor.fixedLength(index))
     }
 
     @ExperimentalSerializationApi
@@ -70,7 +86,9 @@ internal class FixedLengthEncoder(
         val encoder = FixedLengthPrimitiveEncoder(
             serializersModule,
             descriptor.fixedLength(index),
-            builder
+            builder,
+            fillLeadingZero,
+            descriptor.ebcdic(index)
         )
         if (value == null) {
             encoder.encodeNull()
@@ -88,17 +106,14 @@ internal class FixedLengthEncoder(
         val isInnerClass = level != 0 && serializer.descriptor.kind is StructureKind.CLASS &&
             !serializer.descriptor.isInline
         if (serializer.descriptor.kind is PolymorphicKind.SEALED) {
-            val length = if (descriptor.getElementAnnotations(index)
-                .filterIsInstance<FixedLengthSealedClassDiscriminator>()
-                .isNotEmpty()
-            ) { null } else { serializer.descriptor.fixedLengthType }
-            serializer.serialize(
-                FixedLengthSealedEncoder(
-                    length,
-                    this
-                ),
-                value
-            )
+            var length: Int? = serializer.descriptor.fixedLengthType
+            for (anno in descriptor.getElementAnnotations(index)) {
+                if (anno is FixedLengthSealedClassDiscriminator) {
+                    length = null
+                    break
+                }
+            }
+            serializer.serialize(FixedLengthSealedEncoder(length, this), value)
         } else if (
             descriptor.kind is StructureKind.LIST ||
             serializer.descriptor.kind is StructureKind.LIST ||
@@ -110,7 +125,9 @@ internal class FixedLengthEncoder(
                 FixedLengthPrimitiveEncoder(
                     serializersModule,
                     descriptor.fixedLength(index),
-                    builder
+                    builder,
+                    fillLeadingZero,
+                    descriptor.ebcdic(index)
                 ),
                 value
             )
@@ -118,7 +135,7 @@ internal class FixedLengthEncoder(
     }
 
     override fun encodeShortElement(descriptor: SerialDescriptor, index: Int, value: Short) {
-        encode(value.toString(), descriptor.fixedLength(index))
+        encodeNumber(value.toString(), descriptor.fixedLength(index))
     }
 
     override fun encodeStringElement(descriptor: SerialDescriptor, index: Int, value: String) {
@@ -144,6 +161,6 @@ internal class FixedLengthEncoder(
     override fun encodeInline(descriptor: SerialDescriptor): Encoder {
         maybeAddLine()
         val fixedLength = descriptor.fixedLength
-        return FixedLengthPrimitiveEncoder(serializersModule, fixedLength, builder)
+        return FixedLengthPrimitiveEncoder(serializersModule, fixedLength, builder, fillLeadingZero, descriptor.ebcdic)
     }
 }
