@@ -10,7 +10,7 @@ public annotation class Ebcdic(val format: Format) {
     public enum class Format {
 
         /**
-         * The integer is converted into each digit.
+         * The integer is converted using each digit.
          * Each digit is stored binary using 4 bits (1 nibble).
          * ZonedDecimal uses 8 bits (1 byte) or 2 nibbles.
          *
@@ -24,7 +24,6 @@ public annotation class Ebcdic(val format: Format) {
          * -1234 (signed)  results into xF1F2F3D4.
          *
          * The hex value is stored in EBCDIC (IBM-1047).
-         *
          */
         Zoned {
             override fun toInt(string: String): Int = toLong(string).toInt()
