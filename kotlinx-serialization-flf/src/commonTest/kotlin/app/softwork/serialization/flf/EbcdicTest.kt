@@ -37,7 +37,7 @@ class EbcdicTest {
         assertEquals(
             """
             |{"positive":42,"negative":-42,"unsigned":42,"normal":42}
-        """.trimMargin(),
+            """.trimMargin(),
             Json.encodeToString(
                 serializer = Formatting.serializer(),
                 value = value
@@ -70,7 +70,7 @@ class EbcdicTest {
                 deserializer = Formatting.serializer(),
                 """
             |{"positive":42,"negative":-42,"unsigned":42,"normal":42}
-        """.trimMargin()
+                """.trimMargin()
             )
         )
 
@@ -80,7 +80,7 @@ class EbcdicTest {
                 deserializer = Formatting.serializer(),
                 """
             |004B004K00420042
-            """.trimMargin(),
+                """.trimMargin(),
             )
         )
     }

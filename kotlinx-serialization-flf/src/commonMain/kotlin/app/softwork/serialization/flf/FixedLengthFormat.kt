@@ -129,8 +129,9 @@ internal val SerialDescriptor.hasSealedTypeProperty: Boolean
 internal val SerialDescriptor.fixedLengthType: Int
     get() {
         for (anno in annotations) {
-            if (anno is FixedLengthSealedClassDiscriminatorLength)
+            if (anno is FixedLengthSealedClassDiscriminatorLength) {
                 return anno.length
+            }
         }
         error("$serialName not annotated with @FixedLengthSealedType")
     }
@@ -175,4 +176,4 @@ internal val SerialDescriptor.ebcdic: Ebcdic?
             }
         }
         return null
-    } 
+    }

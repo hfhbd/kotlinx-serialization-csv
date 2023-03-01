@@ -79,7 +79,7 @@ internal class FixedLengthDecoder(
         previousValue: T?
     ): T {
         val isInnerClass = level != 0 && deserializer.descriptor.kind is StructureKind.CLASS &&
-                !deserializer.descriptor.isInline
+            !deserializer.descriptor.isInline
         return if (deserializer.descriptor.kind is PolymorphicKind.SEALED) {
             var property: String? = null
             for (anno in descriptor.getElementAnnotations(index)) {

@@ -7,7 +7,4 @@ import kotlinx.serialization.modules.*
 import kotlin.test.*
 
 @ExperimentalSerializationApi
-class FlfFormatTest {
-
-    
-}
+class FlfFormatTest

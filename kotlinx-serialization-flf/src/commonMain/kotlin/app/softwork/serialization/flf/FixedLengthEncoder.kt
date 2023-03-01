@@ -27,12 +27,12 @@ internal class FixedLengthEncoder(
         builder.append(value.padEnd(length))
         afterFirst = true
     }
-    
+
     private fun encodeNumber(value: String, length: Int) {
         if (fillLeadingZero) {
             val sign = value.startsWith("-")
             if (sign) {
-                encode("-" + value.drop(1).padStart(length -1, '0'), length)
+                encode("-" + value.drop(1).padStart(length - 1, '0'), length)
             } else {
                 encode(value.padStart(length, '0'), length)
             }
