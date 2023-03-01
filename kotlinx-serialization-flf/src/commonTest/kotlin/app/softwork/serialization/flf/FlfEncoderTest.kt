@@ -57,9 +57,9 @@ class FlfEncoderTest {
         )
         assertEquals(
             expected = """
-                ShortLong      0   42.3    1970-01-01T00:00:00ZTwo  0  foo4.2true0  f41.118false1   1   4.2 -1   
-                ShortLong      1   42.3    1970-01-01T00:00:00ZTwo  1  foo4.2true0  f41.118false1   1   4.2 -1   
-                ShortLong      2   42.3    1970-01-01T00:00:00ZTwo  2  foo4.2true0  f41.118false1   1   4.2 -1   
+                ShortLong      000042.3    1970-01-01T00:00:00ZTwo  000foo4.2true000f41.118false0001000104.2-001 
+                ShortLong      000142.3    1970-01-01T00:00:00ZTwo  001foo4.2true000f41.118false0001000104.2-001 
+                ShortLong      000242.3    1970-01-01T00:00:00ZTwo  002foo4.2true000f41.118false0001000104.2-001 
             """.trimIndent(),
             actual = flf
         )
@@ -97,9 +97,9 @@ class FlfEncoderTest {
 
         assertEquals(
             expected = listOf(
-                "ShortLong      0   42.3    1970-01-01T00:00:00ZTwo  0  foo4.2true0  f41.118false1   1   4.2 -1   ",
-                "ShortLong      1   42.3    1970-01-01T00:00:00ZTwo  1  foo4.2true0  f41.118false1   1   4.2 -1   ",
-                "ShortLong      2   42.3    1970-01-01T00:00:00ZTwo  2  foo4.2true0  f41.118false1   1   4.2 -1   "
+                "ShortLong      000042.3    1970-01-01T00:00:00ZTwo  000foo4.2true000f41.118false0001000104.2-001 ",
+                "ShortLong      000142.3    1970-01-01T00:00:00ZTwo  001foo4.2true000f41.118false0001000104.2-001 ",
+                "ShortLong      000242.3    1970-01-01T00:00:00ZTwo  002foo4.2true000f41.118false0001000104.2-001 "
             ),
             actual = flf.encode(Sample.serializer()).toList()
         )
@@ -178,7 +178,7 @@ class FlfEncoderTest {
         )
         assertEquals(
             expected = """
-            2fooA421   Bfoo       2   
+            2fooA420001Bfoo       0002
             """.trimIndent(),
             actual = flf
         )
@@ -195,8 +195,8 @@ class FlfEncoderTest {
         )
         assertEquals(
             expected = """
-                A421   
-                Bfoo       2   
+                A420001
+                Bfoo       0002
             """.trimIndent(),
             actual = flf
         )
@@ -213,8 +213,8 @@ class FlfEncoderTest {
         )
         assertEquals(
             expected = """
-                A 42421   
-                B 42foo       2   
+                A 42420001
+                B 42foo       0002
             """.trimIndent(),
             actual = flf
         )
