@@ -106,7 +106,8 @@ public fun <T> Stream<T>.encodeStream(
             val encoder = FixedLengthEncoder(
                 currentRow,
                 format.serializersModule,
-                lineSeparator = ""
+                lineSeparator = "",
+                format.fillLeadingZeros
             )
 
             override fun tryAdvance(action: Consumer<in String>): Boolean {

@@ -13,17 +13,4 @@ dependencies {
     implementation("io.gitlab.arturbosch.detekt:io.gitlab.arturbosch.detekt.gradle.plugin:1.22.0")
 }
 
-gradlePlugin {
-    plugins {
-        register("MyRepos") {
-            id = "MyRepos"
-            implementationClass = "MyRepos"
-        }
-        register("MPP") {
-            id = "mpp"
-            implementationClass = "MPP"
-        }
-    }
-}
-
 kotlin.jvmToolchain(11)

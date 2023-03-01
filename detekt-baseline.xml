@@ -2,7 +2,18 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>MagicNumber:MPP.kt$MPP$8</ID>
+    <ID>CyclomaticComplexMethod:Ebcdic.kt$internal fun String.toSignedEBCDICZonedDecimal(positive: Boolean): String</ID>
+    <ID>CyclomaticComplexMethod:Ebcdic.kt$private fun String.fromSignedEBCDICZonedDecimal(): Long</ID>
+    <ID>EmptyFunctionBlock:Testing.kt$Testing${ }</ID>
+    <ID>MagicNumber:Ebcdic.kt$10</ID>
+    <ID>MagicNumber:Ebcdic.kt$3</ID>
+    <ID>MagicNumber:Ebcdic.kt$4</ID>
+    <ID>MagicNumber:Ebcdic.kt$5</ID>
+    <ID>MagicNumber:Ebcdic.kt$6</ID>
+    <ID>MagicNumber:Ebcdic.kt$7</ID>
+    <ID>MagicNumber:Ebcdic.kt$8</ID>
+    <ID>MagicNumber:Ebcdic.kt$9</ID>
+    <ID>NestedBlockDepth:FixedLengthDecoder.kt$FixedLengthDecoder$@ExperimentalSerializationApi internal fun SerialDescriptor.hasInnerListLengthIndex(): Int?</ID>
     <ID>TooManyFunctions:CSVDecoder.kt$CSVDecoder : AbstractDecoder</ID>
     <ID>TooManyFunctions:FixedLengthDecoder.kt$FixedLengthDecoder : FailingPrimitiveDecoderCompositeDecoder</ID>
     <ID>TooManyFunctions:FixedLengthEncoder.kt$FixedLengthEncoder : FailingPrimitiveEncoderCompositeEncoder</ID>
