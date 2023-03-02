@@ -7,6 +7,9 @@ public abstract class app/softwork/serialization/csv/CSVFormat : kotlinx/seriali
 }
 
 public final class app/softwork/serialization/csv/CSVFormat$Default : app/softwork/serialization/csv/CSVFormat {
+	public final fun invoke ()Lapp/softwork/serialization/csv/CSVFormat;
+	public final fun invoke (Ljava/lang/String;)Lapp/softwork/serialization/csv/CSVFormat;
+	public final fun invoke (Ljava/lang/String;Ljava/lang/String;)Lapp/softwork/serialization/csv/CSVFormat;
 	public final fun invoke (Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;)Lapp/softwork/serialization/csv/CSVFormat;
 	public static synthetic fun invoke$default (Lapp/softwork/serialization/csv/CSVFormat$Default;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;ILjava/lang/Object;)Lapp/softwork/serialization/csv/CSVFormat;
 }

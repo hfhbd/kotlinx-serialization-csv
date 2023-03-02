@@ -2,6 +2,7 @@ package app.softwork.serialization.csv
 
 import kotlinx.serialization.*
 import kotlinx.serialization.modules.*
+import kotlin.jvm.*
 
 /**
  * [RFC-4180](https://datatracker.ietf.org/doc/html/rfc4180)
@@ -23,6 +24,7 @@ public sealed class CSVFormat(
         lineSeparator = "\n",
         serializersModule = EmptySerializersModule()
     ) {
+        @JvmOverloads
         public operator fun invoke(
             separator: String = ",",
             lineSeparator: String = "\n",

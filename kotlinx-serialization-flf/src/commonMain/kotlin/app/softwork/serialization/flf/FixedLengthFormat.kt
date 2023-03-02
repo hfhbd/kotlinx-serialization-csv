@@ -29,9 +29,9 @@ public sealed class FixedLengthFormat(
     ) {
         @JvmOverloads
         public operator fun invoke(
-            serializersModule: SerializersModule = EmptySerializersModule(),
             lineSeparator: String = "\n",
-            fillLeadingZeros: Boolean = true
+            fillLeadingZeros: Boolean = true,
+            serializersModule: SerializersModule = EmptySerializersModule(),
         ): FixedLengthFormat = Custom(serializersModule, lineSeparator, fillLeadingZeros)
     }
 
