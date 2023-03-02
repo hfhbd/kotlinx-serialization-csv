@@ -68,12 +68,12 @@ internal class FixedLengthEncoder(
 
     override fun encodeIntElement(descriptor: SerialDescriptor, index: Int, value: Int) {
         val stringValue = descriptor.ebcdic(index)?.format?.toString(value) ?: value.toString()
-        encodeNumber(stringValue, descriptor.fixedLength(index))
+        encodeNumber(stringValue.toString(), descriptor.fixedLength(index))
     }
 
     override fun encodeLongElement(descriptor: SerialDescriptor, index: Int, value: Long) {
         val stringValue = descriptor.ebcdic(index)?.format?.toString(value) ?: value.toString()
-        encodeNumber(stringValue, descriptor.fixedLength(index))
+        encodeNumber(stringValue.toString(), descriptor.fixedLength(index))
     }
 
     @ExperimentalSerializationApi

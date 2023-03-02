@@ -20,7 +20,7 @@ internal class FixedLengthSealedDecoder(
     override fun decodeStringElement(descriptor: SerialDescriptor, index: Int): String {
         return if (index == 0) {
             when (classDiscriminator) {
-                is SealedClassClassDiscriminator.Length -> originalDecoder.decode(classDiscriminator.length)
+                is SealedClassClassDiscriminator.Length -> originalDecoder.decode(classDiscriminator.length).toString()
                 is SealedClassClassDiscriminator.Property -> classDiscriminator.classDiscriminator
             }
         } else {
