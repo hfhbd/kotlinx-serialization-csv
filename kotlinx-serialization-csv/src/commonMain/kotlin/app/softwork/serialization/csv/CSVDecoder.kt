@@ -61,10 +61,15 @@ internal class CSVDecoder(
     override fun decodeChar() = decodeString().single()
 
     override fun decodeString(): String {
-        val value = data[currentRow].getOrNull(index) ?: error("Missing attribute at $index in line $currentRow")
+        val value = data[currentRow].getOrNull(index) ?: error(
+            "Missing attribute at $index in line ${currentRow + READABLE_LINE_NUMBER + HEADER_OFFSET}"
+        )
         index += 1
         return value
     }
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor) = enumDescriptor.elementNames.indexOf(decodeString())
 }
+
+private const val READABLE_LINE_NUMBER = 1
+private const val HEADER_OFFSET = 1
