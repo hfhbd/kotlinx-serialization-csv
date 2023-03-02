@@ -26,9 +26,9 @@ public annotation class Ebcdic(val format: Format) {
          * The hex value is stored in EBCDIC (IBM-1047).
          */
         Zoned {
-            override fun toInt(string: String): Int = toLong(string).toInt()
+            override fun toInt(string: CharSequence): Int = toLong(string).toInt()
 
-            override fun toLong(string: String): Long =
+            override fun toLong(string: CharSequence): Long =
                 string.fromSignedEBCDICZonedDecimal()
 
             override fun toString(value: Int): String {
@@ -44,11 +44,11 @@ public annotation class Ebcdic(val format: Format) {
             }
         };
 
-        internal abstract fun toInt(string: String): Int
-        internal abstract fun toLong(string: String): Long
+        internal abstract fun toInt(string: CharSequence): Int
+        internal abstract fun toLong(string: CharSequence): Long
 
-        internal abstract fun toString(value: Int): String
-        internal abstract fun toString(value: Long): String
+        internal abstract fun toString(value: Int): CharSequence
+        internal abstract fun toString(value: Long): CharSequence
     }
 }
 
@@ -70,7 +70,7 @@ internal fun String.toSignedEBCDICZonedDecimal(positive: Boolean): String {
     return "$start$last"
 }
 
-private fun String.fromSignedEBCDICZonedDecimal(): Long {
+private fun CharSequence.fromSignedEBCDICZonedDecimal(): Long {
     var result = substring(0, lastIndex).toLongOrNull()?.times(10) ?: 0
     when (last()) {
         '{' -> {} // positive 0

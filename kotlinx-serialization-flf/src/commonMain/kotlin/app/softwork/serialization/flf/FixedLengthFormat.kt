@@ -4,6 +4,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.modules.*
 import kotlin.jvm.*
+import kotlin.math.*
 
 /**
  * [Fixed Length Files](https://www.ibm.com/docs/en/psfa/latest?topic=format-fixed-length-files)
@@ -11,7 +12,7 @@ import kotlin.jvm.*
 @ExperimentalSerializationApi
 public sealed class FixedLengthFormat(
     override val serializersModule: SerializersModule,
-    private val lineSeparator: String,
+    public val lineSeparator: String,
     internal val fillLeadingZeros: Boolean
 ) : StringFormat {
 
@@ -28,7 +29,7 @@ public sealed class FixedLengthFormat(
     ) {
         @JvmOverloads
         public operator fun invoke(
-            serializersModule: SerializersModule,
+            serializersModule: SerializersModule = EmptySerializersModule(),
             lineSeparator: String = "\n",
             fillLeadingZeros: Boolean = true
         ): FixedLengthFormat = Custom(serializersModule, lineSeparator, fillLeadingZeros)
@@ -37,7 +38,18 @@ public sealed class FixedLengthFormat(
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
         deserializer.descriptor.checkForMaps()
         val data = string.split(lineSeparator)
-        return deserializer.deserialize(FixedLengthDecoder(data.iterator()::next, serializersModule, data.size))
+        var index = 0
+        var currentRowIndex = -1
+        var currentRow: String? = null
+        return deserializer.deserialize(FixedLengthDecoder({
+            currentRowIndex++
+            currentRow = data[currentRowIndex]
+            index = 0
+        }, { length ->
+            currentRow!!.substring(index, min(index + length, currentRow!!.length)).also {
+                index += length
+            }
+        }, serializersModule, data.size))
     }
 
     public fun <T> decodeAsSequence(deserializer: DeserializationStrategy<T>, input: Sequence<String>): Sequence<T> {
@@ -47,8 +59,16 @@ public sealed class FixedLengthFormat(
             if (!iterator.hasNext()) {
                 return@sequence
             }
-
-            val decoder = FixedLengthDecoder(iterator::next, serializersModule, size = -1)
+            var currentRow: String? = null
+            var index = 0
+            val decoder = FixedLengthDecoder({
+                currentRow = iterator.next()
+                index = 0
+            }, { length ->
+                val r = currentRow!!.substring(index, min(index + length, currentRow!!.length))
+                index += length
+                r
+            }, serializersModule, size = -1)
             while (iterator.hasNext()) {
                 yield(deserializer.deserialize(decoder))
             }

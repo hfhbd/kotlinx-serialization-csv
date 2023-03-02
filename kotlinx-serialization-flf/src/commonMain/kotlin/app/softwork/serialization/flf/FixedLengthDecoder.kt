@@ -8,22 +8,19 @@ import kotlin.math.*
 
 @ExperimentalSerializationApi
 internal class FixedLengthDecoder(
-    private val next: () -> String,
+    private val nextRow: () -> Unit,
+    private val next: (Int) -> CharSequence,
     override val serializersModule: SerializersModule,
     private val size: Int
 ) : FailingPrimitiveDecoder, CompositeDecoder {
     private var level = 0
-    private var index = 0
-    private var currentRow = ""
-
-    private var lengthIndex: Int? = null
+    private var lengthElementIndex: Int? = null
     private var currentLength: Int? = null
 
     private val sealedClassClassDiscriminators = mutableMapOf<String, String>()
 
-    internal fun decode(length: Int, trim: Boolean = true): String {
-        val data = currentRow.substring(index, min(index + length, currentRow.length))
-        index += length
+    internal fun decode(length: Int, trim: Boolean = true): CharSequence {
+        val data = next(length)
         return if (trim) data.trim() else data
     }
 
@@ -31,15 +28,15 @@ internal class FixedLengthDecoder(
         error("Never called, because decodeSequentially returns true")
 
     override fun decodeFloatElement(descriptor: SerialDescriptor, index: Int) =
-        decode(descriptor.fixedLength(index)).toFloat()
+        decode(descriptor.fixedLength(index)).toString().toFloat()
 
     override fun decodeInlineElement(descriptor: SerialDescriptor, index: Int) =
         decodeInline(descriptor.getElementDescriptor(index))
 
     override fun decodeIntElement(descriptor: SerialDescriptor, index: Int): Int {
         val decoded = decode(descriptor.fixedLength(index))
-        return (descriptor.ebcdic(index)?.format?.toInt(decoded) ?: decoded.toInt()).also {
-            if (index == lengthIndex) {
+        return (descriptor.ebcdic(index)?.format?.toInt(decoded) ?: decoded.toString().toInt()).also {
+            if (index == lengthElementIndex) {
                 currentLength = it
             }
         }
@@ -47,7 +44,7 @@ internal class FixedLengthDecoder(
 
     override fun decodeLongElement(descriptor: SerialDescriptor, index: Int): Long {
         val decoded = decode(descriptor.fixedLength(index))
-        return descriptor.ebcdic(index)?.format?.toLong(decoded) ?: decoded.toLong()
+        return descriptor.ebcdic(index)?.format?.toLong(decoded) ?: decoded.toString().toLong()
     }
 
     @ExperimentalSerializationApi
@@ -111,15 +108,15 @@ internal class FixedLengthDecoder(
     override fun <T : Any> decodeNullableSerializableValue(deserializer: DeserializationStrategy<T?>): T? {
         val isNullabilitySupported = deserializer.descriptor.isNullable
         val length = deserializer.descriptor.fixedLength
-        val value = currentRow.substring(index, min(index + length, currentRow.length))
+        val value = next(length)
         return if (isNullabilitySupported || value.isNotBlank()) decodeSerializableValue(deserializer) else decodeNull()
     }
 
     override fun decodeShortElement(descriptor: SerialDescriptor, index: Int) =
-        decode(descriptor.fixedLength(index)).toShort()
+        decode(descriptor.fixedLength(index)).toString().toShort()
 
     override fun decodeStringElement(descriptor: SerialDescriptor, index: Int): String {
-        val value = decode(descriptor.fixedLength(index))
+        val value = decode(descriptor.fixedLength(index)).toString()
         if (descriptor.hasSealedTypeProperty) {
             sealedClassClassDiscriminators[descriptor.getElementName(index)] = value
         }
@@ -128,16 +125,13 @@ internal class FixedLengthDecoder(
 
     override fun endStructure(descriptor: SerialDescriptor) {
         level -= 1
-        if (level == 0) {
-            index = 0
-        }
     }
 
     override fun decodeBooleanElement(descriptor: SerialDescriptor, index: Int) =
-        decode(descriptor.fixedLength(index)).toBoolean()
+        decode(descriptor.fixedLength(index)).toString().toBoolean()
 
     override fun decodeByteElement(descriptor: SerialDescriptor, index: Int) =
-        decode(descriptor.fixedLength(index)).toByte()
+        decode(descriptor.fixedLength(index)).toString().toByte()
 
     override fun decodeCharElement(descriptor: SerialDescriptor, index: Int) =
         decode(descriptor.fixedLength(index), trim = false).single()
@@ -148,16 +142,16 @@ internal class FixedLengthDecoder(
     }
 
     override fun decodeDoubleElement(descriptor: SerialDescriptor, index: Int) =
-        decode(descriptor.fixedLength(index)).toDouble()
+        decode(descriptor.fixedLength(index)).toString().toDouble()
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         val hasInnerList = descriptor.hasInnerListLengthIndex()
         if (hasInnerList != null) {
-            lengthIndex = hasInnerList
+            lengthElementIndex = hasInnerList
         }
         if (descriptor.kind !is StructureKind.LIST) {
             if (level == 0) {
-                currentRow = next()
+                nextRow()
             }
             level += 1
         }

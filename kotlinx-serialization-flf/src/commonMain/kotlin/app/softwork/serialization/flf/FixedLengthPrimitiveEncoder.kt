@@ -61,12 +61,12 @@ internal class FixedLengthPrimitiveEncoder(
 
     override fun encodeInt(value: Int) {
         val stringValue = ebcdic?.format?.toString(value) ?: value.toString()
-        encodeNumber(stringValue, length)
+        encodeNumber(stringValue.toString(), length)
     }
 
     override fun encodeLong(value: Long) {
         val stringValue = ebcdic?.format?.toString(value) ?: value.toString()
-        encodeNumber(stringValue, length)
+        encodeNumber(stringValue.toString(), length)
     }
 
     @ExperimentalSerializationApi

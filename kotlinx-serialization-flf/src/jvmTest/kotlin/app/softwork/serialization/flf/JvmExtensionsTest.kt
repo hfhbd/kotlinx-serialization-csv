@@ -5,6 +5,7 @@ import java.io.*
 import java.util.stream.*
 import kotlin.test.*
 
+@ExperimentalSerializationApi
 class JvmExtensionsTest {
     @Test
     fun sequences() {
@@ -16,13 +17,16 @@ class JvmExtensionsTest {
         assertEquals(listOf("1", "2", "3", "1", "2", "3"), file.readLines())
     }
 
-    @ExperimentalSerializationApi
     @Test
-    fun append() {
+    fun appendWrite() {
         assertEquals(
-            "1\n",
+            "11\n",
             buildString {
                 append(
+                    Small.serializer(),
+                    Small("1")
+                )
+                appendLine(
                     Small.serializer(),
                     Small("1")
                 )
@@ -30,7 +34,30 @@ class JvmExtensionsTest {
         )
     }
 
-    @ExperimentalSerializationApi
+    @Test
+    fun decode() {
+        assertEquals(
+            listOf(
+                Small("1"), Small("2"), Small("3"),
+            ),
+            "123".reader()
+                .decode(
+                    deserializer = Small.serializer(),
+                    format = FixedLengthFormat.Default(lineSeparator = "")
+                ).toList()
+        )
+
+        assertEquals(
+            listOf(
+                Small("4"), Small("5"), Small("6"),
+            ),
+            "4\n5\n6\n".reader()
+                .decode(
+                    deserializer = Small.serializer(),
+                ).toList()
+        )
+    }
+
     @Test
     fun stream() {
         val stream = Stream.of("a", "b")
