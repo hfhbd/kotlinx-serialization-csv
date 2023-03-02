@@ -41,15 +41,17 @@ public sealed class FixedLengthFormat(
         var index = 0
         var currentRowIndex = -1
         var currentRow: String? = null
-        return deserializer.deserialize(FixedLengthDecoder({
-            currentRowIndex++
-            currentRow = data[currentRowIndex]
-            index = 0
-        }, { length ->
-            currentRow!!.substring(index, min(index + length, currentRow!!.length)).also {
-                index += length
-            }
-        }, serializersModule, data.size))
+        return deserializer.deserialize(
+            FixedLengthDecoder({
+                currentRowIndex++
+                currentRow = data[currentRowIndex]
+                index = 0
+            }, { length ->
+                currentRow!!.substring(index, min(index + length, currentRow!!.length)).also {
+                    index += length
+                }
+            }, serializersModule, data.size)
+        )
     }
 
     public fun <T> decodeAsSequence(deserializer: DeserializationStrategy<T>, input: Sequence<String>): Sequence<T> {

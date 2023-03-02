@@ -41,25 +41,27 @@ public fun <T> Readable.decode(
         var afterInit = false
         generateSequence {
             try {
-                deserializer.deserialize(FixedLengthDecoder({
-                    if (afterInit) {
-                        val length = format.lineSeparator.length
-                        if (length > 0) {
-                            if (read(CharBuffer.allocate(length)) != length) {
-                                throw NoMoreDataException()
+                deserializer.deserialize(
+                    FixedLengthDecoder({
+                        if (afterInit) {
+                            val length = format.lineSeparator.length
+                            if (length > 0) {
+                                if (read(CharBuffer.allocate(length)) != length) {
+                                    throw NoMoreDataException()
+                                }
                             }
                         }
-                    }
-                    afterInit = true
-                }, { length ->
-                    val buffer = CharBuffer.allocate(length)
-                    val got = read(buffer)
-                    if (got != length) {
-                        throw NoMoreDataException()
-                    }
-                    buffer.position(0)
-                    buffer
-                }, format.serializersModule, -1))
+                        afterInit = true
+                    }, { length ->
+                        val buffer = CharBuffer.allocate(length)
+                        val got = read(buffer)
+                        if (got != length) {
+                            throw NoMoreDataException()
+                        }
+                        buffer.position(0)
+                        buffer
+                    }, format.serializersModule, -1)
+                )
             } catch (_: NoMoreDataException) {
                 null
             }
@@ -102,7 +104,8 @@ public fun <T> Stream<String>.decodeStream(
             split.characteristics().and(NONNULL)
         ) {
             var currentRow: String? = null
-            val decoder = FixedLengthDecoder({},
+            val decoder = FixedLengthDecoder(
+                {},
                 { currentRow!! },
                 format.serializersModule,
                 size = exactSizeIfKnown.toIntOrNull() ?: -1

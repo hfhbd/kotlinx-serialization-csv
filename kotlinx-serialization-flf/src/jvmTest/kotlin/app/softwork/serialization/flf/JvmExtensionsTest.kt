@@ -38,7 +38,9 @@ class JvmExtensionsTest {
     fun decode() {
         assertEquals(
             listOf(
-                Small("1"), Small("2"), Small("3"),
+                Small("1"),
+                Small("2"),
+                Small("3"),
             ),
             "123".reader()
                 .decode(
@@ -49,7 +51,9 @@ class JvmExtensionsTest {
 
         assertEquals(
             listOf(
-                Small("4"), Small("5"), Small("6"),
+                Small("4"),
+                Small("5"),
+                Small("6"),
             ),
             "4\n5\n6\n".reader()
                 .decode(

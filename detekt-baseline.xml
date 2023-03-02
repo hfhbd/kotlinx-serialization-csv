@@ -3,7 +3,7 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:Ebcdic.kt$internal fun String.toSignedEBCDICZonedDecimal(positive: Boolean): String</ID>
-    <ID>CyclomaticComplexMethod:Ebcdic.kt$private fun String.fromSignedEBCDICZonedDecimal(): Long</ID>
+    <ID>CyclomaticComplexMethod:Ebcdic.kt$private fun CharSequence.fromSignedEBCDICZonedDecimal(): Long</ID>
     <ID>EmptyFunctionBlock:Testing.kt$Testing${ }</ID>
     <ID>MagicNumber:Ebcdic.kt$10</ID>
     <ID>MagicNumber:Ebcdic.kt$3</ID>
