@@ -36,10 +36,10 @@ public abstract class app/softwork/serialization/flf/FixedLengthFormat : kotlinx
 
 public final class app/softwork/serialization/flf/FixedLengthFormat$Default : app/softwork/serialization/flf/FixedLengthFormat {
 	public final fun invoke ()Lapp/softwork/serialization/flf/FixedLengthFormat;
-	public final fun invoke (Lkotlinx/serialization/modules/SerializersModule;)Lapp/softwork/serialization/flf/FixedLengthFormat;
-	public final fun invoke (Lkotlinx/serialization/modules/SerializersModule;Ljava/lang/String;)Lapp/softwork/serialization/flf/FixedLengthFormat;
-	public final fun invoke (Lkotlinx/serialization/modules/SerializersModule;Ljava/lang/String;Z)Lapp/softwork/serialization/flf/FixedLengthFormat;
-	public static synthetic fun invoke$default (Lapp/softwork/serialization/flf/FixedLengthFormat$Default;Lkotlinx/serialization/modules/SerializersModule;Ljava/lang/String;ZILjava/lang/Object;)Lapp/softwork/serialization/flf/FixedLengthFormat;
+	public final fun invoke (Ljava/lang/String;)Lapp/softwork/serialization/flf/FixedLengthFormat;
+	public final fun invoke (Ljava/lang/String;Z)Lapp/softwork/serialization/flf/FixedLengthFormat;
+	public final fun invoke (Ljava/lang/String;ZLkotlinx/serialization/modules/SerializersModule;)Lapp/softwork/serialization/flf/FixedLengthFormat;
+	public static synthetic fun invoke$default (Lapp/softwork/serialization/flf/FixedLengthFormat$Default;Ljava/lang/String;ZLkotlinx/serialization/modules/SerializersModule;ILjava/lang/Object;)Lapp/softwork/serialization/flf/FixedLengthFormat;
 }
 
 public final class app/softwork/serialization/flf/FixedLengthFormatKt {
