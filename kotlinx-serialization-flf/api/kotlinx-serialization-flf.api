@@ -9,7 +9,7 @@ public final class app/softwork/serialization/flf/Ebcdic$Format : java/lang/Enum
 	public static fun values ()[Lapp/softwork/serialization/flf/Ebcdic$Format;
 }
 
-public final class app/softwork/serialization/flf/Ebcdic$Impl : app/softwork/serialization/flf/Ebcdic {
+public synthetic class app/softwork/serialization/flf/Ebcdic$Impl : app/softwork/serialization/flf/Ebcdic {
 	public fun <init> (Lapp/softwork/serialization/flf/Ebcdic$Format;)V
 	public final synthetic fun format ()Lapp/softwork/serialization/flf/Ebcdic$Format;
 }
@@ -18,7 +18,7 @@ public abstract interface annotation class app/softwork/serialization/flf/FixedL
 	public abstract fun length ()I
 }
 
-public final class app/softwork/serialization/flf/FixedLength$Impl : app/softwork/serialization/flf/FixedLength {
+public synthetic class app/softwork/serialization/flf/FixedLength$Impl : app/softwork/serialization/flf/FixedLength {
 	public fun <init> (I)V
 	public final synthetic fun length ()I
 }
@@ -55,7 +55,7 @@ public abstract interface annotation class app/softwork/serialization/flf/FixedL
 	public abstract fun serialName ()Ljava/lang/String;
 }
 
-public final class app/softwork/serialization/flf/FixedLengthList$Impl : app/softwork/serialization/flf/FixedLengthList {
+public synthetic class app/softwork/serialization/flf/FixedLengthList$Impl : app/softwork/serialization/flf/FixedLengthList {
 	public fun <init> (Ljava/lang/String;)V
 	public final synthetic fun serialName ()Ljava/lang/String;
 }
@@ -64,7 +64,7 @@ public abstract interface annotation class app/softwork/serialization/flf/FixedL
 	public abstract fun serialName ()Ljava/lang/String;
 }
 
-public final class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminator$Impl : app/softwork/serialization/flf/FixedLengthSealedClassDiscriminator {
+public synthetic class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminator$Impl : app/softwork/serialization/flf/FixedLengthSealedClassDiscriminator {
 	public fun <init> (Ljava/lang/String;)V
 	public final synthetic fun serialName ()Ljava/lang/String;
 }
@@ -73,7 +73,7 @@ public abstract interface annotation class app/softwork/serialization/flf/FixedL
 	public abstract fun length ()I
 }
 
-public final class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength$Impl : app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength {
+public synthetic class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength$Impl : app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength {
 	public fun <init> (I)V
 	public final synthetic fun length ()I
 }
