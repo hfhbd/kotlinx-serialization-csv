@@ -30,6 +30,8 @@ detekt {
 
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${detekt.toolVersion}")
+    kover(projects.kotlinxSerializationCsv)
+    kover(projects.kotlinxSerializationFlf)
 }
 
 tasks {
@@ -52,13 +54,14 @@ tasks {
     }
 }
 
-koverMerged {
-    enable()
-    verify {
-        onCheck.set(true)
-        rule {
-            bound {
-                minValue = 85
+koverReport {
+    defaults {
+        verify {
+            onCheck = true
+            rule {
+                bound {
+                    minValue = 90
+                }
             }
         }
     }
