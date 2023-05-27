@@ -39,10 +39,10 @@ extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtensio
     iosArm64()
 
     // tier 3
-    // no kotlinx.serialization support androidNativeArm32()
-    // no kotlinx.serialization support androidNativeArm64()
-    // no kotlinx.serialization support androidNativeX86()
-    // no kotlinx.serialization support androidNativeX64()
+    // no kotlinx.datetime support androidNativeArm32()
+    // no kotlinx.datetime support androidNativeArm64()
+    // no kotlinx.datetime support androidNativeX86()
+    // no kotlinx.datetime support androidNativeX64()
     mingwX64()
-    // no kotlinx.serialization support watchosDeviceArm64()
+    // no kotlinx.datetime support watchosDeviceArm64()
 }

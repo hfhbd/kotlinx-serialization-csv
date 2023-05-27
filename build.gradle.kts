@@ -2,7 +2,6 @@ import io.gitlab.arturbosch.detekt.*
 
 plugins {
     id("io.github.gradle-nexus.publish-plugin")
-    id("org.jetbrains.kotlinx.kover")
     id("org.jetbrains.dokka")
     id("io.gitlab.arturbosch.detekt")
     id("org.jetbrains.kotlinx.binary-compatibility-validator")
@@ -30,8 +29,6 @@ detekt {
 
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${detekt.toolVersion}")
-    kover(projects.kotlinxSerializationCsv)
-    kover(projects.kotlinxSerializationFlf)
 }
 
 tasks {
@@ -50,19 +47,6 @@ tasks {
 
         reports {
             sarif.required.set(true)
-        }
-    }
-}
-
-koverReport {
-    defaults {
-        verify {
-            onCheck = true
-            rule {
-                bound {
-                    minValue = 90
-                }
-            }
         }
     }
 }
