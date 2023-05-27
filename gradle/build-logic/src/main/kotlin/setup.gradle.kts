@@ -27,3 +27,16 @@ tasks.named<DokkaTaskPartial>("dokkaHtmlPartial") {
         externalDocumentationLink("https://kotlinlang.org/api/kotlinx.serialization/")
     }
 }
+
+koverReport {
+    defaults {
+        verify {
+            onCheck = true
+            rule {
+                bound {
+                    minValue = 90
+                }
+            }
+        }
+    }
+}
