@@ -1,19 +1,19 @@
 import io.gitlab.arturbosch.detekt.*
 
 plugins {
-    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
-    org.jetbrains.kotlinx.kover
-    org.jetbrains.dokka
-    io.gitlab.arturbosch.detekt
-    org.jetbrains.kotlinx.`binary-compatibility-validator`
+    id("io.github.gradle-nexus.publish-plugin")
+    id("org.jetbrains.kotlinx.kover")
+    id("org.jetbrains.dokka")
+    id("io.gitlab.arturbosch.detekt")
+    id("org.jetbrains.kotlinx.binary-compatibility-validator")
 }
 
-tasks.dokkaHtmlMultiModule.configure {
+tasks.dokkaHtmlMultiModule {
     includes.from("README.md")
 }
 
 nexusPublishing {
-    repositories {
+    this.repositories {
         sonatype {
             nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
             snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
@@ -22,13 +22,16 @@ nexusPublishing {
 }
 
 detekt {
-    source = files(rootProject.rootDir)
+    source.from(files(rootProject.rootDir))
     parallel = true
+    autoCorrect = true
     buildUponDefaultConfig = true
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${detekt.toolVersion}")
+    kover(projects.kotlinxSerializationCsv)
+    kover(projects.kotlinxSerializationFlf)
 }
 
 tasks {
@@ -44,7 +47,6 @@ tasks {
     }
     withType<Detekt>().configureEach {
         config()
-        autoCorrect = true
 
         reports {
             sarif.required.set(true)
@@ -52,13 +54,14 @@ tasks {
     }
 }
 
-koverMerged {
-    enable()
-    verify {
-        onCheck.set(true)
-        rule {
-            bound {
-                minValue = 85
+koverReport {
+    defaults {
+        verify {
+            onCheck = true
+            rule {
+                bound {
+                    minValue = 90
+                }
             }
         }
     }
