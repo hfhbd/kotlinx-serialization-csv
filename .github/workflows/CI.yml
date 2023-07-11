@@ -13,12 +13,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
+      contents: write
       security-events: write
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: gradle/wrapper-validation-action@v1    
+      - uses: actions/checkout@v3 
       - uses: gradle/gradle-build-action@v2
+        with:
+          dependency-graph: generate-and-submit
       - name: Build with Gradle
         run: ./gradlew build
       - name: Detekt

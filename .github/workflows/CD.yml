@@ -9,11 +9,14 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  GRADLE_OPTS: -Dorg.gradle.parallel=true -Dorg.gradle.caching=true
+  GRADLE_OPTS: -Dorg.gradle.caching=true
 
 jobs:
   build:
     runs-on: macos-latest
+
+    permissions:
+      contents: read
 
     environment: CD
 
@@ -21,12 +24,9 @@ jobs:
       - name: Set environment for version
         run: long="${{ github.ref }}"; version=${long#"refs/tags/v"}; echo "version=${version}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
-      - uses: gradle/wrapper-validation-action@v1
       - uses: gradle/gradle-build-action@v2
-      - name: Build with Gradle
-        run: ./gradlew build -Pversion=$version
       - name: Publish
-        run: ./gradlew -Pversion=$version -Dorg.gradle.parallel=false publish closeAndReleaseStagingRepository
+        run: ./gradlew -Pversion=$version -Dorg.gradle.parallel=false --no-configuration-cache publish closeAndReleaseStagingRepository
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_PRIVATE_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
