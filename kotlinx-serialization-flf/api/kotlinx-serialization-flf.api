@@ -5,6 +5,7 @@ public abstract interface annotation class app/softwork/serialization/flf/Ebcdic
 public final class app/softwork/serialization/flf/Ebcdic$Format : java/lang/Enum {
 	public static final field Zoned Lapp/softwork/serialization/flf/Ebcdic$Format;
 	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lapp/softwork/serialization/flf/Ebcdic$Format;
 	public static fun values ()[Lapp/softwork/serialization/flf/Ebcdic$Format;
 }
