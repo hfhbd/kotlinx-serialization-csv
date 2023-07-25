@@ -35,6 +35,7 @@ public fun <T> Readable.decode(
     deserializer: DeserializationStrategy<T>,
     format: FixedLengthFormat = FixedLengthFormat
 ): Iterable<T> {
+    deserializer.descriptor.checkIfList()
     deserializer.descriptor.checkForMaps()
 
     return Iterable {
@@ -52,7 +53,7 @@ public fun <T> Readable.decode(
                             }
                         }
                         afterInit = true
-                    }, { length ->
+                    }, next = { length ->
                         val buffer = CharBuffer.allocate(length)
                         val got = read(buffer)
                         if (got != length) {
@@ -60,7 +61,13 @@ public fun <T> Readable.decode(
                         }
                         buffer.position(0)
                         buffer
-                    }, format.serializersModule, -1)
+                    }, 
+                        serializersModule = format.serializersModule, 
+                        collectionSize = -1,
+                        supportsSequentialDecoding = true,
+                        trim = format.trim,
+                        hasNext = { true }
+                    )
                 )
             } catch (_: NoMoreDataException) {
                 null
@@ -77,7 +84,7 @@ public fun <T> Stream<String>.decode(
     deserializer: DeserializationStrategy<T>,
     format: FixedLengthFormat = FixedLengthFormat
 ): Iterable<T> {
-    return Iterable { asSequence().decode(deserializer, format).iterator() }
+    return asSequence().decode(deserializer, format).asIterable()
 }
 
 @ExperimentalSerializationApi
@@ -86,7 +93,7 @@ public fun <T> Stream<T>.encode(
     serializer: SerializationStrategy<T>,
     format: FixedLengthFormat = FixedLengthFormat
 ): Iterable<String> {
-    return Iterable { asSequence().encode(serializer, format).iterator() }
+    return asSequence().encode(serializer, format).asIterable()
 }
 
 @ExperimentalSerializationApi
@@ -95,6 +102,7 @@ public fun <T> Stream<String>.decodeStream(
     deserializer: DeserializationStrategy<T>,
     format: FixedLengthFormat = FixedLengthFormat
 ): Stream<T> {
+    deserializer.descriptor.checkIfList()
     deserializer.descriptor.checkForMaps()
     val parallel = isParallel
     val split = spliterator()
@@ -106,9 +114,12 @@ public fun <T> Stream<String>.decodeStream(
             var currentRow: String? = null
             val decoder = FixedLengthDecoder(
                 {},
-                { currentRow!! },
-                format.serializersModule,
-                size = exactSizeIfKnown.toIntOrNull() ?: -1
+                next = { currentRow!! },
+                serializersModule = format.serializersModule,
+                collectionSize = exactSizeIfKnown.toIntOrMinusOne(),
+                supportsSequentialDecoding = true,
+                hasNext = { true },
+                trim = format.trim
             )
 
             override fun tryAdvance(action: Consumer<in T>): Boolean {
@@ -119,9 +130,9 @@ public fun <T> Stream<String>.decodeStream(
                 }
             }
 
-            fun Long.toIntOrNull(): Int? {
+            fun Long.toIntOrMinusOne(): Int {
                 return if (this < Int.MIN_VALUE || this > Int.MAX_VALUE) {
-                    null
+                    -1
                 } else {
                     this.toInt()
                 }

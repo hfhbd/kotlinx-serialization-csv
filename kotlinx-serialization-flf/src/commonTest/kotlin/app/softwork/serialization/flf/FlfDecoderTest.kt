@@ -3,10 +3,55 @@ package app.softwork.serialization.flf
 import kotlinx.datetime.*
 import kotlinx.serialization.*
 import kotlinx.serialization.builtins.*
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.decodeStructure
 import kotlin.test.*
 
 @ExperimentalSerializationApi
 class FlfDecoderTest {
+    
+    object NonSequentialDeserializer: DeserializationStrategy<Seal.A> {
+        override val descriptor: SerialDescriptor = Seal.A.serializer().descriptor
+
+        fun missing(missingField: String): Nothing = throw MissingFieldException(missingField, descriptor.serialName)
+        
+        override fun deserialize(decoder: Decoder): Seal.A = decoder.decodeStructure(descriptor) {
+            var a: Int? = null
+            var s: Int? = null
+            while (true) {
+                when (val index = decodeElementIndex(descriptor)) {
+                    CompositeDecoder.DECODE_DONE -> break
+                    0 -> {
+                        a = decodeIntElement(descriptor, 0)
+                    }
+                    1 -> {
+                        s = decodeIntElement(descriptor, 1)
+                    }
+                    else -> throw SerializationException("Unexpected index $index")
+                }
+            }
+
+            return@decodeStructure Seal.A(
+                a = a ?: missing("a"), 
+                s = s ?: missing("s"),
+            )
+        }
+    }
+    
+    @Test
+    fun nonSequentialDeserializer() {
+        val working = "424242"
+        assertEquals(Seal.A(42, 4242), FixedLengthFormat.decodeFromCharSequence(NonSequentialDeserializer, working))
+        val flf = "42"
+        assertFailsWith<MissingFieldException> { 
+            FixedLengthFormat.decodeFromCharSequence(NonSequentialDeserializer, flf)
+        }
+    }
+    
+    @Test
+    fun nullableEnd() {}
 
     @Test
     fun normal() {

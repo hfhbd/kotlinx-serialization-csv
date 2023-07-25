@@ -3,28 +3,40 @@ package app.softwork.serialization.flf
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
+import kotlinx.serialization.encoding.CompositeDecoder.Companion.DECODE_DONE
 import kotlinx.serialization.modules.*
 
 @ExperimentalSerializationApi
 public class FixedLengthDecoder(
-    private val nextRow: () -> Unit,
-    private val next: (Int) -> CharSequence,
+    private val hasNextRecord: () -> Boolean,
+    private val decodeElement: (Int) -> CharSequence,
     override val serializersModule: SerializersModule,
-    private val size: Int
+    private val collectionSize: Int,
+    private val trimElement: Boolean
 ) : FailingPrimitiveDecoder, CompositeDecoder {
     private var level = 0
-    private var lengthElementIndex: Int? = null
-    private var currentLength: Int? = null
+    private var nextInnerListLength = -1
 
     private val sealedClassClassDiscriminators = mutableMapOf<String, String>()
 
-    internal fun decode(length: Int, trim: Boolean = true): CharSequence {
-        val data = next(length)
+    internal fun decode(length: Int, trim: Boolean = trimElement): CharSequence {
+        val data = decodeElement(length)
         return if (trim) data.trim() else data
     }
 
-    override fun decodeElementIndex(descriptor: SerialDescriptor): Nothing =
-        error("Never called, because decodeSequentially returns true")
+    private var currentElementIndex = -1
+    override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
+        currentElementIndex += 1
+        if (descriptor.elementsCount == currentElementIndex) {
+            return DECODE_DONE
+        }
+        val length = descriptor.fixedLength(currentElementIndex)
+        return if (hasNext(length)) {
+            currentElementIndex
+        } else {
+            DECODE_DONE
+        }
+    }
 
     override fun decodeFloatElement(descriptor: SerialDescriptor, index: Int): Float =
         decode(descriptor.fixedLength(index)).toString().toFloat()
@@ -32,13 +44,21 @@ public class FixedLengthDecoder(
     override fun decodeInlineElement(descriptor: SerialDescriptor, index: Int): Decoder =
         decodeInline(descriptor.getElementDescriptor(index))
 
+    private var nextLengthElementIndex: Int? = null
     override fun decodeIntElement(descriptor: SerialDescriptor, index: Int): Int {
         val decoded = decode(descriptor.fixedLength(index))
-        return (descriptor.ebcdic(index)?.format?.toInt(decoded) ?: decoded.toString().toInt()).also {
-            if (index == lengthElementIndex) {
-                currentLength = it
-            }
+        val isEbcdic = descriptor.ebcdic(index)?.format
+        
+        val int = if(isEbcdic != null) {
+            isEbcdic.toInt(decoded)
+        } else {
+            decoded.toString().toIntOrNull()
+        } ?: throw MissingFieldException(descriptor.getElementName(index), descriptor.serialName)
+
+        if (index == nextLengthElementIndex) {
+            nextInnerListLength = int
         }
+        return int
     }
 
     override fun decodeLongElement(descriptor: SerialDescriptor, index: Int): Long {
@@ -66,7 +86,7 @@ public class FixedLengthDecoder(
         }
     }
 
-    override fun decodeSequentially(): Boolean = true
+    override fun decodeSequentially(): Boolean = supportsSequentialDecoding
 
     override fun <T> decodeSerializableElement(
         descriptor: SerialDescriptor,
@@ -136,8 +156,13 @@ public class FixedLengthDecoder(
         decode(descriptor.fixedLength(index), trim = false).single()
 
     override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = when (level) {
-        0 -> size
-        else -> currentLength ?: error("${descriptor.fixedLengthList} was not seen before this list: $descriptor")
+        0 -> collectionSize
+        else -> {
+            require(nextInnerListLength != -1) { 
+                "${descriptor.fixedLengthList} was not seen before this list: $descriptor" 
+            }
+            nextInnerListLength
+        }
     }
 
     override fun decodeDoubleElement(descriptor: SerialDescriptor, index: Int): Double =
@@ -146,7 +171,7 @@ public class FixedLengthDecoder(
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         val hasInnerList = descriptor.hasInnerListLengthIndex()
         if (hasInnerList != null) {
-            lengthElementIndex = hasInnerList
+            nextLengthElementIndex = hasInnerList
         }
         if (descriptor.kind !is StructureKind.LIST) {
             if (level == 0) {

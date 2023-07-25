@@ -32,7 +32,7 @@ public class CSVDecoder(
         }
     }
 
-    override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
+    override fun decodeElementIndex(descriptor: SerialDescriptor): Nothing {
         error("Never called, because decodeSequentially returns true")
     }
 

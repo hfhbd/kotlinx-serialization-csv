@@ -13,48 +13,93 @@ import kotlin.math.*
 public sealed class FixedLengthFormat(
     override val serializersModule: SerializersModule,
     public val lineSeparator: String,
+    internal val trim: Boolean = true,
     internal val fillLeadingZeros: Boolean
 ) : StringFormat {
 
     private class Custom(
         serializersModule: SerializersModule,
         lineSeparator: String,
+        trim: Boolean,
         fillLeadingZeros: Boolean
-    ) : FixedLengthFormat(serializersModule, lineSeparator, fillLeadingZeros)
+    ) : FixedLengthFormat(serializersModule, lineSeparator, trim, fillLeadingZeros)
 
     public companion object Default : FixedLengthFormat(
         serializersModule = EmptySerializersModule(),
         lineSeparator = "\n",
+        trim = true,
         fillLeadingZeros = true
     ) {
         @JvmOverloads
         public operator fun invoke(
             lineSeparator: String = "\n",
             fillLeadingZeros: Boolean = true,
+            trim: Boolean = true,
             serializersModule: SerializersModule = EmptySerializersModule(),
-        ): FixedLengthFormat = Custom(serializersModule, lineSeparator, fillLeadingZeros)
+        ): FixedLengthFormat = Custom(serializersModule, lineSeparator, trim, fillLeadingZeros)
     }
 
+    public fun <T> decodeFromCharSequence(deserializer: DeserializationStrategy<T>, charSequence: CharSequence): T =
+        if (lineSeparator == "") {
+            deserializer.descriptor.checkIfList()
+            deserializer.descriptor.checkForMaps()
+            var index = 0
+            deserializer.deserialize(
+                FixedLengthDecoder(
+                    nextRow = {
+                        // empty lineSeparator results into 1 row
+                    },
+                    next = { length ->
+                        val maxLength = min(index + length, charSequence.length)
+                        val next = charSequence.subSequence(index, maxLength)
+                        index += length
+                        next
+                    },
+                    hasNext = {
+                              true
+                    },
+                    serializersModule = serializersModule,
+                    collectionSize = -1,
+                    supportsSequentialDecoding = false, // "" does not have a record delimiter, so the size of all records is unknown.
+                    trim = trim,
+                )
+            )
+        } else {
+            deserializer.descriptor.checkForMaps()
+            val data = charSequence.split(lineSeparator)
+            var index = 0
+            var currentRowIndex = -1
+            var currentRow: String? = null
+            deserializer.deserialize(
+                FixedLengthDecoder(
+                    nextRow = {
+                        currentRowIndex++
+                        currentRow = data[currentRowIndex]
+                        index = 0
+                    },
+                    next = { length ->
+                        val maxLength = min(index + length, currentRow!!.length)
+                        val next = currentRow!!.substring(index, maxLength)
+                        index += length
+                        next
+                    }, 
+                    hasNext = {
+                      true // not called due supportsSequentialDecoding = true             
+                    },
+                    serializersModule = serializersModule,
+                    collectionSize = data.size,
+                    supportsSequentialDecoding = true,
+                    trim = trim,
+                )
+            )
+        }
+    
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
-        deserializer.descriptor.checkForMaps()
-        val data = string.split(lineSeparator)
-        var index = 0
-        var currentRowIndex = -1
-        var currentRow: String? = null
-        return deserializer.deserialize(
-            FixedLengthDecoder({
-                currentRowIndex++
-                currentRow = data[currentRowIndex]
-                index = 0
-            }, { length ->
-                currentRow!!.substring(index, min(index + length, currentRow!!.length)).also {
-                    index += length
-                }
-            }, serializersModule, data.size)
-        )
+        return decodeFromCharSequence(deserializer, string)
     }
 
     public fun <T> decodeAsSequence(deserializer: DeserializationStrategy<T>, input: Sequence<String>): Sequence<T> {
+        deserializer.descriptor.checkIfList()
         deserializer.descriptor.checkForMaps()
         return sequence {
             val iterator = input.iterator()
@@ -63,14 +108,23 @@ public sealed class FixedLengthFormat(
             }
             var currentRow: String? = null
             var index = 0
-            val decoder = FixedLengthDecoder({
-                currentRow = iterator.next()
-                index = 0
-            }, { length ->
-                val r = currentRow!!.substring(index, min(index + length, currentRow!!.length))
-                index += length
-                r
-            }, serializersModule, size = -1)
+            val decoder = FixedLengthDecoder(
+                nextRow = {
+                    currentRow = iterator.next()
+                    index = 0
+                },
+                next = { length ->
+                    val maxLength = min(index + length, currentRow!!.length)
+                    val next = currentRow!!.subSequence(index, maxLength)
+                    index += length
+                    next
+                },
+                hasNext = { true },
+                serializersModule = serializersModule,
+                collectionSize = -1,
+                supportsSequentialDecoding = true,
+                trim = trim,
+            )
             while (iterator.hasNext()) {
                 yield(deserializer.deserialize(decoder))
             }
@@ -99,6 +153,12 @@ public sealed class FixedLengthFormat(
             }
         }
     }
+
+    public inline fun <reified In, reified Out> convert(
+        value: In,
+        from: SerializationStrategy<In> = serializer<In>(),
+        to: DeserializationStrategy<Out> = serializer<Out>()
+    ): Out = decodeFromString(to, encodeToString(from, value))
 }
 
 @ExperimentalSerializationApi
@@ -170,12 +230,19 @@ internal val SerialDescriptor.fixedLengthList: String
     }
 
 @ExperimentalSerializationApi
-internal fun SerialDescriptor.checkForMaps() {
+public fun SerialDescriptor.checkForMaps() {
     for (descriptor in elementDescriptors) {
         if (descriptor.kind is StructureKind.MAP) {
             error("Map is not yet supported: ${descriptor.serialName}")
         }
         descriptor.checkForMaps()
+    }
+}
+
+@ExperimentalSerializationApi
+public fun SerialDescriptor.checkIfList() {
+    require(kind !is StructureKind.LIST) {
+        "Top level list is not supported for lazy decoding."
     }
 }
 

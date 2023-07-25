@@ -18,6 +18,12 @@ public sealed class CSVFormat(
         lineSeparator: String,
         serializersModule: SerializersModule
     ) : CSVFormat(separator, lineSeparator, serializersModule)
+    
+    init {
+        require(lineSeparator != "") {
+            "lineSeparator must not be the empty string."
+        }
+    }
 
     public companion object Default : CSVFormat(
         separator = ",",
