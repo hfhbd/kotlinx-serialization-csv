@@ -6,7 +6,7 @@ import kotlinx.serialization.encoding.*
 import kotlinx.serialization.modules.*
 
 @ExperimentalSerializationApi
-internal class CSVEncoder(
+public class CSVEncoder(
     private val builder: StringBuilder,
     private val separator: String,
     private val lineSeparator: String,

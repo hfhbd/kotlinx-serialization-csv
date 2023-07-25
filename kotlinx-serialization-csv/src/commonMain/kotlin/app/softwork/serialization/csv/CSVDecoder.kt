@@ -6,7 +6,7 @@ import kotlinx.serialization.encoding.*
 import kotlinx.serialization.modules.*
 
 @ExperimentalSerializationApi
-internal class CSVDecoder(
+public class CSVDecoder(
     private val data: List<List<String>>,
     override val serializersModule: SerializersModule
 ) : AbstractDecoder() {
@@ -36,7 +36,7 @@ internal class CSVDecoder(
         error("Never called, because decodeSequentially returns true")
     }
 
-    override fun decodeCollectionSize(descriptor: SerialDescriptor) = data.size
+    override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = data.size
     override fun decodeSequentially(): Boolean = true
 
     override fun decodeNull(): Nothing? {
@@ -44,21 +44,21 @@ internal class CSVDecoder(
         return null
     }
 
-    override fun decodeBoolean() = decodeString().toBoolean()
+    override fun decodeBoolean(): Boolean = decodeString().toBoolean()
 
-    override fun decodeByte() = decodeString().toByte()
+    override fun decodeByte(): Byte = decodeString().toByte()
 
-    override fun decodeShort() = decodeString().toShort()
+    override fun decodeShort(): Short = decodeString().toShort()
 
-    override fun decodeInt() = decodeString().toInt()
+    override fun decodeInt(): Int = decodeString().toInt()
 
-    override fun decodeLong() = decodeString().toLong()
+    override fun decodeLong(): Long = decodeString().toLong()
 
-    override fun decodeFloat() = decodeString().toFloat()
+    override fun decodeFloat(): Float = decodeString().toFloat()
 
-    override fun decodeDouble() = decodeString().toDouble()
+    override fun decodeDouble(): Double = decodeString().toDouble()
 
-    override fun decodeChar() = decodeString().single()
+    override fun decodeChar(): Char = decodeString().single()
 
     override fun decodeString(): String {
         val value = data[currentRow].getOrNull(index) ?: error(
@@ -68,7 +68,7 @@ internal class CSVDecoder(
         return value
     }
 
-    override fun decodeEnum(enumDescriptor: SerialDescriptor) = enumDescriptor.elementNames.indexOf(decodeString())
+    override fun decodeEnum(enumDescriptor: SerialDescriptor): Int = enumDescriptor.elementNames.indexOf(decodeString())
 }
 
 private const val READABLE_LINE_NUMBER = 1

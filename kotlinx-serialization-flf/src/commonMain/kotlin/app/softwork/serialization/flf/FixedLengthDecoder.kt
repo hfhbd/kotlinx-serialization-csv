@@ -4,10 +4,9 @@ import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 import kotlinx.serialization.modules.*
-import kotlin.math.*
 
 @ExperimentalSerializationApi
-internal class FixedLengthDecoder(
+public class FixedLengthDecoder(
     private val nextRow: () -> Unit,
     private val next: (Int) -> CharSequence,
     override val serializersModule: SerializersModule,
@@ -24,13 +23,13 @@ internal class FixedLengthDecoder(
         return if (trim) data.trim() else data
     }
 
-    override fun decodeElementIndex(descriptor: SerialDescriptor) =
+    override fun decodeElementIndex(descriptor: SerialDescriptor): Nothing =
         error("Never called, because decodeSequentially returns true")
 
-    override fun decodeFloatElement(descriptor: SerialDescriptor, index: Int) =
+    override fun decodeFloatElement(descriptor: SerialDescriptor, index: Int): Float =
         decode(descriptor.fixedLength(index)).toString().toFloat()
 
-    override fun decodeInlineElement(descriptor: SerialDescriptor, index: Int) =
+    override fun decodeInlineElement(descriptor: SerialDescriptor, index: Int): Decoder =
         decodeInline(descriptor.getElementDescriptor(index))
 
     override fun decodeIntElement(descriptor: SerialDescriptor, index: Int): Int {
@@ -67,7 +66,7 @@ internal class FixedLengthDecoder(
         }
     }
 
-    override fun decodeSequentially() = true
+    override fun decodeSequentially(): Boolean = true
 
     override fun <T> decodeSerializableElement(
         descriptor: SerialDescriptor,
@@ -112,7 +111,7 @@ internal class FixedLengthDecoder(
         return if (isNullabilitySupported || value.isNotBlank()) decodeSerializableValue(deserializer) else decodeNull()
     }
 
-    override fun decodeShortElement(descriptor: SerialDescriptor, index: Int) =
+    override fun decodeShortElement(descriptor: SerialDescriptor, index: Int): Short =
         decode(descriptor.fixedLength(index)).toString().toShort()
 
     override fun decodeStringElement(descriptor: SerialDescriptor, index: Int): String {
@@ -127,21 +126,21 @@ internal class FixedLengthDecoder(
         level -= 1
     }
 
-    override fun decodeBooleanElement(descriptor: SerialDescriptor, index: Int) =
+    override fun decodeBooleanElement(descriptor: SerialDescriptor, index: Int): Boolean =
         decode(descriptor.fixedLength(index)).toString().toBoolean()
 
-    override fun decodeByteElement(descriptor: SerialDescriptor, index: Int) =
+    override fun decodeByteElement(descriptor: SerialDescriptor, index: Int): Byte =
         decode(descriptor.fixedLength(index)).toString().toByte()
 
-    override fun decodeCharElement(descriptor: SerialDescriptor, index: Int) =
+    override fun decodeCharElement(descriptor: SerialDescriptor, index: Int): Char =
         decode(descriptor.fixedLength(index), trim = false).single()
 
-    override fun decodeCollectionSize(descriptor: SerialDescriptor) = when (level) {
+    override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = when (level) {
         0 -> size
         else -> currentLength ?: error("${descriptor.fixedLengthList} was not seen before this list: $descriptor")
     }
 
-    override fun decodeDoubleElement(descriptor: SerialDescriptor, index: Int) =
+    override fun decodeDoubleElement(descriptor: SerialDescriptor, index: Int): Double =
         decode(descriptor.fixedLength(index)).toString().toDouble()
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
@@ -170,7 +169,7 @@ internal class FixedLengthDecoder(
     }
 
     @ExperimentalSerializationApi
-    override fun decodeNotNullMark() =
+    override fun decodeNotNullMark(): Nothing =
         error("Never called, because decodeNullableSerializableValue is overridden.")
 
     @ExperimentalSerializationApi
