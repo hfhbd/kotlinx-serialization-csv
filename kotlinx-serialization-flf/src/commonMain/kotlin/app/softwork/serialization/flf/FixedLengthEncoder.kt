@@ -6,7 +6,7 @@ import kotlinx.serialization.encoding.*
 import kotlinx.serialization.modules.*
 
 @ExperimentalSerializationApi
-internal class FixedLengthEncoder(
+public class FixedLengthEncoder(
     private val builder: StringBuilder,
     override val serializersModule: SerializersModule,
     private val lineSeparator: String,
