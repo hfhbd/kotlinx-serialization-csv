@@ -4,34 +4,34 @@ import kotlinx.serialization.*
 import kotlinx.serialization.encoding.*
 
 internal interface FailingPrimitiveDecoder : Decoder {
-    override fun decodeBoolean() =
+    override fun decodeBoolean(): Nothing =
         error("Primitives are not supported due to missing length")
 
-    override fun decodeByte() =
+    override fun decodeByte(): Nothing =
         error("Primitives are not supported due to missing length")
 
-    override fun decodeChar() =
+    override fun decodeChar(): Nothing =
         error("Primitives are not supported due to missing length")
 
-    override fun decodeDouble() =
+    override fun decodeDouble(): Nothing =
         error("Primitives are not supported due to missing length")
 
-    override fun decodeFloat() =
+    override fun decodeFloat(): Nothing =
         error("Primitives are not supported due to missing length")
 
-    override fun decodeInt() =
+    override fun decodeInt(): Nothing =
         error("Primitives are not supported due to missing length")
 
-    override fun decodeLong() =
+    override fun decodeLong(): Nothing =
         error("Primitives are not supported due to missing length")
 
     @ExperimentalSerializationApi
-    override fun decodeNull() =
+    override fun decodeNull(): Nothing =
         error("Primitives are not supported due to missing length")
 
-    override fun decodeShort() =
+    override fun decodeShort(): Nothing =
         error("Primitives are not supported due to missing length")
 
-    override fun decodeString() =
+    override fun decodeString(): Nothing =
         error("Primitives are not supported due to missing length")
 }

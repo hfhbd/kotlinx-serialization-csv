@@ -7,6 +7,7 @@ import java.nio.charset.*
 import java.util.Spliterators.*
 import java.util.function.*
 import java.util.stream.*
+import kotlin.math.min
 import kotlin.streams.*
 
 @JvmOverloads
@@ -53,7 +54,7 @@ public fun <T> Readable.decode(
                             }
                         }
                         afterInit = true
-                    }, next = { length ->
+                    }, decodeElement = { length ->
                         val buffer = CharBuffer.allocate(length)
                         val got = read(buffer)
                         if (got != length) {
@@ -61,12 +62,12 @@ public fun <T> Readable.decode(
                         }
                         buffer.position(0)
                         buffer
-                    }, 
-                        serializersModule = format.serializersModule, 
+                    },
+                        serializersModule = format.serializersModule,
                         collectionSize = -1,
                         supportsSequentialDecoding = true,
-                        trim = format.trim,
-                        hasNext = { true }
+                        trimElement = format.trim,
+                        hasNextRow = { true }
                     )
                 )
             } catch (_: NoMoreDataException) {
@@ -112,14 +113,20 @@ public fun <T> Stream<String>.decodeStream(
             split.characteristics().and(NONNULL)
         ) {
             var currentRow: String? = null
+            var index = 0
             val decoder = FixedLengthDecoder(
-                {},
-                next = { currentRow!! },
+                nextRow = {
+                    index = 0
+                },
+                decodeElement = {
+                    val max = min(index + it, currentRow!!.length)
+                    currentRow!!.subSequence(index, max)
+                },
                 serializersModule = format.serializersModule,
                 collectionSize = exactSizeIfKnown.toIntOrMinusOne(),
                 supportsSequentialDecoding = true,
-                hasNext = { true },
-                trim = format.trim
+                hasNextRow = { true },
+                trimElement = format.trim
             )
 
             override fun tryAdvance(action: Consumer<in T>): Boolean {

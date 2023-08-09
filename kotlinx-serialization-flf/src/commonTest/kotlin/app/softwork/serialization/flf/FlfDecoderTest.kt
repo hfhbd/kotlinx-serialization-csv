@@ -49,9 +49,6 @@ class FlfDecoderTest {
             FixedLengthFormat.decodeFromCharSequence(NonSequentialDeserializer, flf)
         }
     }
-    
-    @Test
-    fun nullableEnd() {}
 
     @Test
     fun normal() {

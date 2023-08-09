@@ -41,27 +41,29 @@ public sealed class FixedLengthFormat(
 
     public fun <T> decodeFromCharSequence(deserializer: DeserializationStrategy<T>, charSequence: CharSequence): T =
         if (lineSeparator == "") {
-            deserializer.descriptor.checkIfList()
             deserializer.descriptor.checkForMaps()
+
             var index = 0
             deserializer.deserialize(
                 FixedLengthDecoder(
                     nextRow = {
                         // empty lineSeparator results into 1 row
                     },
-                    next = { length ->
+                    decodeElement = { length ->
                         val maxLength = min(index + length, charSequence.length)
                         val next = charSequence.subSequence(index, maxLength)
                         index += length
                         next
                     },
-                    hasNext = {
-                              true
+                    hasNextRow = { descriptor ->
+                        val minLength = descriptor.parseRecordMinLength(charSequence)
+                        val maxLength = min(index + minLength, charSequence.length)
+                        minLength <= maxLength
                     },
                     serializersModule = serializersModule,
                     collectionSize = -1,
                     supportsSequentialDecoding = false, // "" does not have a record delimiter, so the size of all records is unknown.
-                    trim = trim,
+                    trimElement = trim,
                 )
             )
         } else {
@@ -77,19 +79,19 @@ public sealed class FixedLengthFormat(
                         currentRow = data[currentRowIndex]
                         index = 0
                     },
-                    next = { length ->
+                    decodeElement = { length ->
                         val maxLength = min(index + length, currentRow!!.length)
                         val next = currentRow!!.substring(index, maxLength)
                         index += length
                         next
                     }, 
-                    hasNext = {
+                    hasNextRow = {
                       true // not called due supportsSequentialDecoding = true             
                     },
                     serializersModule = serializersModule,
                     collectionSize = data.size,
                     supportsSequentialDecoding = true,
-                    trim = trim,
+                    trimElement = trim,
                 )
             )
         }
@@ -113,17 +115,17 @@ public sealed class FixedLengthFormat(
                     currentRow = iterator.next()
                     index = 0
                 },
-                next = { length ->
+                decodeElement = { length ->
                     val maxLength = min(index + length, currentRow!!.length)
                     val next = currentRow!!.subSequence(index, maxLength)
                     index += length
                     next
                 },
-                hasNext = { true },
+                hasNextRow = { true },
                 serializersModule = serializersModule,
                 collectionSize = -1,
                 supportsSequentialDecoding = true,
-                trim = trim,
+                trimElement = trim,
             )
             while (iterator.hasNext()) {
                 yield(deserializer.deserialize(decoder))

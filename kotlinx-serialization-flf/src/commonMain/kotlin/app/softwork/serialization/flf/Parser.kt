@@ -1,6 +1,5 @@
 package app.softwork.serialization.flf
 
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.descriptors.*
 import kotlin.jvm.JvmInline
@@ -8,39 +7,58 @@ import kotlin.math.absoluteValue
 import kotlin.math.min
 
 @ExperimentalSerializationApi
-internal fun <T> DeserializationStrategy<T>.parseRecordMinLength(value: CharSequence): Int {
-    require(descriptor.kind == StructureKind.CLASS) {
-        "Parsing requires a top level class, but was ${descriptor.kind}."
+public fun SerialDescriptor.parseRecordMinLength(value: CharSequence): Int {
+    require(kind == StructureKind.CLASS) {
+        "Parsing requires a top level class, but was ${kind}."
     }
-    val record = descriptor.parseRecord(value, startIndex = 0)
-    
+    val record = parseRecord(value, startIndex = 0)
+    return record.minLength()
+}
+
+private fun Record.minLength(): Int {
     var minLength = 0
     var gotNonNull = false
-    for (element in record.elements.reversed()) {
+    for (element in elements.reversed()) {
         when (element) {
-            is IntPrimitive -> TODO()
-            is Primitive -> {
-                val length = element.length
-                if (gotNonNull || length >= 0) {
-                    minLength += element.length
+            is IntPrimitive -> {
+                if (element.length < 0) {
+                    gotNonNull = true
+                }
+                if (gotNonNull) {
+                    minLength += element.length.absoluteValue
                 }
             }
-            is InnerList -> TODO()
-            
-            is Record -> TODO()
+            is Primitive -> {
+                if (element.length < 0) {
+                    gotNonNull = true
+                }
+                if (gotNonNull) {
+                    minLength += element.length.absoluteValue
+                }
+            }
+            is InnerList -> {
+                minLength += element.length
+            }
+
+            is Record -> {
+                val recordLength = element.minLength()
+                if (recordLength < 0) {
+                    gotNonNull = true
+                }
+                if (gotNonNull) {
+                    minLength += recordLength.absoluteValue
+                }
+            }
             is SealedDiscriminator -> {
                 require(element.length > 0)
                 minLength += element.length
+                gotNonNull = true
             }
         }
         minLength += element.length
     }
-    
-    return minLength
-}
 
-private fun Element.minLength(): Int {
-    
+    return minLength
 }
 
 @ExperimentalSerializationApi
@@ -59,7 +77,7 @@ private sealed interface Element {
 
 @JvmInline
 private value class Record(
-    val elements: Array<Element>
+    val elements: List<Element>
 ) : Element {
     override val length: Nothing
         get() = error("Not supported")
@@ -84,16 +102,17 @@ private value class InnerList(override val length: Int) : Element
 private fun SerialDescriptor.parseElements(
     value: CharSequence,
     startIndex: Int
-): Array<Element> = buildList {
+): List<Element> = buildList {
     var index = startIndex
     for ((elementIndex, elementDescriptor) in elementDescriptors.withIndex()) {
-        val element = elementDescriptor.parse(value, index) { counterSerialName, serialName ->
+        val elementAnnotations = getElementAnnotations(elementIndex)
+        val element = elementDescriptor.parse(elementAnnotations, value, index) { counterSerialName, serialName ->
             resolveReference(counterSerialName, serialName, elementIndex) { get(it) }
         }
         index += element.length.absoluteValue
         add(element)
     }
-}.toTypedArray()
+}
 
 @ExperimentalSerializationApi
 private fun SerialDescriptor.resolveReference(
@@ -112,6 +131,7 @@ private fun SerialDescriptor.resolveReference(
 
 @ExperimentalSerializationApi
 private fun SerialDescriptor.parse(
+    elementAnnotations: Iterable<Annotation>,
     value: CharSequence,
     startIndex: Int,
     resolve: (String, String) -> Element
@@ -121,7 +141,7 @@ private fun SerialDescriptor.parse(
         StructureKind.CLASS -> return parseRecord(value, startIndex)
 
         is PrimitiveKind -> {
-            for (anno in annotations) {
+            for (anno in elementAnnotations) {
                 if (anno is FixedLength) {
                     val length = if (isNullable) {
                         anno.length * -1
@@ -151,13 +171,14 @@ private fun SerialDescriptor.parse(
                     val elementDescriptor = elementDescriptors.single()
 
                     val element = elementDescriptor.parse(
+                        elementAnnotations = getElementAnnotations(0),
                         value = value,
                         startIndex = startIndex + length,
                         resolve = resolve
                     )
 
                     return Record(
-                        elements = arrayOf(
+                        elements = listOf(
                             SealedDiscriminator(length),
                             element
                         )
@@ -175,12 +196,16 @@ private fun SerialDescriptor.parse(
                         "$counter needs to be a Int."
                     }
                     val elementDescriptor = elementDescriptors.single()
+                    require(!elementDescriptor.isNullable) {
+                        "Inner lists can't have nullable types."
+                    }
                     require(elementDescriptor.kind != SerialKind.CONTEXTUAL) {
                         "Inner lists requires the same kind or a sealed class, but was ${elementDescriptor.kind}"
                     }
                     var length = 0
                     repeat(counter.value) {
                         val element = elementDescriptor.parse(
+                            elementAnnotations = getElementAnnotations(0),
                             value = value,
                             startIndex = startIndex + length,
                             resolve = resolve
