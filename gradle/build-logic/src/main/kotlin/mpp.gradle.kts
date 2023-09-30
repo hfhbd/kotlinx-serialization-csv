@@ -28,7 +28,7 @@ extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtensio
     iosX64()
 
     // tier 2
-    // no kotlinx.datetime support linuxArm64()
+    linuxArm64()
     watchosSimulatorArm64()
     watchosX64()
     watchosArm32()
@@ -44,5 +44,5 @@ extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtensio
     // no kotlinx.datetime support androidNativeX86()
     // no kotlinx.datetime support androidNativeX64()
     mingwX64()
-    // no kotlinx.datetime support watchosDeviceArm64()
+    watchosDeviceArm64()
 }
