@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.9.21"
-serialization = "1.6.1"
+serialization = "1.6.2"
 
 [libraries]
 serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
