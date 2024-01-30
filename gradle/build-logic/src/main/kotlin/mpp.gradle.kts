@@ -1,6 +1,8 @@
-apply(plugin = "org.jetbrains.kotlin.multiplatform")
+plugins {
+    kotlin("multiplatform")
+}
 
-extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>("kotlin") {
+kotlin {
     jvmToolchain(8)
     explicitApi()
     targets.configureEach {
@@ -19,6 +21,9 @@ extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtensio
         browser()
         nodejs()
     }
+
+    wasmJs()
+   // no kotlinx.datetime support wasmWasi()
 
     // tier 1
     linuxX64()
