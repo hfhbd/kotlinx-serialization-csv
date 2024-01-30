@@ -23,7 +23,7 @@ jobs:
       - uses: actions/configure-pages@v4
       - uses: actions/checkout@v4
       - uses: gradle/wrapper-validation-action@v1
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/actions/setup-gradle@v3
       - name: Generate Docs
         run: ./gradlew dokkaHtmlMultiModule
       - name: Upload Docs
@@ -32,4 +32,4 @@ jobs:
           path: build/dokka/htmlMultiModule
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@main
+        uses: actions/deploy-pages@v2
