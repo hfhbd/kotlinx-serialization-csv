@@ -22,6 +22,22 @@ class CsvDecoderTest {
     }
 
     @Test
+    fun ignoreEmptyLines() {
+        val csv = """
+            bar
+            42
+            
+            
+            
+        """.trimIndent()
+
+        assertEquals(
+            expected = Foo(bar = 42),
+            actual = CSVFormat.decodeFromString(Foo.serializer(), csv)
+        )
+    }
+
+    @Test
     fun named() {
         val csv = """
             foo

@@ -36,7 +36,7 @@ public sealed class CSVFormat(
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
         deserializer.descriptor.checkForLists()
         val lines = string.split(lineSeparator)
-        val data = lines.drop(1).map { it.split(separator) }
+        val data = lines.drop(1).dropLastWhile { it.isEmpty() }.map { it.split(separator) }
         return deserializer.deserialize(
             decoder = CSVDecoder(
                 data = data,
