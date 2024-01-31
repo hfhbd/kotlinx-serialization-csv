@@ -22,8 +22,8 @@ kotlin {
         nodejs()
     }
 
-    wasmJs()
-   // no kotlinx.datetime support wasmWasi()
+    // publishing error wasmJs()
+    // no kotlinx.datetime support wasmWasi()
 
     // tier 1
     linuxX64()
