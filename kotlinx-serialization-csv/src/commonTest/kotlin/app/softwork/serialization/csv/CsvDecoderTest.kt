@@ -64,6 +64,19 @@ class CsvDecoderTest {
     }
 
     @Test
+    fun nullableSecondWithoutComma() {
+        val csv = """
+            bar,baz
+            42
+        """.trimIndent()
+
+        assertEquals(
+            expected = FooNull(bar = 42, baz = null),
+            actual = CSVFormat.decodeFromString(FooNull.serializer(), csv)
+        )
+    }
+
+    @Test
     fun nullableFirst() {
         val csv = """
             baz,bar

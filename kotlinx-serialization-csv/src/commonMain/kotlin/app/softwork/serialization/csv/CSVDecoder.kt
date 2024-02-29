@@ -22,7 +22,10 @@ public class CSVDecoder(
         return this
     }
 
-    override fun decodeNotNullMark(): Boolean = data[currentRow][index] != ""
+    override fun decodeNotNullMark(): Boolean {
+        val value = data[currentRow].getOrNull(index)
+        return value != null && value != ""
+    }
 
     override fun endStructure(descriptor: SerialDescriptor) {
         level -= 1
