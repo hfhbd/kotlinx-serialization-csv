@@ -13,14 +13,13 @@ jobs:
   build:
     runs-on: macos-14
     permissions:
-      contents: write
+      contents: read
       security-events: write
 
     steps:
       - uses: actions/checkout@v4
       - uses: gradle/actions/setup-gradle@v3
         with:
-          dependency-graph: generate-and-submit
           gradle-home-cache-cleanup: true
       - name: Build with Gradle
         run: ./gradlew build
