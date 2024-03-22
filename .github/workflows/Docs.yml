@@ -20,9 +20,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - uses: actions/configure-pages@v4
       - uses: actions/checkout@v4
-      - uses: gradle/wrapper-validation-action@v2
+      - uses: actions/configure-pages@v4
       - uses: gradle/actions/setup-gradle@v3
       - name: Generate Docs
         run: ./gradlew dokkaHtmlMultiModule --no-configuration-cache
