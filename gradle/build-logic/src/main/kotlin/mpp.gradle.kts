@@ -44,10 +44,10 @@ kotlin {
     iosArm64()
 
     // tier 3
-    // no kotlinx.datetime support androidNativeArm32()
-    // no kotlinx.datetime support androidNativeArm64()
-    // no kotlinx.datetime support androidNativeX86()
-    // no kotlinx.datetime support androidNativeX64()
+    androidNativeArm32()
+    androidNativeArm64()
+    androidNativeX86()
+    androidNativeX64()
     mingwX64()
     watchosDeviceArm64()
 }
