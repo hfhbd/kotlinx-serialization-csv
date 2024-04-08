@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@v321
       - name: Generate Docs
         run: ./gradlew dokkaHtmlMultiModule --no-configuration-cache
       - name: Upload Docs
