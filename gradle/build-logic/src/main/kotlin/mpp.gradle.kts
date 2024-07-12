@@ -5,12 +5,8 @@ plugins {
 kotlin {
     jvmToolchain(8)
     explicitApi()
-    targets.configureEach {
-        compilations.configureEach {
-            compilerOptions.configure {
-                allWarningsAsErrors.set(true)
-            }
-        }
+    compilerOptions {
+        allWarningsAsErrors.set(true)
     }
     sourceSets.configureEach {
         languageSettings.progressiveMode = true
