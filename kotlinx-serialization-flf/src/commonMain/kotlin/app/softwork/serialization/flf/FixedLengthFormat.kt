@@ -24,6 +24,13 @@ public sealed class FixedLengthFormat(
         fillLeadingZeros: Boolean
     ) : FixedLengthFormat(serializersModule, lineSeparator, trim, fillLeadingZeros)
 
+    public data object MemoryFormat: FixedLengthFormat(
+        serializersModule = EmptySerializersModule(),
+        lineSeparator = "",
+        trim = true,
+        fillLeadingZeros = true
+    )
+
     public companion object Default : FixedLengthFormat(
         serializersModule = EmptySerializersModule(),
         lineSeparator = "\n",
