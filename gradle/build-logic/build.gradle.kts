@@ -9,7 +9,6 @@ dependencies {
     implementation(libs.plugins.publish.toDep())
     implementation(libs.plugins.binary.toDep())
     implementation(libs.plugins.dokka.toDep())
-    implementation(libs.plugins.kover.toDep())
     implementation(libs.plugins.detekt.toDep())
 }
 
