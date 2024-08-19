@@ -8,21 +8,21 @@ import kotlinx.serialization.modules.*
 @ExperimentalSerializationApi
 public class CSVEncoder internal constructor(
     private val builder: StringBuilder,
-    private val separator: String,
-    private val lineSeparator: String,
-    private val alwaysEmitQuotes: Boolean,
-    private val numberFormat: CSVFormat.NumberFormat,
-    override val serializersModule: SerializersModule
+    public val configuration: CSVConfiguration,
 ) : AbstractEncoder() {
+    override val serializersModule: SerializersModule
+        get() = configuration.serializersModule
+
     private var afterFirst = false
     private var level = 0
 
     override fun encodeValue(value: Any) {
         if (afterFirst) {
-            builder.append(separator)
+            builder.append(configuration.separator)
         }
         val valueToAppend = value.toString()
-        val quote = alwaysEmitQuotes || separator in valueToAppend || lineSeparator in valueToAppend
+        val quote =
+            configuration.alwaysEmitQuotes || configuration.separator in valueToAppend || configuration.lineSeparator in valueToAppend
         if (quote) {
             builder.append('"')
         }
@@ -42,7 +42,7 @@ public class CSVEncoder internal constructor(
     }
 
     private fun encodeNumber(value: Number) {
-        when (numberFormat) {
+        when (configuration.numberFormat) {
             CSVFormat.NumberFormat.Dot -> encodeValue(value)
             CSVFormat.NumberFormat.Comma -> encodeValue(value.toString().replace(".", ","))
         }
@@ -50,7 +50,7 @@ public class CSVEncoder internal constructor(
 
     override fun encodeNull() {
         if (afterFirst) {
-            builder.append(separator)
+            builder.append(configuration.separator)
         }
         afterFirst = true
     }
@@ -58,7 +58,7 @@ public class CSVEncoder internal constructor(
     override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
         if (level == 0) {
             if (builder.isNotEmpty()) {
-                builder.append(lineSeparator)
+                builder.append(configuration.lineSeparator)
             }
             afterFirst = false
         }
@@ -74,7 +74,7 @@ public class CSVEncoder internal constructor(
 
     override fun encodeInline(descriptor: SerialDescriptor): Encoder {
         if (level == 0) {
-            builder.append(lineSeparator)
+            builder.append(configuration.lineSeparator)
             afterFirst = false
         }
         return this

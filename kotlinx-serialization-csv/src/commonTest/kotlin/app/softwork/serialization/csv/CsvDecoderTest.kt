@@ -179,6 +179,14 @@ class CsvDecoderTest {
     }
 
     @Test
+    fun parseEnumTest() {
+        val csv = """
+            baz,foo
+            ,One
+        """.trimIndent()
+    }
+
+    @Test
     fun inlineTest() {
         val csv = """
             foo
@@ -210,10 +218,10 @@ class CsvDecoderTest {
 
         assertEquals(
             expected = FooInline(42.42),
-            actual = CSVFormat(
-                numberFormat = CSVFormat.NumberFormat.Comma,
+            actual = CSVFormat {
+                numberFormat = CSVFormat.NumberFormat.Comma
                 separator = ";"
-            ).decodeFromString(FooInline.serializer(), csv2)
+            }.decodeFromString(FooInline.serializer(), csv2)
         )
     }
 
@@ -281,10 +289,10 @@ class CsvDecoderTest {
 
         assertEquals(
             expected = listOf(FooNull(bar = 42, baz = null)),
-            actual = CSVFormat(
-                separator = ";",
+            actual = CSVFormat {
+                separator = ";"
                 lineSeparator = "\r\n"
-            ).decodeFromString(ListSerializer(FooNull.serializer()), csv)
+            }.decodeFromString(ListSerializer(FooNull.serializer()), csv)
         )
     }
 
@@ -297,7 +305,7 @@ class CsvDecoderTest {
                 Sealed.Foo("some String"),
                 Sealed.Bar(42),
             ),
-            actual = CSVFormat(includeHeader = false).decodeFromString(ListSerializer(Sealed.serializer()), csv)
+            actual = CSVFormat { includeHeader = false }.decodeFromString(ListSerializer(Sealed.serializer()), csv)
         )
     }
 }

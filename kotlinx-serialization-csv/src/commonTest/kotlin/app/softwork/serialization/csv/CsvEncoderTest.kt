@@ -193,7 +193,10 @@ class CsvEncoderTest {
 
     @Test
     fun custom() {
-        val csv = CSVFormat(separator = ";", lineSeparator = "\r\n").encodeToString(
+        val csv = CSVFormat {
+            separator = ";"
+            lineSeparator = "\r\n"
+        }.encodeToString(
             FooNull.serializer(),
             FooNull(bar = 42, baz = null)
         )
@@ -206,11 +209,11 @@ class CsvEncoderTest {
 
     @Test
     fun numberFormatTest() {
-        val csv = CSVFormat(
-            separator = ";",
-            lineSeparator = "\r\n",
+        val csv = CSVFormat {
+            separator = ";"
+            lineSeparator = "\r\n"
             numberFormat = CSVFormat.NumberFormat.Comma
-        ).encodeToString(
+        }.encodeToString(
             serializer = ListSerializer(FooComplex.serializer()),
             value = List(size = 3) {
                 FooComplex(
@@ -237,11 +240,11 @@ class CsvEncoderTest {
 
     @Test
     fun customList() {
-        val csv = CSVFormat(
-            separator = ";",
-            lineSeparator = "\r\n",
-            includeHeader = false,
-        ).encodeToString(
+        val csv = CSVFormat {
+            separator = ";"
+            lineSeparator = "\r\n"
+            includeHeader = false
+        }.encodeToString(
             ListSerializer(Sealed.serializer()),
             listOf(
                 Sealed.Foo("Hello ;from\r\nWorld"),
@@ -257,10 +260,10 @@ class CsvEncoderTest {
 
     @Test
     fun alwaysQuote() {
-        val csv = CSVFormat(
-            alwaysEmitQuotes = true,
-            includeHeader = false,
-        ).encodeToString(
+        val csv = CSVFormat {
+            alwaysEmitQuotes = true
+            includeHeader = false
+        }.encodeToString(
             ListSerializer(Sealed.serializer()),
             listOf(Sealed.Foo("Hello from\nWorld"), Sealed.Bar(42))
         )
