@@ -194,7 +194,7 @@ class CsvEncoderTest {
     @Test
     fun custom() {
         val csv = CSVFormat {
-            separator = ";"
+            separator = ';'
             lineSeparator = "\r\n"
         }.encodeToString(
             FooNull.serializer(),
@@ -210,7 +210,7 @@ class CsvEncoderTest {
     @Test
     fun numberFormatTest() {
         val csv = CSVFormat {
-            separator = ";"
+            separator = ';'
             lineSeparator = "\r\n"
             numberFormat = CSVFormat.NumberFormat.Comma
         }.encodeToString(
@@ -241,7 +241,7 @@ class CsvEncoderTest {
     @Test
     fun customList() {
         val csv = CSVFormat {
-            separator = ";"
+            separator = ';'
             lineSeparator = "\r\n"
             includeHeader = false
         }.encodeToString(

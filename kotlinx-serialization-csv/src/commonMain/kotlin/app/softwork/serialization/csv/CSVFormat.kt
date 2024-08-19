@@ -2,6 +2,8 @@ package app.softwork.serialization.csv
 
 import app.softwork.serialization.csv.CSVFormat.NumberFormat
 import kotlinx.serialization.*
+import kotlinx.serialization.descriptors.SerialKind
+import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.modules.*
 import kotlin.native.concurrent.ThreadLocal
 
@@ -29,15 +31,32 @@ public sealed class CSVFormat(public val configuration: CSVConfiguration) : Stri
 
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
         deserializer.descriptor.checkForLists()
-        val lines = string.split(configuration.lineSeparator)
-        val data = lines.drop(if (configuration.includeHeader) 1 else 0).dropLastWhile { it.isEmpty() }
-            .map { it.split(configuration.separator) }
-        return deserializer.deserialize(
-            decoder = CSVDecoderImpl(
-                data = data,
-                configuration = configuration,
+        val parsed = string.parse(configuration.separator, configuration.lineSeparator)
+
+        return if (configuration.includeHeader) {
+            val headers = parsed.getHeader()
+            val isSequentially = headers.isSequentially(deserializer.descriptor)
+            deserializer.deserialize(
+                decoder = CSVDecoderImpl(
+                    header = headers,
+                    nodes = parsed,
+                    configuration = configuration,
+                    decodesSequentially = isSequentially,
+                    level = if (deserializer.descriptor.kind is StructureKind.LIST) -1 else 0,
+                )
             )
-        )
+        } else {
+            val decodesSequentially = deserializer.descriptor.kind !is StructureKind.LIST
+            deserializer.deserialize(
+                decoder = CSVDecoderImpl(
+                    header = emptyList(),
+                    nodes = parsed,
+                    configuration = configuration,
+                    decodesSequentially = decodesSequentially,
+                    level = if (deserializer.descriptor.kind is StructureKind.LIST) -1 else 0,
+                )
+            )
+        }
     }
 
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String = buildString {
@@ -62,7 +81,7 @@ public sealed class CSVFormat(public val configuration: CSVConfiguration) : Stri
 
 @OptIn(ExperimentalSerializationApi::class)
 public class CSVConfiguration internal constructor(
-    public val separator: String,
+    public val separator: Char,
     public val lineSeparator: String,
     public val includeHeader: Boolean,
     public val alwaysEmitQuotes: Boolean,
@@ -71,7 +90,7 @@ public class CSVConfiguration internal constructor(
 ) {
     internal companion object {
         internal val default: CSVConfiguration = CSVConfiguration(
-            separator = ",",
+            separator = ',',
             lineSeparator = "\n",
             includeHeader = true,
             alwaysEmitQuotes = false,
@@ -81,7 +100,7 @@ public class CSVConfiguration internal constructor(
     }
 
     public class Builder {
-        public var separator: String = default.separator
+        public var separator: Char = default.separator
         public var lineSeparator: String = default.lineSeparator
         public var includeHeader: Boolean = default.includeHeader
         public var alwaysEmitQuotes: Boolean = default.alwaysEmitQuotes

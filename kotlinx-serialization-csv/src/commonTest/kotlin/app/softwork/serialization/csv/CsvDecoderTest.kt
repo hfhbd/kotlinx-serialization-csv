@@ -1,5 +1,7 @@
 package app.softwork.serialization.csv
 
+import app.softwork.serialization.csv.CSVNode.Element
+import app.softwork.serialization.csv.CSVNode.NewLine
 import kotlinx.datetime.*
 import kotlinx.serialization.*
 import kotlinx.serialization.builtins.*
@@ -58,6 +60,17 @@ class CsvDecoderTest {
         """.trimIndent()
 
         assertEquals(
+            listOf(
+                Element("bar"),
+                Element("baz"),
+                NewLine,
+
+                Element("42"),
+            ),
+            csv.parse().asSequence().toList()
+        )
+
+        assertEquals(
             expected = FooNull(bar = 42, baz = null),
             actual = CSVFormat.decodeFromString(FooNull.serializer(), csv)
         )
@@ -97,6 +110,21 @@ class CsvDecoderTest {
         """.trimIndent()
 
         assertEquals(
+            listOf(
+                Element("baz"),
+                Element("baz"),
+                Element("bar"),
+                Element("foo"),
+                NewLine,
+                Element("42"),
+                Element(""),
+                Element("43"),
+                Element("1"),
+            ),
+            csv.parse(',', "\n").asSequence().toList()
+        )
+
+        assertEquals(
             expected = listOf(
                 FooNested(
                     baz = 42,
@@ -105,6 +133,38 @@ class CsvDecoderTest {
                 )
             ),
             actual = CSVFormat.decodeFromString(ListSerializer(FooNested.serializer()), csv)
+        )
+    }
+
+    @Test
+    fun unordered() {
+        val csv = """
+            foo,bar,value
+            1,42,value
+        """.trimIndent()
+
+        assertEquals(
+            listOf(
+                Element("foo"),
+                Element("bar"),
+                Element("value"),
+                NewLine,
+                Element("1"),
+                Element("42"),
+                Element("value"),
+            ),
+            csv.parse(',', "\n").asSequence().toList()
+        )
+
+        assertEquals(
+            expected = listOf(
+                FooString(
+                    bar = 42,
+                    value = "value",
+                    foo = 1
+                )
+            ),
+            actual = CSVFormat.decodeFromString(ListSerializer(FooString.serializer()), csv)
         )
     }
 
@@ -184,6 +244,17 @@ class CsvDecoderTest {
             baz,foo
             ,One
         """.trimIndent()
+
+        assertEquals(
+            expected = listOf(
+                Element("baz"),
+                Element("foo"),
+                NewLine,
+                Element(""),
+                Element("One"),
+            ),
+            actual = csv.parse(separator = ',', lineSeparator = "\n").asSequence().toList(),
+        )
     }
 
     @Test
@@ -220,7 +291,7 @@ class CsvDecoderTest {
             expected = FooInline(42.42),
             actual = CSVFormat {
                 numberFormat = CSVFormat.NumberFormat.Comma
-                separator = ";"
+                separator = ';'
             }.decodeFromString(FooInline.serializer(), csv2)
         )
     }
@@ -249,22 +320,67 @@ class CsvDecoderTest {
 
     @Test
     fun moreAttributesTest() {
+        //language=csv
         val csv = """
-            bar,foo,enum,instant,a
-            ,42,Three,1970-01-01T00:00:00Z,a
-            Something,42,Three,1970-01-01T00:00:01Z,a
-            ,42,Three,1970-01-01T00:00:02Z,a
+            bar,foo,enum,instant,more
+            ,42,One,1970-01-01T00:00:00Z,more
+            Something,42,Two,1970-01-01T00:00:01Z,more
+            ,42,Three,1970-01-01T00:00:02Z,more
         """.trimIndent()
 
         assertEquals(
-            expected = List(3) {
+            listOf(
+                Element(value = "bar"),
+                Element(value = "foo"),
+                Element(value = "enum"),
+                Element(value = "instant"),
+                Element(value = "more"),
+                NewLine,
+
+                Element(value = ""),
+                Element(value = "42"),
+                Element(value = "One"),
+                Element(value = "1970-01-01T00:00:00Z"),
+                Element(value = "more"),
+                NewLine,
+
+                Element(value = "Something"),
+                Element(value = "42"),
+                Element(value = "Two"),
+                Element(value = "1970-01-01T00:00:01Z"),
+                Element(value = "more"),
+                NewLine,
+
+                Element(value = ""),
+                Element(value = "42"),
+                Element(value = "Three"),
+                Element(value = "1970-01-01T00:00:02Z"),
+                Element(value = "more")
+            ),
+            csv.parse().asSequence().toList()
+        )
+
+        assertEquals(
+            expected = listOf(
                 FooComplex(
-                    bar = if (it == 1) "Something" else null,
+                    bar = null,
+                    inline = FooInline(42.0),
+                    enum = FooEnum.A.One,
+                    instant = Instant.fromEpochSeconds(0)
+                ),
+                FooComplex(
+                    bar = "Something",
+                    inline = FooInline(42.0),
+                    enum = FooEnum.A.Two,
+                    instant = Instant.fromEpochSeconds(1)
+                ),
+                FooComplex(
+                    bar = null,
                     inline = FooInline(42.0),
                     enum = FooEnum.A.Three,
-                    instant = Instant.fromEpochSeconds(it.toLong())
+                    instant = Instant.fromEpochSeconds(2)
                 )
-            },
+            ),
             actual = CSVFormat.decodeFromString(ListSerializer(FooComplex.serializer()), csv)
         )
     }
@@ -286,15 +402,166 @@ class CsvDecoderTest {
 
     @Test
     fun custom() {
-        val csv = "bar;baz\r\n42;"
+        val csv = "bar;baz\r\n42;\r\n"
+
+        assertEquals(
+            listOf(
+                Element("bar"),
+                Element("baz"),
+                NewLine,
+                Element("42"),
+                Element(""),
+                NewLine,
+            ),
+            csv.parse(';', "\r\n").asSequence().toList()
+        )
 
         assertEquals(
             expected = listOf(FooNull(bar = 42, baz = null)),
             actual = CSVFormat {
-                separator = ";"
+                separator = ';'
                 lineSeparator = "\r\n"
             }.decodeFromString(ListSerializer(FooNull.serializer()), csv)
         )
+    }
+
+    @Test
+    fun quotesWithSealedClassWithoutHeaders() {
+        // language=csv
+        val csv =
+            "\"bar\";\"42\"\r\n\"foo\";\"Some long\r\nvalue with\nnewline\"\r\n\"bar\";\"1\""
+
+        assertEquals(
+            listOf(
+                Element(value = "bar"),
+                Element(value = "42"),
+                NewLine,
+
+                Element(value = "foo"),
+                Element(value = "Some long\r\nvalue with\nnewline"),
+                NewLine,
+
+                Element(value = "bar"),
+                Element(value = "1")
+            ),
+            csv.parse(';', "\r\n").asSequence().toList()
+        )
+
+        assertEquals(
+            expected = listOf(Sealed.Bar(42), Sealed.Foo("Some long\r\nvalue with\nnewline"), Sealed.Bar(1)),
+            actual = CSVFormat {
+                separator = ';'
+                lineSeparator = "\r\n"
+                includeHeader = false
+            }.decodeFromString(ListSerializer(Sealed.serializer()), csv)
+        )
+    }
+
+    @Test
+    fun simpleQuotes() {
+        // language=csv
+        val csv = "\"bar\"\n\"42\"\n11"
+
+        assertEquals(
+            listOf(
+                Element(value = "bar"),
+                NewLine,
+                Element(value = "42"),
+                NewLine,
+                Element(value = "11"),
+            ),
+            csv.parse().asSequence().toList()
+        )
+
+        assertEquals(
+            expected = listOf(
+                Foo(42),
+                Foo(11),
+            ),
+            actual = CSVFormat.decodeFromString(
+                ListSerializer(
+                    Foo.serializer(),
+                ), csv
+            )
+        )
+    }
+
+    @Test
+    fun simpleQuotesWithNewLine() {
+        // language=csv
+        val csv = "\"bar\",value,\"foo\"\n\"42\",\"asf\nsadfh\n\",\"42\"\n11,asdf,1\n"
+
+        assertEquals(
+            listOf(
+                Element(value = "bar"),
+                Element(value = "value"),
+                Element(value = "foo"),
+                NewLine,
+                Element(value = "42"),
+                Element(value = "asf\nsadfh\n"),
+                Element(value = "42"),
+                NewLine,
+                Element(value = "11"),
+                Element(value = "asdf"),
+                Element(value = "1"),
+                NewLine,
+            ),
+            csv.parse().asSequence().toList()
+        )
+
+        assertEquals(
+            expected = listOf(
+                FooString(42, "asf\nsadfh\n", 42),
+                FooString(11, "asdf", 1),
+            ),
+            actual = CSVFormat.decodeFromString(
+                ListSerializer(
+                    FooString.serializer(),
+                ), csv
+            )
+        )
+    }
+
+    @Test
+    fun doubleQuotes() {
+        // language=csv
+        val csv = "\"bar\",value,\"foo\"\n\"42\",\"ff\"\"f\na\",\"42\"\n"
+
+        assertEquals(
+            listOf(
+                Element(value = "bar"),
+                Element(value = "value"),
+                Element(value = "foo"),
+                NewLine,
+                Element(value = "42"),
+                Element(value = "ff\"f\na"),
+                Element(value = "42"),
+                NewLine,
+            ),
+            csv.parse().asSequence().toList()
+        )
+
+        assertEquals(
+            expected = listOf(
+                FooString(42, "ff\"f\na", 42),
+            ),
+            actual = CSVFormat.decodeFromString(
+                ListSerializer(
+                    FooString.serializer(),
+                ), csv
+            )
+        )
+    }
+
+    @Test
+    fun quotesFails() {
+        // language=csv
+        val csv = "\"bar\",value,\"foo\"\n\"42\",\"asf\nsadfh\n,\"42\"\n11,asdf,1\n"
+
+        val exception = assertFailsWith<SerializationException> {
+            csv.parse().asSequence().count()
+        }
+        assertEquals("Missing end of quotes at 49", exception.message)
     }
 
     @Test

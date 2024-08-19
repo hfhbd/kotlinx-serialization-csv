@@ -8,6 +8,9 @@ import kotlin.jvm.*
 data class Foo(val bar: Int)
 
 @Serializable
+data class FooString(val bar: Int, val value: String, val foo: Int)
+
+@Serializable
 data class FooNamed(@SerialName("foo") val bar: Int)
 
 @Serializable
