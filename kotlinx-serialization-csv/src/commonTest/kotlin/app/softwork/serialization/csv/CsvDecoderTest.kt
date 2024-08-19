@@ -93,16 +93,18 @@ class CsvDecoderTest {
     fun nested() {
         val csv = """
             baz,baz,bar,foo
-            42,,42,1
+            42,,43,1
         """.trimIndent()
 
         assertEquals(
-            expected = FooNested(
-                baz = 42,
-                child = FooNullFirst(baz = null, bar = 42),
-                foo = 1
+            expected = listOf(
+                FooNested(
+                    baz = 42,
+                    child = FooNullFirst(baz = null, bar = 43),
+                    foo = 1
+                )
             ),
-            actual = CSVFormat.decodeFromString(FooNested.serializer(), csv)
+            actual = CSVFormat.decodeFromString(ListSerializer(FooNested.serializer()), csv)
         )
     }
 
@@ -184,8 +186,34 @@ class CsvDecoderTest {
         """.trimIndent()
 
         assertEquals(
-            expected = FooInline(42),
+            expected = FooInline(42.0),
             actual = CSVFormat.decodeFromString(FooInline.serializer(), csv)
+        )
+    }
+
+    @Test
+    fun numberFormatTest() {
+        val csv = """
+            foo
+            42.42
+        """.trimIndent()
+
+        assertEquals(
+            expected = FooInline(42.42),
+            actual = CSVFormat.decodeFromString(FooInline.serializer(), csv)
+        )
+
+        val csv2 = """
+            foo
+            42,42
+        """.trimIndent()
+
+        assertEquals(
+            expected = FooInline(42.42),
+            actual = CSVFormat(
+                numberFormat = CSVFormat.NumberFormat.Comma,
+                separator = ";"
+            ).decodeFromString(FooInline.serializer(), csv2)
         )
     }
 
@@ -202,7 +230,7 @@ class CsvDecoderTest {
             expected = List(3) {
                 FooComplex(
                     bar = if (it == 1) "Something" else null,
-                    inline = FooInline(42),
+                    inline = FooInline(42.0),
                     enum = FooEnum.A.Three,
                     instant = Instant.fromEpochSeconds(it.toLong())
                 )
@@ -224,7 +252,7 @@ class CsvDecoderTest {
             expected = List(3) {
                 FooComplex(
                     bar = if (it == 1) "Something" else null,
-                    inline = FooInline(42),
+                    inline = FooInline(42.0),
                     enum = FooEnum.A.Three,
                     instant = Instant.fromEpochSeconds(it.toLong())
                 )
@@ -242,7 +270,7 @@ class CsvDecoderTest {
             ,42,Three
         """.trimIndent()
 
-        assertFailsWith<IllegalStateException> {
+        assertFailsWith<SerializationException> {
             CSVFormat.decodeFromString(ListSerializer(FooComplex.serializer()), csv)
         }
     }
@@ -252,8 +280,24 @@ class CsvDecoderTest {
         val csv = "bar;baz\r\n42;"
 
         assertEquals(
-            expected = FooNull(bar = 42, baz = null),
-            actual = CSVFormat(separator = ";", lineSeparator = "\r\n").decodeFromString(FooNull.serializer(), csv)
+            expected = listOf(FooNull(bar = 42, baz = null)),
+            actual = CSVFormat(
+                separator = ";",
+                lineSeparator = "\r\n"
+            ).decodeFromString(ListSerializer(FooNull.serializer()), csv)
+        )
+    }
+
+    @Test
+    fun sealed() {
+        val csv = "foo,some String\nbar,42"
+
+        assertEquals(
+            expected = listOf(
+                Sealed.Foo("some String"),
+                Sealed.Bar(42),
+            ),
+            actual = CSVFormat(includeHeader = false).decodeFromString(ListSerializer(Sealed.serializer()), csv)
         )
     }
 }

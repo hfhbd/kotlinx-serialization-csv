@@ -155,12 +155,12 @@ class CsvEncoderTest {
 
     @Test
     fun inlineTest() {
-        val csv = CSVFormat.encodeToString(FooInline.serializer(), FooInline(42))
+        val csv = CSVFormat.encodeToString(FooInline.serializer(), FooInline(42.0))
 
         assertEquals(
             expected = """
                 foo
-                42
+                42.0
             """.trimIndent(),
             actual = csv
         )
@@ -173,7 +173,7 @@ class CsvEncoderTest {
             value = List(size = 3) {
                 FooComplex(
                     bar = if (it == 1) "Something" else null,
-                    inline = FooInline(42),
+                    inline = FooInline(42.0),
                     enum = FooEnum.A.Three,
                     instant = Instant.fromEpochSeconds(it.toLong())
                 )
@@ -183,9 +183,9 @@ class CsvEncoderTest {
         assertEquals(
             expected = """
                 bar,foo,enum,instant
-                ,42,Three,1970-01-01T00:00:00Z
-                Something,42,Three,1970-01-01T00:00:01Z
-                ,42,Three,1970-01-01T00:00:02Z
+                ,42.0,Three,1970-01-01T00:00:00Z
+                Something,42.0,Three,1970-01-01T00:00:01Z
+                ,42.0,Three,1970-01-01T00:00:02Z
             """.trimIndent(),
             actual = csv
         )
@@ -205,6 +205,26 @@ class CsvEncoderTest {
     }
 
     @Test
+    fun numberFormatTest() {
+        val csv = CSVFormat(separator = ";", lineSeparator = "\r\n", numberFormat = CSVFormat.NumberFormat.Comma).encodeToString(
+            serializer = ListSerializer(FooComplex.serializer()),
+            value = List(size = 3) {
+                FooComplex(
+                    bar = if (it == 1) "Something" else null,
+                    inline = FooInline(42.0),
+                    enum = FooEnum.A.Three,
+                    instant = Instant.fromEpochSeconds(it.toLong())
+                )
+            }
+        )
+
+        assertEquals(
+            expected = "bar;foo;enum;instant\r\n;42,0;Three;1970-01-01T00:00:00Z\r\nSomething;42,0;Three;1970-01-01T00:00:01Z\r\n;42,0;Three;1970-01-01T00:00:02Z",
+            actual = csv
+        )
+    }
+
+    @Test
     fun checkForPolymorphicClasses() {
         assertFailsWith<IllegalArgumentException> {
             CSVFormat.encodeToString(ListSerializer(Sealed.serializer()), emptyList())
@@ -216,7 +236,7 @@ class CsvEncoderTest {
         val csv = CSVFormat(
             separator = ";",
             lineSeparator = "\r\n",
-            encodeHeader = false,
+            includeHeader = false,
         ).encodeToString(
             ListSerializer(Sealed.serializer()),
             listOf(
@@ -235,7 +255,7 @@ class CsvEncoderTest {
     fun alwaysQuote() {
         val csv = CSVFormat(
             alwaysEmitQuotes = true,
-            encodeHeader = false,
+            includeHeader = false,
         ).encodeToString(
             ListSerializer(Sealed.serializer()),
             listOf(Sealed.Foo("Hello from\nWorld"), Sealed.Bar(42))
