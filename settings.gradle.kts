@@ -8,6 +8,7 @@ pluginManagement {
 
 plugins {
     id("MyRepos")
+    id("org.jetbrains.kotlinx.kover.aggregation") version "0.8.3"
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
     id("com.gradle.develocity") version "3.18"
 }
@@ -33,3 +34,7 @@ rootProject.name = "kotlinx-serialization-csv-flf"
 
 include("kotlinx-serialization-csv")
 include("kotlinx-serialization-flf")
+
+kover {
+    enableCoverage()
+}

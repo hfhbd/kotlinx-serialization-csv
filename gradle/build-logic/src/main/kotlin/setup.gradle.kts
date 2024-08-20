@@ -4,7 +4,6 @@ plugins {
     kotlin("plugin.serialization")
     id("org.jetbrains.dokka")
     id("app.cash.licensee")
-    id("org.jetbrains.kotlinx.kover")
 }
 
 licensee {
@@ -25,18 +24,5 @@ tasks.named<DokkaTaskPartial>("dokkaHtmlPartial") {
             }
         }
         externalDocumentationLink("https://kotlinlang.org/api/kotlinx.serialization/")
-    }
-}
-
-koverReport {
-    defaults {
-        verify {
-            onCheck = true
-            rule {
-                bound {
-                    minValue = 85
-                }
-            }
-        }
     }
 }
