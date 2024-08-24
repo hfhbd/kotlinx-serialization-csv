@@ -6,6 +6,8 @@ import kotlin.test.*
 
 @ExperimentalSerializationApi
 class JsonTest {
+    private val prettyPrintJson = Json { prettyPrint = true }
+
     @Test
     fun interop() {
         val sampleFlf = """
@@ -19,7 +21,7 @@ class JsonTest {
             Sample.simple,
             decode
         )
-        val jsonString = Json { prettyPrint = true }.encodeToString(Sample.serializer(), decode)
+        val jsonString = prettyPrintJson.encodeToString(Sample.serializer(), decode)
         //language=JSON
         assertEquals(
             """
