@@ -11,26 +11,46 @@ import kotlin.jvm.*
 public sealed class CSVFormat(
     private val separator: String,
     private val lineSeparator: String,
+    private val encodeHeader: Boolean,
+    private val alwaysEmitQuotes: Boolean,
     override val serializersModule: SerializersModule
 ) : StringFormat {
     private class Custom(
         separator: String,
         lineSeparator: String,
-        serializersModule: SerializersModule
-    ) : CSVFormat(separator, lineSeparator, serializersModule)
+        encodeHeader: Boolean,
+        alwaysEmitQuotes: Boolean,
+        serializersModule: SerializersModule,
+    ) : CSVFormat(
+        separator = separator,
+        lineSeparator = lineSeparator,
+        encodeHeader = encodeHeader,
+        alwaysEmitQuotes = alwaysEmitQuotes,
+        serializersModule = serializersModule
+    )
 
     public companion object Default : CSVFormat(
         separator = ",",
         lineSeparator = "\n",
+        encodeHeader = true,
+        alwaysEmitQuotes = false,
         serializersModule = EmptySerializersModule()
     ) {
         @JvmOverloads
         public operator fun invoke(
             separator: String = ",",
             lineSeparator: String = "\n",
-            serializersModule: SerializersModule = EmptySerializersModule()
+            serializersModule: SerializersModule = EmptySerializersModule(),
+            encodeHeader: Boolean = true,
+            alwaysEmitQuotes: Boolean = false
         ): CSVFormat =
-            Custom(separator, lineSeparator, serializersModule)
+            Custom(
+                separator = separator,
+                lineSeparator = lineSeparator,
+                encodeHeader = encodeHeader,
+                alwaysEmitQuotes = alwaysEmitQuotes,
+                serializersModule = serializersModule
+            )
     }
 
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
@@ -47,18 +67,19 @@ public sealed class CSVFormat(
 
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String = buildString {
         serializer.descriptor.checkForLists()
-        var afterFirst = false
 
-        serializer.descriptor.flatNames.forEach {
-            if (afterFirst) {
-                append(separator)
+        if (encodeHeader) {
+            serializer.descriptor.checkForPolymorphicClasses()
+            for (header in serializer.descriptor.flatNames) {
+                if (isNotEmpty()) {
+                    append(separator)
+                }
+                append(header)
             }
-            append(it)
-            afterFirst = true
         }
 
         serializer.serialize(
-            encoder = CSVEncoder(this, separator, lineSeparator, serializersModule),
+            encoder = CSVEncoder(this, separator, lineSeparator, alwaysEmitQuotes, serializersModule),
             value = value
         )
     }

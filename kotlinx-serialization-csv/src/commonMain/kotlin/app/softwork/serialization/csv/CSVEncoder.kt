@@ -10,6 +10,7 @@ public class CSVEncoder(
     private val builder: StringBuilder,
     private val separator: String,
     private val lineSeparator: String,
+    private val alwaysEmitQuotes: Boolean,
     override val serializersModule: SerializersModule
 ) : AbstractEncoder() {
     private var afterFirst = false
@@ -19,7 +20,15 @@ public class CSVEncoder(
         if (afterFirst) {
             builder.append(separator)
         }
-        builder.append(value)
+        val valueToAppend = value.toString()
+        val quote = alwaysEmitQuotes || separator in valueToAppend || lineSeparator in valueToAppend
+        if (quote) {
+            builder.append('"')
+        }
+        builder.append(valueToAppend)
+        if (quote) {
+            builder.append('"')
+        }
         afterFirst = true
     }
 
@@ -32,7 +41,9 @@ public class CSVEncoder(
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
         if (level == 0) {
-            builder.append(lineSeparator)
+            if (builder.isNotEmpty()) {
+                builder.append(lineSeparator)
+            }
             afterFirst = false
         }
         level++
@@ -54,9 +65,6 @@ public class CSVEncoder(
     }
 
     override fun encodeEnum(enumDescriptor: SerialDescriptor, index: Int) {
-        if (afterFirst) {
-            builder.append(separator)
-        }
-        builder.append(enumDescriptor.getElementName(index))
+        encodeValue(enumDescriptor.getElementName(index))
     }
 }

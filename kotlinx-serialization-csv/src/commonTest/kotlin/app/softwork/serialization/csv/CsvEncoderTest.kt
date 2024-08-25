@@ -203,4 +203,47 @@ class CsvEncoderTest {
             actual = csv
         )
     }
+
+    @Test
+    fun checkForPolymorphicClasses() {
+        assertFailsWith<IllegalArgumentException> {
+            CSVFormat.encodeToString(ListSerializer(Sealed.serializer()), emptyList())
+        }
+    }
+
+    @Test
+    fun customList() {
+        val csv = CSVFormat(
+            separator = ";",
+            lineSeparator = "\r\n",
+            encodeHeader = false,
+        ).encodeToString(
+            ListSerializer(Sealed.serializer()),
+            listOf(
+                Sealed.Foo("Hello ;from\r\nWorld"),
+                Sealed.Bar(42)
+            )
+        )
+
+        assertEquals(
+            expected = "foo;\"Hello ;from\r\nWorld\"\r\nbar;42",
+            actual = csv
+        )
+    }
+
+    @Test
+    fun alwaysQuote() {
+        val csv = CSVFormat(
+            alwaysEmitQuotes = true,
+            encodeHeader = false,
+        ).encodeToString(
+            ListSerializer(Sealed.serializer()),
+            listOf(Sealed.Foo("Hello from\nWorld"), Sealed.Bar(42))
+        )
+
+        assertEquals(
+            expected = "\"foo\",\"Hello from\nWorld\"\n\"bar\",\"42\"",
+            actual = csv
+        )
+    }
 }

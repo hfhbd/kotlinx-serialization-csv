@@ -10,24 +10,36 @@ internal val SerialDescriptor.flatNames: Iterator<String>
     }
 
 @ExperimentalSerializationApi
-private suspend fun SequenceScope<String>.names(s: SerialDescriptor) {
-    val count = s.elementsCount
-    for (i in 0 until count) {
-        val descriptor = s.getElementDescriptor(i)
-        if (descriptor.elementsCount == 0 || descriptor.kind == SerialKind.ENUM) {
-            yield(s.getElementName(i))
+private suspend fun SequenceScope<String>.names(descriptor: SerialDescriptor) {
+    for (i in 0 until descriptor.elementsCount) {
+        val elementDescriptor = descriptor.getElementDescriptor(i)
+        if (elementDescriptor.elementsCount == 0 || elementDescriptor.kind == SerialKind.ENUM) {
+            yield(descriptor.getElementName(i))
         } else {
-            names(descriptor)
+            names(elementDescriptor)
         }
     }
 }
 
-@ExperimentalSerializationApi
+@OptIn(ExperimentalSerializationApi::class)
 internal fun SerialDescriptor.checkForLists() {
-    for (descriptor in elementDescriptors) {
-        if (descriptor.kind is StructureKind.LIST || descriptor.kind is StructureKind.MAP) {
-            error("List or Map are not yet supported")
+    for (elementDescriptor in elementDescriptors) {
+        require(elementDescriptor.kind !is StructureKind.LIST) {
+            error("List is not yet supported")
         }
-        descriptor.checkForLists()
+        require(elementDescriptor.kind !is StructureKind.MAP) {
+            error("Map is not yet supported")
+        }
+        elementDescriptor.checkForLists()
+    }
+}
+
+@OptIn(ExperimentalSerializationApi::class)
+internal fun SerialDescriptor.checkForPolymorphicClasses() {
+    for (elementDescriptor in elementDescriptors) {
+        require(elementDescriptor.kind !is PolymorphicKind) {
+            "Polymorphic classes are not supported with encodeToString using encodeHeader."
+        }
+        elementDescriptor.checkForPolymorphicClasses()
     }
 }
