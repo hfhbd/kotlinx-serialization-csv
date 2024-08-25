@@ -40,9 +40,9 @@ public sealed class CSVFormat(
         public operator fun invoke(
             separator: String = ",",
             lineSeparator: String = "\n",
+            serializersModule: SerializersModule = EmptySerializersModule(),
             encodeHeader: Boolean = true,
-            alwaysEmitQuotes: Boolean = false,
-            serializersModule: SerializersModule = EmptySerializersModule()
+            alwaysEmitQuotes: Boolean = false
         ): CSVFormat =
             Custom(
                 separator = separator,
