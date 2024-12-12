@@ -16,10 +16,6 @@ kotlin {
         nodejs()
     }
 
-    wasmJs {
-        nodejs()
-    }
-
     // tier 1
     linuxX64()
     macosX64()
