@@ -155,12 +155,12 @@ class CsvEncoderTest {
 
     @Test
     fun inlineTest() {
-        val csv = CSVFormat.encodeToString(FooInline.serializer(), FooInline(42.0))
+        val csv = CSVFormat.encodeToString(FooInline.serializer(), FooInline(42.42))
 
         assertEquals(
             expected = """
                 foo
-                42.0
+                42.42
             """.trimIndent(),
             actual = csv
         )
@@ -173,7 +173,7 @@ class CsvEncoderTest {
             value = List(size = 3) {
                 FooComplex(
                     bar = if (it == 1) "Something" else null,
-                    inline = FooInline(42.0),
+                    inline = FooInline(42.42),
                     enum = FooEnum.A.Three,
                     instant = Instant.fromEpochSeconds(it.toLong())
                 )
@@ -183,9 +183,9 @@ class CsvEncoderTest {
         assertEquals(
             expected = """
                 bar,foo,enum,instant
-                ,42.0,Three,1970-01-01T00:00:00Z
-                Something,42.0,Three,1970-01-01T00:00:01Z
-                ,42.0,Three,1970-01-01T00:00:02Z
+                ,42.42,Three,1970-01-01T00:00:00Z
+                Something,42.42,Three,1970-01-01T00:00:01Z
+                ,42.42,Three,1970-01-01T00:00:02Z
             """.trimIndent(),
             actual = csv
         )
@@ -215,7 +215,7 @@ class CsvEncoderTest {
             value = List(size = 3) {
                 FooComplex(
                     bar = if (it == 1) "Something" else null,
-                    inline = FooInline(42.0),
+                    inline = FooInline(42.42),
                     enum = FooEnum.A.Three,
                     instant = Instant.fromEpochSeconds(it.toLong())
                 )
@@ -223,7 +223,7 @@ class CsvEncoderTest {
         )
 
         assertEquals(
-            expected = "bar;foo;enum;instant\r\n;42,0;Three;1970-01-01T00:00:00Z\r\nSomething;42,0;Three;1970-01-01T00:00:01Z\r\n;42,0;Three;1970-01-01T00:00:02Z",
+            expected = "bar;foo;enum;instant\r\n;42,42;Three;1970-01-01T00:00:00Z\r\nSomething;42,42;Three;1970-01-01T00:00:01Z\r\n;42,42;Three;1970-01-01T00:00:02Z",
             actual = csv
         )
     }
