@@ -206,7 +206,11 @@ class CsvEncoderTest {
 
     @Test
     fun numberFormatTest() {
-        val csv = CSVFormat(separator = ";", lineSeparator = "\r\n", numberFormat = CSVFormat.NumberFormat.Comma).encodeToString(
+        val csv = CSVFormat(
+            separator = ";",
+            lineSeparator = "\r\n",
+            numberFormat = CSVFormat.NumberFormat.Comma
+        ).encodeToString(
             serializer = ListSerializer(FooComplex.serializer()),
             value = List(size = 3) {
                 FooComplex(
