@@ -32,7 +32,7 @@ data class FooEnum(val baz: Int?, val foo: A) {
 
 @Serializable
 @JvmInline
-value class FooInline(val foo: Int)
+value class FooInline(val foo: Double)
 
 @Serializable
 data class FooComplex(val bar: String?, val inline: FooInline, val enum: FooEnum.A, val instant: Instant)

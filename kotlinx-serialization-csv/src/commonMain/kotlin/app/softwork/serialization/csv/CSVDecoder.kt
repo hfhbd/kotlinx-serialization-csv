@@ -6,9 +6,10 @@ import kotlinx.serialization.encoding.*
 import kotlinx.serialization.modules.*
 
 @ExperimentalSerializationApi
-public class CSVDecoder(
+public class CSVDecoder internal constructor(
     private val data: List<List<String>>,
-    override val serializersModule: SerializersModule
+    override val serializersModule: SerializersModule,
+    private val numberFormat: CSVFormat.NumberFormat,
 ) : AbstractDecoder() {
 
     private var index = 0
@@ -57,14 +58,22 @@ public class CSVDecoder(
 
     override fun decodeLong(): Long = decodeString().toLong()
 
-    override fun decodeFloat(): Float = decodeString().toFloat()
+    override fun decodeFloat(): Float = decodeNumber().toFloat()
 
-    override fun decodeDouble(): Double = decodeString().toDouble()
+    private fun decodeNumber(): String {
+        val data = decodeString()
+        return when (numberFormat) {
+            CSVFormat.NumberFormat.Dot -> data
+            CSVFormat.NumberFormat.Comma -> data.replace(",", ".")
+        }
+    }
+
+    override fun decodeDouble(): Double = decodeNumber().toDouble()
 
     override fun decodeChar(): Char = decodeString().single()
 
     override fun decodeString(): String {
-        val value = data[currentRow].getOrNull(index) ?: error(
+        val value = data[currentRow].getOrNull(index) ?: throw SerializationException(
             "Missing attribute at $index in line ${currentRow + READABLE_LINE_NUMBER + HEADER_OFFSET}"
         )
         index += 1

@@ -6,11 +6,12 @@ import kotlinx.serialization.encoding.*
 import kotlinx.serialization.modules.*
 
 @ExperimentalSerializationApi
-public class CSVEncoder(
+public class CSVEncoder internal constructor(
     private val builder: StringBuilder,
     private val separator: String,
     private val lineSeparator: String,
     private val alwaysEmitQuotes: Boolean,
+    private val numberFormat: CSVFormat.NumberFormat,
     override val serializersModule: SerializersModule
 ) : AbstractEncoder() {
     private var afterFirst = false
@@ -30,6 +31,21 @@ public class CSVEncoder(
             builder.append('"')
         }
         afterFirst = true
+    }
+
+    override fun encodeDouble(value: Double) {
+        encodeNumber(value)
+    }
+
+    override fun encodeFloat(value: Float) {
+        encodeNumber(value)
+    }
+
+    private fun encodeNumber(value: Number) {
+        when (numberFormat) {
+            CSVFormat.NumberFormat.Dot -> encodeValue(value)
+            CSVFormat.NumberFormat.Comma -> encodeValue(value.toString().replace(".", ","))
+        }
     }
 
     override fun encodeNull() {

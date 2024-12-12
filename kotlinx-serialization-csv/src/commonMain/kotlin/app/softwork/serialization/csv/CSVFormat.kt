@@ -11,20 +11,29 @@ import kotlin.jvm.*
 public sealed class CSVFormat(
     private val separator: String,
     private val lineSeparator: String,
-    private val encodeHeader: Boolean,
+    private val includeHeader: Boolean,
     private val alwaysEmitQuotes: Boolean,
+    private val numberFormat: NumberFormat,
     override val serializersModule: SerializersModule
 ) : StringFormat {
+
+    public enum class NumberFormat {
+        Dot,
+        Comma,
+    }
+
     private class Custom(
         separator: String,
         lineSeparator: String,
-        encodeHeader: Boolean,
+        numberFormat: NumberFormat,
+        includeHeader: Boolean,
         alwaysEmitQuotes: Boolean,
         serializersModule: SerializersModule,
     ) : CSVFormat(
         separator = separator,
         lineSeparator = lineSeparator,
-        encodeHeader = encodeHeader,
+        numberFormat = numberFormat,
+        includeHeader = includeHeader,
         alwaysEmitQuotes = alwaysEmitQuotes,
         serializersModule = serializersModule
     )
@@ -32,7 +41,8 @@ public sealed class CSVFormat(
     public companion object Default : CSVFormat(
         separator = ",",
         lineSeparator = "\n",
-        encodeHeader = true,
+        numberFormat = NumberFormat.Dot,
+        includeHeader = true,
         alwaysEmitQuotes = false,
         serializersModule = EmptySerializersModule()
     ) {
@@ -41,26 +51,28 @@ public sealed class CSVFormat(
             separator: String = ",",
             lineSeparator: String = "\n",
             serializersModule: SerializersModule = EmptySerializersModule(),
-            encodeHeader: Boolean = true,
-            alwaysEmitQuotes: Boolean = false
-        ): CSVFormat =
-            Custom(
-                separator = separator,
-                lineSeparator = lineSeparator,
-                encodeHeader = encodeHeader,
-                alwaysEmitQuotes = alwaysEmitQuotes,
-                serializersModule = serializersModule
-            )
+            includeHeader: Boolean = true,
+            alwaysEmitQuotes: Boolean = false,
+            numberFormat: NumberFormat = NumberFormat.Dot,
+        ): CSVFormat = Custom(
+            separator = separator,
+            lineSeparator = lineSeparator,
+            numberFormat = numberFormat,
+            includeHeader = includeHeader,
+            alwaysEmitQuotes = alwaysEmitQuotes,
+            serializersModule = serializersModule
+        )
     }
 
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
         deserializer.descriptor.checkForLists()
         val lines = string.split(lineSeparator)
-        val data = lines.drop(1).dropLastWhile { it.isEmpty() }.map { it.split(separator) }
+        val data = lines.drop(if (includeHeader) 1 else 0).dropLastWhile { it.isEmpty() }.map { it.split(separator) }
         return deserializer.deserialize(
             decoder = CSVDecoder(
                 data = data,
-                serializersModule = serializersModule
+                serializersModule = serializersModule,
+                numberFormat = numberFormat,
             )
         )
     }
@@ -68,7 +80,7 @@ public sealed class CSVFormat(
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String = buildString {
         serializer.descriptor.checkForLists()
 
-        if (encodeHeader) {
+        if (includeHeader) {
             serializer.descriptor.checkForPolymorphicClasses()
             for (header in serializer.descriptor.flatNames) {
                 if (isNotEmpty()) {
@@ -79,7 +91,7 @@ public sealed class CSVFormat(
         }
 
         serializer.serialize(
-            encoder = CSVEncoder(this, separator, lineSeparator, alwaysEmitQuotes, serializersModule),
+            encoder = CSVEncoder(this, separator, lineSeparator, alwaysEmitQuotes, numberFormat, serializersModule),
             value = value
         )
     }
