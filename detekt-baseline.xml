@@ -13,7 +13,7 @@
     <ID>MagicNumber:Ebcdic.kt$7</ID>
     <ID>MagicNumber:Ebcdic.kt$8</ID>
     <ID>MagicNumber:Ebcdic.kt$9</ID>
-    <ID>MaxLineLength:CsvEncoderTest.kt$CsvEncoderTest$expected = "bar;foo;enum;instant\r\n;42,0;Three;1970-01-01T00:00:00Z\r\nSomething;42,0;Three;1970-01-01T00:00:01Z\r\n;42,0;Three;1970-01-01T00:00:02Z"</ID>
+    <ID>MaxLineLength:CsvEncoderTest.kt$CsvEncoderTest$expected = "bar;foo;enum;instant\r\n;42,42;Three;1970-01-01T00:00:00Z\r\nSomething;42,42;Three;1970-01-01T00:00:01Z\r\n;42,42;Three;1970-01-01T00:00:02Z"</ID>
     <ID>MaximumLineLength:CsvEncoderTest.kt$CsvEncoderTest$ </ID>
     <ID>NestedBlockDepth:FixedLengthDecoder.kt$FixedLengthDecoder$@ExperimentalSerializationApi internal fun SerialDescriptor.hasInnerListLengthIndex(): Int?</ID>
     <ID>TooManyFunctions:CSVDecoder.kt$CSVDecoder : AbstractDecoder</ID>
