@@ -1,5 +1,3 @@
-import org.jetbrains.dokka.gradle.*
-
 plugins {
     kotlin("plugin.serialization")
     id("org.jetbrains.dokka")
@@ -10,7 +8,7 @@ licensee {
     allow("Apache-2.0")
 }
 
-tasks.named<DokkaTaskPartial>("dokkaHtmlPartial") {
+dokka {
     val module = project.name
     dokkaSourceSets.configureEach {
         includes.from("README.md")
@@ -19,10 +17,14 @@ tasks.named<DokkaTaskPartial>("dokkaHtmlPartial") {
         File("$module/src/$sourceSetName").takeIf { it.exists() }?.let {
             sourceLink {
                 localDirectory.set(file("src/$sourceSetName/kotlin"))
-                remoteUrl.set(uri("https://github.com/hfhbd/kotlinx-serialization-csv/tree/main/$module/src/$sourceSetName/kotlin").toURL())
+                remoteUrl.set(uri("https://github.com/hfhbd/kotlinx-serialization-csv/tree/main/$module/src/$sourceSetName/kotlin"))
                 remoteLineSuffix.set("#L")
             }
         }
-        externalDocumentationLink("https://kotlinlang.org/api/kotlinx.serialization/")
+        externalDocumentationLinks {
+            register("kotlinx.serialization") {
+                url("https://kotlinlang.org/api/kotlinx.serialization/")
+            }
+        }
     }
 }

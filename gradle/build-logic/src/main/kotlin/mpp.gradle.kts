@@ -4,22 +4,17 @@ plugins {
 
 kotlin {
     jvmToolchain(8)
+
     explicitApi()
     compilerOptions {
         allWarningsAsErrors.set(true)
-    }
-    sourceSets.configureEach {
-        languageSettings.progressiveMode = true
+        progressiveMode.set(true)
     }
 
     jvm()
-    js(IR) {
-        browser()
+    js {
         nodejs()
     }
-
-    // publishing error wasmJs()
-    // no kotlinx.datetime support wasmWasi()
 
     // tier 1
     linuxX64()
