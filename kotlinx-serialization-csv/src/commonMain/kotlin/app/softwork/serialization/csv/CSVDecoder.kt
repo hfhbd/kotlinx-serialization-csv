@@ -8,9 +8,10 @@ import kotlinx.serialization.modules.*
 @ExperimentalSerializationApi
 public class CSVDecoder internal constructor(
     private val data: List<List<String>>,
-    override val serializersModule: SerializersModule,
-    private val numberFormat: CSVFormat.NumberFormat,
+    public val configuration: CSVConfiguration,
 ) : AbstractDecoder() {
+
+    override val serializersModule: SerializersModule get() = configuration.serializersModule
 
     private var index = 0
     private var level = 0
@@ -62,7 +63,7 @@ public class CSVDecoder internal constructor(
 
     private fun decodeNumber(): String {
         val data = decodeString()
-        return when (numberFormat) {
+        return when (configuration.numberFormat) {
             CSVFormat.NumberFormat.Dot -> data
             CSVFormat.NumberFormat.Comma -> data.replace(",", ".")
         }
