@@ -4,7 +4,6 @@
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:Ebcdic.kt$internal fun String.toSignedEBCDICZonedDecimal(positive: Boolean): String</ID>
     <ID>CyclomaticComplexMethod:Ebcdic.kt$private fun CharSequence.fromSignedEBCDICZonedDecimal(): Long</ID>
-    <ID>LongParameterList:CSVFormat.kt$CSVFormat.Default$( separator: String = ",", lineSeparator: String = "\n", serializersModule: SerializersModule = EmptySerializersModule(), includeHeader: Boolean = true, alwaysEmitQuotes: Boolean = false, numberFormat: NumberFormat = NumberFormat.Dot, )</ID>
     <ID>MagicNumber:Ebcdic.kt$10</ID>
     <ID>MagicNumber:Ebcdic.kt$3</ID>
     <ID>MagicNumber:Ebcdic.kt$4</ID>
@@ -13,7 +12,9 @@
     <ID>MagicNumber:Ebcdic.kt$7</ID>
     <ID>MagicNumber:Ebcdic.kt$8</ID>
     <ID>MagicNumber:Ebcdic.kt$9</ID>
+    <ID>MaxLineLength:CSVEncoder.kt$CSVEncoder$configuration.alwaysEmitQuotes || configuration.separator in valueToAppend || configuration.lineSeparator in valueToAppend</ID>
     <ID>MaxLineLength:CsvEncoderTest.kt$CsvEncoderTest$expected = "bar;foo;enum;instant\r\n;42,42;Three;1970-01-01T00:00:00Z\r\nSomething;42,42;Three;1970-01-01T00:00:01Z\r\n;42,42;Three;1970-01-01T00:00:02Z"</ID>
+    <ID>MaximumLineLength:CSVEncoder.kt$CSVEncoder$ </ID>
     <ID>MaximumLineLength:CsvEncoderTest.kt$CsvEncoderTest$ </ID>
     <ID>NestedBlockDepth:FixedLengthDecoder.kt$FixedLengthDecoder$@ExperimentalSerializationApi internal fun SerialDescriptor.hasInnerListLengthIndex(): Int?</ID>
     <ID>TooManyFunctions:CSVDecoder.kt$CSVDecoder : AbstractDecoder</ID>

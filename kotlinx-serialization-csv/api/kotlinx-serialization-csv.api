@@ -1,3 +1,28 @@
+public final class app/softwork/serialization/csv/CSVConfiguration {
+	public final fun getAlwaysEmitQuotes ()Z
+	public final fun getIncludeHeader ()Z
+	public final fun getLineSeparator ()Ljava/lang/String;
+	public final fun getNumberFormat ()Lapp/softwork/serialization/csv/CSVFormat$NumberFormat;
+	public final fun getSeparator ()Ljava/lang/String;
+	public final fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
+}
+
+public final class app/softwork/serialization/csv/CSVConfiguration$Builder {
+	public fun <init> ()V
+	public final fun getAlwaysEmitQuotes ()Z
+	public final fun getIncludeHeader ()Z
+	public final fun getLineSeparator ()Ljava/lang/String;
+	public final fun getNumberFormat ()Lapp/softwork/serialization/csv/CSVFormat$NumberFormat;
+	public final fun getSeparator ()Ljava/lang/String;
+	public final fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
+	public final fun setAlwaysEmitQuotes (Z)V
+	public final fun setIncludeHeader (Z)V
+	public final fun setLineSeparator (Ljava/lang/String;)V
+	public final fun setNumberFormat (Lapp/softwork/serialization/csv/CSVFormat$NumberFormat;)V
+	public final fun setSeparator (Ljava/lang/String;)V
+	public final fun setSerializersModule (Lkotlinx/serialization/modules/SerializersModule;)V
+}
+
 public final class app/softwork/serialization/csv/CSVDecoder : kotlinx/serialization/encoding/AbstractDecoder {
 	public fun beginStructure (Lkotlinx/serialization/descriptors/SerialDescriptor;)Lapp/softwork/serialization/csv/CSVDecoder;
 	public synthetic fun beginStructure (Lkotlinx/serialization/descriptors/SerialDescriptor;)Lkotlinx/serialization/encoding/CompositeDecoder;
@@ -17,6 +42,7 @@ public final class app/softwork/serialization/csv/CSVDecoder : kotlinx/serializa
 	public fun decodeShort ()S
 	public fun decodeString ()Ljava/lang/String;
 	public fun endStructure (Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public final fun getConfiguration ()Lapp/softwork/serialization/csv/CSVConfiguration;
 	public fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
 }
 
@@ -30,26 +56,21 @@ public final class app/softwork/serialization/csv/CSVEncoder : kotlinx/serializa
 	public fun encodeNull ()V
 	public fun encodeValue (Ljava/lang/Object;)V
 	public fun endStructure (Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public final fun getConfiguration ()Lapp/softwork/serialization/csv/CSVConfiguration;
 	public fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
 }
 
 public abstract class app/softwork/serialization/csv/CSVFormat : kotlinx/serialization/StringFormat {
 	public static final field Default Lapp/softwork/serialization/csv/CSVFormat$Default;
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ZZLapp/softwork/serialization/csv/CSVFormat$NumberFormat;Lkotlinx/serialization/modules/SerializersModule;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lapp/softwork/serialization/csv/CSVConfiguration;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun decodeFromString (Lkotlinx/serialization/DeserializationStrategy;Ljava/lang/String;)Ljava/lang/Object;
 	public fun encodeToString (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Ljava/lang/String;
+	public final fun getConfiguration ()Lapp/softwork/serialization/csv/CSVConfiguration;
 	public fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
 }
 
 public final class app/softwork/serialization/csv/CSVFormat$Default : app/softwork/serialization/csv/CSVFormat {
-	public final fun invoke ()Lapp/softwork/serialization/csv/CSVFormat;
-	public final fun invoke (Ljava/lang/String;)Lapp/softwork/serialization/csv/CSVFormat;
-	public final fun invoke (Ljava/lang/String;Ljava/lang/String;)Lapp/softwork/serialization/csv/CSVFormat;
-	public final fun invoke (Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;)Lapp/softwork/serialization/csv/CSVFormat;
-	public final fun invoke (Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;Z)Lapp/softwork/serialization/csv/CSVFormat;
-	public final fun invoke (Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;ZZ)Lapp/softwork/serialization/csv/CSVFormat;
-	public final fun invoke (Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;ZZLapp/softwork/serialization/csv/CSVFormat$NumberFormat;)Lapp/softwork/serialization/csv/CSVFormat;
-	public static synthetic fun invoke$default (Lapp/softwork/serialization/csv/CSVFormat$Default;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;ZZLapp/softwork/serialization/csv/CSVFormat$NumberFormat;ILjava/lang/Object;)Lapp/softwork/serialization/csv/CSVFormat;
+	public final fun invoke (Lkotlin/jvm/functions/Function1;)Lapp/softwork/serialization/csv/CSVFormat;
 }
 
 public final class app/softwork/serialization/csv/CSVFormat$NumberFormat : java/lang/Enum {

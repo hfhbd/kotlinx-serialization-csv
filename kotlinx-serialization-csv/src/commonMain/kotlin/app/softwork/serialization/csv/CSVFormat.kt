@@ -21,6 +21,7 @@ public sealed class CSVFormat(public val configuration: CSVConfiguration) : Stri
         configuration: CSVConfiguration
     ) : CSVFormat(configuration)
 
+    @ThreadLocal
     public companion object Default : CSVFormat(CSVConfiguration.default) {
         public operator fun invoke(builder: CSVConfiguration.Builder.() -> Unit): CSVFormat =
             Custom(CSVConfiguration.Builder().apply(builder).build())
@@ -68,9 +69,8 @@ public class CSVConfiguration internal constructor(
     public val numberFormat: NumberFormat,
     public val serializersModule: SerializersModule,
 ) {
-    public companion object {
-        @ThreadLocal
-        public val default: CSVConfiguration = CSVConfiguration(
+    internal companion object {
+        internal val default: CSVConfiguration = CSVConfiguration(
             separator = ",",
             lineSeparator = "\n",
             includeHeader = true,
