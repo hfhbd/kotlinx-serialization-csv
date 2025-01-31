@@ -11,7 +11,7 @@ datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.6.1
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 binary = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version = "0.17.0" }
-mavencentral = { id = "io.github.hfhbd.mavencentral", version = "0.0.15" }
+mavencentral = { id = "io.github.hfhbd.mavencentral", version = "0.0.16" }
 dokka = { id = "org.jetbrains.dokka", version = "2.0.0-Beta" }
 licensee = { id = "app.cash.licensee", version = "1.12.0" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.7" }
