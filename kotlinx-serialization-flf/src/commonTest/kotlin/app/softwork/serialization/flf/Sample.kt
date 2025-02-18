@@ -28,7 +28,8 @@ data class Sample(
     @FixedLength(5) val boolean: Boolean,
     @FixedLength(4) val byte: Byte,
     @FixedLength(4) val short: Short,
-    @FixedLength(4) val float: Float,
+    // https://youtrack.jetbrains.com/issue/KT-68948/Wasm-float-from-variable-is-printed-with-many-decimal-points
+    @FixedLength(4) val float: Double,
     @FixedLength(4) val long: Long,
     @FixedLength(1) val char: Char
 ) {
@@ -48,13 +49,13 @@ data class Sample(
             inlineL = FooL(0L),
             inlineChar = FooChar('f'),
             inlineShort = FooShort(4.toShort()),
-            inlineFloat = FooFloat(1.1f),
+            inlineFloat = FooFloat(1.1),
             inlineByte = FooByte(1.toByte()),
             innerClass = Inner(8),
             boolean = false,
             byte = 1.toByte(),
             short = 1.toShort(),
-            float = 4.2f,
+            float = 4.2,
             long = -1L,
             char = ' '
         )
@@ -102,9 +103,10 @@ data class Sample(
     @JvmInline
     value class FooChar(val int: Char)
 
+    // https://youtrack.jetbrains.com/issue/KT-68948/Wasm-float-from-variable-is-printed-with-many-decimal-points
     @Serializable
     @JvmInline
-    value class FooFloat(val int: Float)
+    value class FooFloat(val int: Double)
 }
 
 @ExperimentalSerializationApi

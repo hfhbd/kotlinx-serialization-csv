@@ -15,6 +15,12 @@ kotlin {
     js {
         nodejs()
     }
+    wasmJs {
+        nodejs()
+    }
+    wasmWasi {
+        nodejs()
+    }
 
     // tier 1
     linuxX64()
