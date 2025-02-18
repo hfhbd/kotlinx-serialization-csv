@@ -45,13 +45,13 @@ class FlfDecoderTest {
                     inlineL = Sample.FooL(0L),
                     inlineChar = Sample.FooChar('f'),
                     inlineShort = Sample.FooShort(4.toShort()),
-                    inlineFloat = Sample.FooFloat(1f),
+                    inlineFloat = Sample.FooFloat(1.0),
                     inlineByte = Sample.FooByte(1.toByte()),
                     innerClass = Sample.Inner(8),
                     boolean = false,
                     byte = 1.toByte(),
                     short = 1.toShort(),
-                    float = 4.0f,
+                    float = 4.0,
                     long = -1L,
                     char = ' '
                 )
@@ -86,13 +86,13 @@ class FlfDecoderTest {
                     inlineL = Sample.FooL(0L),
                     inlineChar = Sample.FooChar('f'),
                     inlineShort = Sample.FooShort(4.toShort()),
-                    inlineFloat = Sample.FooFloat(1f),
+                    inlineFloat = Sample.FooFloat(1.0),
                     inlineByte = Sample.FooByte(1.toByte()),
                     innerClass = Sample.Inner(8),
                     boolean = false,
                     byte = 1.toByte(),
                     short = 1.toShort(),
-                    float = 4.0f,
+                    float = 4.0,
                     long = -1L,
                     char = ' '
                 )
