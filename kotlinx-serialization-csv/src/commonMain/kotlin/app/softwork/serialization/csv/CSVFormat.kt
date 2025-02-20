@@ -33,7 +33,7 @@ public sealed class CSVFormat(public val configuration: CSVConfiguration) : Stri
         val data = lines.drop(if (configuration.includeHeader) 1 else 0).dropLastWhile { it.isEmpty() }
             .map { it.split(configuration.separator) }
         return deserializer.deserialize(
-            decoder = CSVDecoder(
+            decoder = CSVDecoderImpl(
                 data = data,
                 configuration = configuration,
             )
@@ -54,7 +54,7 @@ public sealed class CSVFormat(public val configuration: CSVConfiguration) : Stri
         }
 
         serializer.serialize(
-            encoder = CSVEncoder(this, configuration),
+            encoder = CSVEncoderImpl(this, configuration),
             value = value
         )
     }

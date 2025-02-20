@@ -4,7 +4,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 
 @ExperimentalSerializationApi
-internal val SerialDescriptor.flatNames: Iterator<String>
+internal inline val SerialDescriptor.flatNames: Iterator<String>
     get() = iterator {
         names(this@flatNames)
     }
