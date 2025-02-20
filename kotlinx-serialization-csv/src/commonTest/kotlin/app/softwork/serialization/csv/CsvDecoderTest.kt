@@ -397,7 +397,7 @@ class CsvDecoderTest {
         val exception = assertFailsWith<SerializationException> {
             CSVFormat.decodeFromString(ListSerializer(FooComplex.serializer()), csv)
         }
-        assertEquals("Missing value at index 3 in line 2", exception.message)
+        assertEquals("Missing value at the end of line 2", exception.message)
     }
 
     @Test

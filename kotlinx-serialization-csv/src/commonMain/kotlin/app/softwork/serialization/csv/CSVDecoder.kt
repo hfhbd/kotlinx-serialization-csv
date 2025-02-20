@@ -126,11 +126,13 @@ internal class CSVDecoderImpl(
         index += 1
         return when (val nextNode = nodes.next()) {
             is CSVNode.Element -> nextNode.value
-            CSVNode.NewLine -> throw SerializationException(
-                "Missing value at index $index in line ${currentRow + READABLE_LINE_NUMBER + HEADER_OFFSET}"
-            )
+            CSVNode.NewLine -> throwUnknownValue()
         }
     }
+
+    private fun throwUnknownValue(): Nothing = throw SerializationException(
+        "Missing value at the end of line ${currentRow + READABLE_LINE_NUMBER + HEADER_OFFSET}"
+    )
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int = enumDescriptor.elementNames.indexOf(decodeString())
 
@@ -150,6 +152,9 @@ internal class CSVDecoderImpl(
         } else {
             val headerName = header.getOrNull(index) ?: return CompositeDecoder.DECODE_DONE
             val index = descriptor.getElementIndex(headerName)
+            if (index == CompositeDecoder.UNKNOWN_NAME) {
+                throwUnknownValue()
+            }
             return index
         }
     }
