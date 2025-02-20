@@ -79,7 +79,7 @@ internal class CSVDecoderImpl(
 
     override fun decodeString(): String {
         val value = data[currentRow].getOrNull(index) ?: throw SerializationException(
-            "Missing attribute at $index in line ${currentRow + READABLE_LINE_NUMBER + HEADER_OFFSET}"
+            "Missing value at index $index in line ${currentRow + READABLE_LINE_NUMBER + HEADER_OFFSET}"
         )
         index += 1
         return value
