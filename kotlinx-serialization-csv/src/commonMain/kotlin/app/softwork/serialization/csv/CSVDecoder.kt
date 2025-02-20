@@ -5,11 +5,15 @@ import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 import kotlinx.serialization.modules.*
 
+public interface CSVDecoder : Decoder, CompositeDecoder {
+    public val configuration: CSVConfiguration
+}
+
 @ExperimentalSerializationApi
-public class CSVDecoder internal constructor(
+internal class CSVDecoderImpl(
     private val data: List<List<String>>,
-    public val configuration: CSVConfiguration,
-) : AbstractDecoder() {
+    public override val configuration: CSVConfiguration,
+) : AbstractDecoder(), CSVDecoder {
 
     override val serializersModule: SerializersModule get() = configuration.serializersModule
 

@@ -12,12 +12,12 @@
     <ID>MagicNumber:Ebcdic.kt$7</ID>
     <ID>MagicNumber:Ebcdic.kt$8</ID>
     <ID>MagicNumber:Ebcdic.kt$9</ID>
-    <ID>MaxLineLength:CSVEncoder.kt$CSVEncoder$configuration.alwaysEmitQuotes || configuration.separator in valueToAppend || configuration.lineSeparator in valueToAppend</ID>
+    <ID>MaxLineLength:CSVEncoder.kt$CSVEncoderImpl$configuration.alwaysEmitQuotes || configuration.separator in valueToAppend || configuration.lineSeparator in valueToAppend</ID>
     <ID>MaxLineLength:CsvEncoderTest.kt$CsvEncoderTest$expected = "bar;foo;enum;instant\r\n;42,42;Three;1970-01-01T00:00:00Z\r\nSomething;42,42;Three;1970-01-01T00:00:01Z\r\n;42,42;Three;1970-01-01T00:00:02Z"</ID>
-    <ID>MaximumLineLength:CSVEncoder.kt$CSVEncoder$ </ID>
+    <ID>MaximumLineLength:CSVEncoder.kt$CSVEncoderImpl$ </ID>
     <ID>MaximumLineLength:CsvEncoderTest.kt$CsvEncoderTest$ </ID>
     <ID>NestedBlockDepth:FixedLengthDecoder.kt$FixedLengthDecoder$@ExperimentalSerializationApi internal fun SerialDescriptor.hasInnerListLengthIndex(): Int?</ID>
-    <ID>TooManyFunctions:CSVDecoder.kt$CSVDecoder : AbstractDecoder</ID>
+    <ID>TooManyFunctions:CSVDecoder.kt$CSVDecoderImpl : AbstractDecoderCSVDecoder</ID>
     <ID>TooManyFunctions:FixedLengthDecoder.kt$FixedLengthDecoder : FailingPrimitiveDecoderCompositeDecoder</ID>
     <ID>TooManyFunctions:FixedLengthEncoder.kt$FixedLengthEncoder : FailingPrimitiveEncoderCompositeEncoder</ID>
     <ID>TooManyFunctions:FixedLengthPrimitiveDecoder.kt$FixedLengthPrimitiveDecoder : Decoder</ID>
