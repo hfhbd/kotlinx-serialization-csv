@@ -3,7 +3,7 @@ public final class app/softwork/serialization/csv/CSVConfiguration {
 	public final fun getIncludeHeader ()Z
 	public final fun getLineSeparator ()Ljava/lang/String;
 	public final fun getNumberFormat ()Lapp/softwork/serialization/csv/CSVFormat$NumberFormat;
-	public final fun getSeparator ()Ljava/lang/String;
+	public final fun getSeparator ()C
 	public final fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
 }
 
@@ -13,13 +13,13 @@ public final class app/softwork/serialization/csv/CSVConfiguration$Builder {
 	public final fun getIncludeHeader ()Z
 	public final fun getLineSeparator ()Ljava/lang/String;
 	public final fun getNumberFormat ()Lapp/softwork/serialization/csv/CSVFormat$NumberFormat;
-	public final fun getSeparator ()Ljava/lang/String;
+	public final fun getSeparator ()C
 	public final fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
 	public final fun setAlwaysEmitQuotes (Z)V
 	public final fun setIncludeHeader (Z)V
 	public final fun setLineSeparator (Ljava/lang/String;)V
 	public final fun setNumberFormat (Lapp/softwork/serialization/csv/CSVFormat$NumberFormat;)V
-	public final fun setSeparator (Ljava/lang/String;)V
+	public final fun setSeparator (C)V
 	public final fun setSerializersModule (Lkotlinx/serialization/modules/SerializersModule;)V
 }
 
