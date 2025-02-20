@@ -32,7 +32,6 @@ class StatefulIteratorTest {
         assertEquals(4, iter.next())
         assertEquals(4, iter.current)
 
-
         assertEquals(null, iter.peek())
         assertEquals(false, iter.hasNext())
         assertEquals(null, iter.current)

@@ -2,8 +2,11 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>CyclomaticComplexMethod:CSVParser.kt$internal fun String.parse( separator: Char = ',', lineSeparator: String = "\n", ): StatefulIterator&lt;CSVNode></ID>
     <ID>CyclomaticComplexMethod:Ebcdic.kt$internal fun String.toSignedEBCDICZonedDecimal(positive: Boolean): String</ID>
     <ID>CyclomaticComplexMethod:Ebcdic.kt$private fun CharSequence.fromSignedEBCDICZonedDecimal(): Long</ID>
+    <ID>LongMethod:CSVParser.kt$internal fun String.parse( separator: Char = ',', lineSeparator: String = "\n", ): StatefulIterator&lt;CSVNode></ID>
+    <ID>LoopWithTooManyJumpStatements:CSVParser.kt$while</ID>
     <ID>MagicNumber:Ebcdic.kt$10</ID>
     <ID>MagicNumber:Ebcdic.kt$3</ID>
     <ID>MagicNumber:Ebcdic.kt$4</ID>
@@ -12,11 +15,18 @@
     <ID>MagicNumber:Ebcdic.kt$7</ID>
     <ID>MagicNumber:Ebcdic.kt$8</ID>
     <ID>MagicNumber:Ebcdic.kt$9</ID>
+    <ID>MatchingDeclarationName:CSVParser.kt$CSVNode</ID>
     <ID>MaxLineLength:CSVEncoder.kt$CSVEncoderImpl$configuration.alwaysEmitQuotes || configuration.separator in valueToAppend || configuration.lineSeparator in valueToAppend</ID>
+    <ID>MaxLineLength:CSVParser.kt$currentChar == lineSeparator.first() &amp;&amp; substring(index until index + lineSeparator.length) == lineSeparator</ID>
     <ID>MaxLineLength:CsvEncoderTest.kt$CsvEncoderTest$expected = "bar;foo;enum;instant\r\n;42,42;Three;1970-01-01T00:00:00Z\r\nSomething;42,42;Three;1970-01-01T00:00:01Z\r\n;42,42;Three;1970-01-01T00:00:02Z"</ID>
     <ID>MaximumLineLength:CSVEncoder.kt$CSVEncoderImpl$ </ID>
+    <ID>MaximumLineLength:CSVParser.kt$ </ID>
     <ID>MaximumLineLength:CsvEncoderTest.kt$CsvEncoderTest$ </ID>
     <ID>NestedBlockDepth:FixedLengthDecoder.kt$FixedLengthDecoder$@ExperimentalSerializationApi internal fun SerialDescriptor.hasInnerListLengthIndex(): Int?</ID>
+    <ID>ReturnCount:CSVDecoder.kt$CSVDecoderImpl$override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder</ID>
+    <ID>ReturnCount:CSVDecoder.kt$CSVDecoderImpl$override fun decodeElementIndex(descriptor: SerialDescriptor): Int</ID>
+    <ID>ReturnCount:CSVParser.kt$@ExperimentalSerializationApi internal fun List&lt;String>.isSequentially(descriptor: SerialDescriptor): Boolean</ID>
+    <ID>ReturnCount:StatefulIterator.kt$&lt;no name provided>$override fun peek(): T?</ID>
     <ID>TooManyFunctions:CSVDecoder.kt$CSVDecoderImpl : AbstractDecoderCSVDecoder</ID>
     <ID>TooManyFunctions:FixedLengthDecoder.kt$FixedLengthDecoder : FailingPrimitiveDecoderCompositeDecoder</ID>
     <ID>TooManyFunctions:FixedLengthEncoder.kt$FixedLengthEncoder : FailingPrimitiveEncoderCompositeEncoder</ID>

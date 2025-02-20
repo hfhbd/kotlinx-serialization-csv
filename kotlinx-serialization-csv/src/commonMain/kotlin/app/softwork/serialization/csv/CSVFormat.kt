@@ -2,7 +2,6 @@ package app.softwork.serialization.csv
 
 import app.softwork.serialization.csv.CSVFormat.NumberFormat
 import kotlinx.serialization.*
-import kotlinx.serialization.descriptors.SerialKind
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.modules.*
 import kotlin.native.concurrent.ThreadLocal
