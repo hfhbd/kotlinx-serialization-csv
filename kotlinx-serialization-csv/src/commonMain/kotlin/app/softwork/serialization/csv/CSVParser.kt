@@ -61,7 +61,9 @@ internal fun String.parse(
                                         }
                                     }
 
-                                    null -> throw SerializationException("Missing end of quotes at ${indexOfClosingQuotes - 1}")
+                                    null -> throw SerializationException(
+                                        "Missing end of quotes at ${indexOfClosingQuotes - 1}"
+                                    )
                                 }
                                 indexOfClosingQuotes += 1
                             }
@@ -74,25 +76,13 @@ internal fun String.parse(
                         }
 
                         currentChar == separator -> {
-                            val text = if (get(start) == '"' && get(index - 1) == '"') {
-                                substring(start + 1, index - 1).replace(oldValue = "\"\"", newValue = "\"")
-                            } else {
-                                substring(start, index)
-                            }
-                            val node = CSVNode.Element(text)
-                            yield(node)
+                            yield(createNode(start, index))
                             index += 1
                             break@normal
                         }
 
                         currentChar == lineSeparator.first() && substring(index until index + lineSeparator.length) == lineSeparator -> {
-                            val text = if (get(start) == '"' && get(index - 1) == '"') {
-                                substring(start + 1, index - 1).replace(oldValue = "\"\"", newValue = "\"")
-                            } else {
-                                substring(start, index)
-                            }
-                            val node = CSVNode.Element(text)
-                            yield(node)
+                            yield(createNode(start, index))
                             index += lineSeparator.length
                             yield(CSVNode.NewLine)
                             break@normal
@@ -105,6 +95,15 @@ internal fun String.parse(
         }
     }
 }.stateful()
+
+private fun String.createNode(start: Int, index: Int): CSVNode.Element {
+    val text = if (get(start) == '"' && get(index - 1) == '"') {
+        substring(start + 1, index - 1).replace(oldValue = "\"\"", newValue = "\"")
+    } else {
+        substring(start, index)
+    }
+    return CSVNode.Element(text)
+}
 
 internal fun Iterator<CSVNode>.getHeader(): List<String> = buildList {
     for (node in this@getHeader) {

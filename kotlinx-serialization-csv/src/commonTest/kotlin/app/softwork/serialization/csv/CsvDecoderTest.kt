@@ -481,7 +481,8 @@ class CsvDecoderTest {
             actual = CSVFormat.decodeFromString(
                 ListSerializer(
                     Foo.serializer(),
-                ), csv
+                ),
+                csv
             )
         )
     }
@@ -517,7 +518,8 @@ class CsvDecoderTest {
             actual = CSVFormat.decodeFromString(
                 ListSerializer(
                     FooString.serializer(),
-                ), csv
+                ),
+                csv
             )
         )
     }
@@ -548,7 +550,8 @@ class CsvDecoderTest {
             actual = CSVFormat.decodeFromString(
                 ListSerializer(
                     FooString.serializer(),
-                ), csv
+                ),
+                csv
             )
         )
     }
