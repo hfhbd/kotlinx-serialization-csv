@@ -4,8 +4,8 @@ This module contains the [CSV-Format](https://datatracker.ietf.org/doc/html/rfc4
 
 ## Usage
 
-```
-FirstName,LastName
+```csv
+firstName,lastName
 John,Doe
 ```
 
@@ -26,6 +26,39 @@ CSVFormat.encodeToString(Names.serializer(), Names("John", "Doe"))
 """
 firstName,lastName
 John,Doe
+"""
+```
+
+### Quotes
+
+```csv
+"lastName";"firstName"
+"Doe";"John"
+```
+
+To decode from the given CSV string with quotes and unordered attributes:
+
+```kotlin
+@Serializable
+data class Names(val firstName: String, val lastName: String)
+
+CSVFormat {
+    separator = ';'
+    alwaysEmitQuotes = true
+}.decodeFromString(Names.serializer(), csv)
+```
+
+And to encode:
+
+```kotlin
+CSVFormat {
+    separator = ';'
+    alwaysEmitQuotes = true
+}.encodeToString(Names.serializer(), Names("John", "Doe"))
+
+"""
+"firstName";"lastName"
+"John";"Doe"
 """
 ```
 
