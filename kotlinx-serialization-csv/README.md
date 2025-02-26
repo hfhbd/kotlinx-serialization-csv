@@ -64,5 +64,5 @@ CSVFormat {
 
 ## Limitations
 
-- Inner lists (and Maps) are not supported, eg. `data class NotSupported(val innerList: List<String>)`
+- Inner lists are not supported, eg. `data class NotSupported(val innerList: List<String>)`
 - Maps are not supported.
