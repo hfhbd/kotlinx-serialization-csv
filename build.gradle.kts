@@ -4,6 +4,12 @@ plugins {
     id("org.jetbrains.kotlinx.binary-compatibility-validator")
 }
 
+dependencies {
+    for (s in subprojects) {
+        dokka(s)
+    }
+}
+
 dokka {
     dokkaPublications.configureEach {
         includes.from("README.md")
