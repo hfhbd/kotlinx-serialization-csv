@@ -39,3 +39,4 @@ John Doe
 - Because this format does not have any delimiters, it is not possible to decode/encode primitives. You must use a class
   with `@FixedLength` annotated properties.
 - Inner lists are not supported, eg. `data class NotSupported(val innerList: List<String>)`
+- Maps are not supported.

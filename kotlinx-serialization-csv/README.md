@@ -31,6 +31,5 @@ John,Doe
 
 ## Limitations
 
-- The order of the properties of the class must match the order of the header/fields!
-- The header is ignored.
-- Inner lists are not supported, eg. `data class NotSupported(val innerList: List<String>)`
+- Inner lists (and Maps) are not supported, eg. `data class NotSupported(val innerList: List<String>)`
+- Maps are not supported.
