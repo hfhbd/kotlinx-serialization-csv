@@ -22,11 +22,11 @@ And to encode:
 
 ```kotlin
 CSVFormat.encodeToString(Names.serializer(), Names("John", "Doe"))
+```
 
-"""
+```csv
 firstName,lastName
 John,Doe
-"""
 ```
 
 ### Quotes
@@ -55,11 +55,11 @@ CSVFormat {
     separator = ';'
     alwaysEmitQuotes = true
 }.encodeToString(Names.serializer(), Names("John", "Doe"))
+```
 
-"""
+```csv
 "firstName";"lastName"
 "John";"Doe"
-"""
 ```
 
 ## Limitations

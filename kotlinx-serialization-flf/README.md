@@ -24,10 +24,10 @@ And to encode:
 
 ```kotlin
 FixedLengthFormat.encodeToString(Names.serializer(), Names("John", "Doe"))
+```
 
-"""
+```
 John Doe  
-"""
 ```
 
 ## Limitations
