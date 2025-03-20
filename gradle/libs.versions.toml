@@ -13,5 +13,5 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 binary = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version = "0.17.0" }
 mavencentral = { id = "io.github.hfhbd.mavencentral", version = "0.0.17" }
 dokka = { id = "org.jetbrains.dokka", version = "2.0.0" }
-licensee = { id = "app.cash.licensee", version = "1.12.0" }
+licensee = { id = "app.cash.licensee", version = "1.13.0" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.8" }
