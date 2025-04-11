@@ -262,6 +262,24 @@ class CsvEncoderTest {
     fun alwaysQuote() {
         val csv = CSVFormat {
             alwaysEmitQuotes = true
+        }.encodeToString(
+            ListSerializer(FooString.serializer()),
+            listOf(
+                FooString(42, "ff\"", 42),
+                FooString(42, "newLine\nff", 42),
+            )
+        )
+
+        assertEquals(
+            expected = "\"bar\",\"value\",\"foo\"\n\"42\",\"ff\"\"\",\"42\"\n\"42\",\"newLine\nff\",\"42\"",
+            actual = csv
+        )
+    }
+
+    @Test
+    fun alwaysQuoteWithoutHeader() {
+        val csv = CSVFormat {
+            alwaysEmitQuotes = true
             includeHeader = false
         }.encodeToString(
             ListSerializer(Sealed.serializer()),
