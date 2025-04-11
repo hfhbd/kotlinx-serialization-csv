@@ -67,7 +67,13 @@ public sealed class CSVFormat(public val configuration: CSVConfiguration) : Stri
                 if (isNotEmpty()) {
                     append(configuration.separator)
                 }
-                append(header)
+                if (configuration.alwaysEmitQuotes) {
+                    append('"')
+                    append(header.escapeQuotes())
+                    append('"')
+                } else {
+                    append(header)
+                }
             }
         }
 

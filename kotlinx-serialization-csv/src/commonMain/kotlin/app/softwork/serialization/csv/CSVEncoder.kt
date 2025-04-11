@@ -29,10 +29,10 @@ internal class CSVEncoderImpl(
             configuration.alwaysEmitQuotes || configuration.separator in valueToAppend || configuration.lineSeparator in valueToAppend
         if (quote) {
             builder.append('"')
-        }
-        builder.append(valueToAppend)
-        if (quote) {
+            builder.append(valueToAppend.escapeQuotes())
             builder.append('"')
+        } else {
+            builder.append(valueToAppend)
         }
         afterFirst = true
     }
@@ -88,3 +88,5 @@ internal class CSVEncoderImpl(
         encodeValue(enumDescriptor.getElementName(index))
     }
 }
+
+internal fun String.escapeQuotes(): String = replace("\"", "\"\"")
