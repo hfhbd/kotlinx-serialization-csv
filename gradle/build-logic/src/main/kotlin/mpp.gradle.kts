@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
+
 plugins {
     kotlin("multiplatform")
 }
@@ -9,9 +11,14 @@ kotlin {
     compilerOptions {
         allWarningsAsErrors.set(true)
         progressiveMode.set(true)
+        extraWarnings.set(true)
     }
 
     jvm {
+        compilerOptions {
+            jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
+        }
+
         val main = compilations.getByName("main")
         val jvm9 = compilations.create("9Main") {
             associateWith(main)
