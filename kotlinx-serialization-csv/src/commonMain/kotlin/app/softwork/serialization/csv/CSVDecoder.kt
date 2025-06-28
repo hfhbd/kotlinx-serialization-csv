@@ -88,8 +88,10 @@ internal class CSVDecoderImpl(
     }
 
     override fun decodeNull(): Nothing? {
-        if (nodes.hasNext()) {
-            nodes.next()
+        when (nodes.peek()) {
+            is CSVNode.Element -> nodes.next()
+            CSVNode.NewLine -> Unit
+            null -> Unit
         }
         index += 1
         return null

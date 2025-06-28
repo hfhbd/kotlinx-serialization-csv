@@ -401,6 +401,51 @@ class CsvDecoderTest {
     }
 
     @Test
+    fun missingMultipleNullableValuesTest() {
+        val csv = """
+            bar,baz1,baz2,baz3
+            40,,,
+            41,,
+            42,
+            43
+        """.trimIndent()
+
+        assertEquals(
+            listOf(
+                Element("bar"),
+                Element("baz1"),
+                Element("baz2"),
+                Element("baz3"),
+                NewLine,
+                Element("40"),
+                Element(""),
+                Element(""),
+                Element(""),
+                NewLine,
+                Element("41"),
+                Element(""),
+                Element(""),
+                NewLine,
+                Element("42"),
+                Element(""),
+                NewLine,
+                Element("43")
+            ),
+            csv.parse().asSequence().toList()
+        )
+
+        assertEquals(
+            expected = listOf(
+                FooMultipleNull(40, null, null, null),
+                FooMultipleNull(41, null, null, null),
+                FooMultipleNull(42, null, null, null),
+                FooMultipleNull(43, null, null, null),
+            ),
+            actual = CSVFormat.decodeFromString(ListSerializer(FooMultipleNull.serializer()), csv)
+        )
+    }
+
+    @Test
     fun custom() {
         val csv = "bar;baz\r\n42;\r\n"
 

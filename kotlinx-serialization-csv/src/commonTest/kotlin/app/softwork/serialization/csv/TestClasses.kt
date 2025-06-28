@@ -17,6 +17,9 @@ data class FooNamed(@SerialName("foo") val bar: Int)
 data class FooNull(val bar: Int, val baz: Int?)
 
 @Serializable
+data class FooMultipleNull(val bar: Int, val baz1: Int?, val baz2: Int?, val baz3: Int?)
+
+@Serializable
 data class FooNullFirst(val baz: Int?, val bar: Int)
 
 @Serializable
