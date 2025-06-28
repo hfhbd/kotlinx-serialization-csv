@@ -5,16 +5,12 @@ plugins {
 }
 
 kotlin {
+    compilerOptions.optIn.add("kotlin.time.ExperimentalTime")
+
     sourceSets {
         commonMain {
             dependencies {
                 api(libs.serialization.core)
-            }
-        }
-        commonTest {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(libs.datetime)
             }
         }
     }

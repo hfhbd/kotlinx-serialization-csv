@@ -1,8 +1,8 @@
 package app.softwork.serialization.flf
 
-import kotlinx.datetime.*
 import kotlinx.serialization.*
 import kotlin.jvm.*
+import kotlin.time.Instant
 
 @ExperimentalSerializationApi
 @Serializable

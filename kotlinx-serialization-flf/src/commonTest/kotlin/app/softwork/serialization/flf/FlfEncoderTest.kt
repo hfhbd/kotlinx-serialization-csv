@@ -1,10 +1,10 @@
 package app.softwork.serialization.flf
 
 import app.softwork.serialization.flf.Seal.*
-import kotlinx.datetime.*
 import kotlinx.serialization.*
 import kotlinx.serialization.builtins.*
 import kotlin.test.*
+import kotlin.time.*
 
 @ExperimentalSerializationApi
 class FlfEncoderTest {

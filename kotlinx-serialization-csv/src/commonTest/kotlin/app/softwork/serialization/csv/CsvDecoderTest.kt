@@ -2,10 +2,10 @@ package app.softwork.serialization.csv
 
 import app.softwork.serialization.csv.CSVNode.Element
 import app.softwork.serialization.csv.CSVNode.NewLine
-import kotlinx.datetime.*
 import kotlinx.serialization.*
 import kotlinx.serialization.builtins.*
 import kotlin.test.*
+import kotlin.time.*
 
 @ExperimentalSerializationApi
 class CsvDecoderTest {

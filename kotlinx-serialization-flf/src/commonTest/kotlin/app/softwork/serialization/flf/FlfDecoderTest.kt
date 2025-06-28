@@ -1,9 +1,9 @@
 package app.softwork.serialization.flf
 
-import kotlinx.datetime.*
 import kotlinx.serialization.*
 import kotlinx.serialization.builtins.*
 import kotlin.test.*
+import kotlin.time.*
 
 @ExperimentalSerializationApi
 class FlfDecoderTest {
