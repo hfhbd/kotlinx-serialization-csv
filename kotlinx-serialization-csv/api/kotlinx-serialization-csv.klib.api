@@ -1,0 +1,80 @@
+// Klib ABI Dump
+// Targets: [androidNativeArm32, androidNativeArm64, androidNativeX64, androidNativeX86, iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, wasmWasi, watchosArm32, watchosArm64, watchosDeviceArm64, watchosSimulatorArm64, watchosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <app.softwork:kotlinx-serialization-csv>
+abstract interface app.softwork.serialization.csv/CSVDecoder : kotlinx.serialization.encoding/CompositeDecoder, kotlinx.serialization.encoding/Decoder { // app.softwork.serialization.csv/CSVDecoder|null[0]
+    abstract val configuration // app.softwork.serialization.csv/CSVDecoder.configuration|{}configuration[0]
+        abstract fun <get-configuration>(): app.softwork.serialization.csv/CSVConfiguration // app.softwork.serialization.csv/CSVDecoder.configuration.<get-configuration>|<get-configuration>(){}[0]
+}
+
+abstract interface app.softwork.serialization.csv/CSVEncoder : kotlinx.serialization.encoding/CompositeEncoder, kotlinx.serialization.encoding/Encoder { // app.softwork.serialization.csv/CSVEncoder|null[0]
+    abstract val configuration // app.softwork.serialization.csv/CSVEncoder.configuration|{}configuration[0]
+        abstract fun <get-configuration>(): app.softwork.serialization.csv/CSVConfiguration // app.softwork.serialization.csv/CSVEncoder.configuration.<get-configuration>|<get-configuration>(){}[0]
+}
+
+final class app.softwork.serialization.csv/CSVConfiguration { // app.softwork.serialization.csv/CSVConfiguration|null[0]
+    final val alwaysEmitQuotes // app.softwork.serialization.csv/CSVConfiguration.alwaysEmitQuotes|{}alwaysEmitQuotes[0]
+        final fun <get-alwaysEmitQuotes>(): kotlin/Boolean // app.softwork.serialization.csv/CSVConfiguration.alwaysEmitQuotes.<get-alwaysEmitQuotes>|<get-alwaysEmitQuotes>(){}[0]
+    final val includeHeader // app.softwork.serialization.csv/CSVConfiguration.includeHeader|{}includeHeader[0]
+        final fun <get-includeHeader>(): kotlin/Boolean // app.softwork.serialization.csv/CSVConfiguration.includeHeader.<get-includeHeader>|<get-includeHeader>(){}[0]
+    final val lineSeparator // app.softwork.serialization.csv/CSVConfiguration.lineSeparator|{}lineSeparator[0]
+        final fun <get-lineSeparator>(): kotlin/String // app.softwork.serialization.csv/CSVConfiguration.lineSeparator.<get-lineSeparator>|<get-lineSeparator>(){}[0]
+    final val numberFormat // app.softwork.serialization.csv/CSVConfiguration.numberFormat|{}numberFormat[0]
+        final fun <get-numberFormat>(): app.softwork.serialization.csv/CSVFormat.NumberFormat // app.softwork.serialization.csv/CSVConfiguration.numberFormat.<get-numberFormat>|<get-numberFormat>(){}[0]
+    final val separator // app.softwork.serialization.csv/CSVConfiguration.separator|{}separator[0]
+        final fun <get-separator>(): kotlin/Char // app.softwork.serialization.csv/CSVConfiguration.separator.<get-separator>|<get-separator>(){}[0]
+    final val serializersModule // app.softwork.serialization.csv/CSVConfiguration.serializersModule|{}serializersModule[0]
+        final fun <get-serializersModule>(): kotlinx.serialization.modules/SerializersModule // app.softwork.serialization.csv/CSVConfiguration.serializersModule.<get-serializersModule>|<get-serializersModule>(){}[0]
+
+    final class Builder { // app.softwork.serialization.csv/CSVConfiguration.Builder|null[0]
+        constructor <init>() // app.softwork.serialization.csv/CSVConfiguration.Builder.<init>|<init>(){}[0]
+
+        final var alwaysEmitQuotes // app.softwork.serialization.csv/CSVConfiguration.Builder.alwaysEmitQuotes|{}alwaysEmitQuotes[0]
+            final fun <get-alwaysEmitQuotes>(): kotlin/Boolean // app.softwork.serialization.csv/CSVConfiguration.Builder.alwaysEmitQuotes.<get-alwaysEmitQuotes>|<get-alwaysEmitQuotes>(){}[0]
+            final fun <set-alwaysEmitQuotes>(kotlin/Boolean) // app.softwork.serialization.csv/CSVConfiguration.Builder.alwaysEmitQuotes.<set-alwaysEmitQuotes>|<set-alwaysEmitQuotes>(kotlin.Boolean){}[0]
+        final var includeHeader // app.softwork.serialization.csv/CSVConfiguration.Builder.includeHeader|{}includeHeader[0]
+            final fun <get-includeHeader>(): kotlin/Boolean // app.softwork.serialization.csv/CSVConfiguration.Builder.includeHeader.<get-includeHeader>|<get-includeHeader>(){}[0]
+            final fun <set-includeHeader>(kotlin/Boolean) // app.softwork.serialization.csv/CSVConfiguration.Builder.includeHeader.<set-includeHeader>|<set-includeHeader>(kotlin.Boolean){}[0]
+        final var lineSeparator // app.softwork.serialization.csv/CSVConfiguration.Builder.lineSeparator|{}lineSeparator[0]
+            final fun <get-lineSeparator>(): kotlin/String // app.softwork.serialization.csv/CSVConfiguration.Builder.lineSeparator.<get-lineSeparator>|<get-lineSeparator>(){}[0]
+            final fun <set-lineSeparator>(kotlin/String) // app.softwork.serialization.csv/CSVConfiguration.Builder.lineSeparator.<set-lineSeparator>|<set-lineSeparator>(kotlin.String){}[0]
+        final var numberFormat // app.softwork.serialization.csv/CSVConfiguration.Builder.numberFormat|{}numberFormat[0]
+            final fun <get-numberFormat>(): app.softwork.serialization.csv/CSVFormat.NumberFormat // app.softwork.serialization.csv/CSVConfiguration.Builder.numberFormat.<get-numberFormat>|<get-numberFormat>(){}[0]
+            final fun <set-numberFormat>(app.softwork.serialization.csv/CSVFormat.NumberFormat) // app.softwork.serialization.csv/CSVConfiguration.Builder.numberFormat.<set-numberFormat>|<set-numberFormat>(app.softwork.serialization.csv.CSVFormat.NumberFormat){}[0]
+        final var separator // app.softwork.serialization.csv/CSVConfiguration.Builder.separator|{}separator[0]
+            final fun <get-separator>(): kotlin/Char // app.softwork.serialization.csv/CSVConfiguration.Builder.separator.<get-separator>|<get-separator>(){}[0]
+            final fun <set-separator>(kotlin/Char) // app.softwork.serialization.csv/CSVConfiguration.Builder.separator.<set-separator>|<set-separator>(kotlin.Char){}[0]
+        final var serializersModule // app.softwork.serialization.csv/CSVConfiguration.Builder.serializersModule|{}serializersModule[0]
+            final fun <get-serializersModule>(): kotlinx.serialization.modules/SerializersModule // app.softwork.serialization.csv/CSVConfiguration.Builder.serializersModule.<get-serializersModule>|<get-serializersModule>(){}[0]
+            final fun <set-serializersModule>(kotlinx.serialization.modules/SerializersModule) // app.softwork.serialization.csv/CSVConfiguration.Builder.serializersModule.<set-serializersModule>|<set-serializersModule>(kotlinx.serialization.modules.SerializersModule){}[0]
+    }
+}
+
+sealed class app.softwork.serialization.csv/CSVFormat : kotlinx.serialization/StringFormat { // app.softwork.serialization.csv/CSVFormat|null[0]
+    final val configuration // app.softwork.serialization.csv/CSVFormat.configuration|{}configuration[0]
+        final fun <get-configuration>(): app.softwork.serialization.csv/CSVConfiguration // app.softwork.serialization.csv/CSVFormat.configuration.<get-configuration>|<get-configuration>(){}[0]
+    open val serializersModule // app.softwork.serialization.csv/CSVFormat.serializersModule|{}serializersModule[0]
+        open fun <get-serializersModule>(): kotlinx.serialization.modules/SerializersModule // app.softwork.serialization.csv/CSVFormat.serializersModule.<get-serializersModule>|<get-serializersModule>(){}[0]
+
+    open fun <#A1: kotlin/Any?> decodeFromString(kotlinx.serialization/DeserializationStrategy<#A1>, kotlin/String): #A1 // app.softwork.serialization.csv/CSVFormat.decodeFromString|decodeFromString(kotlinx.serialization.DeserializationStrategy<0:0>;kotlin.String){0§<kotlin.Any?>}[0]
+    open fun <#A1: kotlin/Any?> encodeToString(kotlinx.serialization/SerializationStrategy<#A1>, #A1): kotlin/String // app.softwork.serialization.csv/CSVFormat.encodeToString|encodeToString(kotlinx.serialization.SerializationStrategy<0:0>;0:0){0§<kotlin.Any?>}[0]
+
+    final enum class NumberFormat : kotlin/Enum<app.softwork.serialization.csv/CSVFormat.NumberFormat> { // app.softwork.serialization.csv/CSVFormat.NumberFormat|null[0]
+        enum entry Comma // app.softwork.serialization.csv/CSVFormat.NumberFormat.Comma|null[0]
+        enum entry Dot // app.softwork.serialization.csv/CSVFormat.NumberFormat.Dot|null[0]
+
+        final val entries // app.softwork.serialization.csv/CSVFormat.NumberFormat.entries|#static{}entries[0]
+            final fun <get-entries>(): kotlin.enums/EnumEntries<app.softwork.serialization.csv/CSVFormat.NumberFormat> // app.softwork.serialization.csv/CSVFormat.NumberFormat.entries.<get-entries>|<get-entries>#static(){}[0]
+
+        final fun valueOf(kotlin/String): app.softwork.serialization.csv/CSVFormat.NumberFormat // app.softwork.serialization.csv/CSVFormat.NumberFormat.valueOf|valueOf#static(kotlin.String){}[0]
+        final fun values(): kotlin/Array<app.softwork.serialization.csv/CSVFormat.NumberFormat> // app.softwork.serialization.csv/CSVFormat.NumberFormat.values|values#static(){}[0]
+    }
+
+    final object Default : app.softwork.serialization.csv/CSVFormat { // app.softwork.serialization.csv/CSVFormat.Default|null[0]
+        final fun invoke(kotlin/Function1<app.softwork.serialization.csv/CSVConfiguration.Builder, kotlin/Unit>): app.softwork.serialization.csv/CSVFormat // app.softwork.serialization.csv/CSVFormat.Default.invoke|invoke(kotlin.Function1<app.softwork.serialization.csv.CSVConfiguration.Builder,kotlin.Unit>){}[0]
+    }
+}
