@@ -1,16 +1,9 @@
-import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
-
 plugins {
     kotlin("multiplatform")
 }
 
 kotlin {
     jvmToolchain(8)
-
-    abiValidation {
-        @OptIn(ExperimentalAbiValidation::class)
-        enabled.set(true)
-    }
 
     explicitApi()
     compilerOptions {
@@ -68,10 +61,6 @@ kotlin {
     androidNativeX64()
     mingwX64()
     watchosDeviceArm64()
-}
-
-tasks.check {
-    dependsOn(tasks.checkLegacyAbi)
 }
 
 tasks.named<JavaCompile>("compileJvm9MainJava") {

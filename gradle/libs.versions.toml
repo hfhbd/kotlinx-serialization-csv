@@ -10,6 +10,7 @@ datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.6.2
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+binary = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version = "0.18.0" }
 mavencentral = { id = "io.github.hfhbd.mavencentral", version = "0.0.17" }
 dokka = { id = "org.jetbrains.dokka", version = "2.0.0" }
 licensee = { id = "app.cash.licensee", version = "1.13.0" }
