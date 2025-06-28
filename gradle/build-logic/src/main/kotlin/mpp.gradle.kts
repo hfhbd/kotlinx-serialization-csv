@@ -15,10 +15,6 @@ kotlin {
     }
 
     jvm {
-        compilerOptions {
-            jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
-        }
-
         val main = compilations.getByName("main")
         val jvm9 = compilations.create("9Main") {
             associateWith(main)
