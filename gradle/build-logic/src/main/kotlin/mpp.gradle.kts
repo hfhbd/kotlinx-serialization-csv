@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
+
 plugins {
     kotlin("multiplatform")
 }
@@ -9,9 +11,24 @@ kotlin {
     compilerOptions {
         allWarningsAsErrors.set(true)
         progressiveMode.set(true)
+        extraWarnings.set(true)
     }
 
-    jvm()
+    jvm {
+        val main = compilations.getByName("main")
+        val jvm9 = compilations.create("9Main") {
+            associateWith(main)
+        }
+        tasks.named(artifactsTaskName, Jar::class) {
+            from(jvm9.output.allOutputs) {
+                into("META-INF/versions/9")
+            }
+            manifest {
+                manifest.attributes("Multi-Release" to true)
+            }
+        }
+    }
+
     js {
         nodejs()
     }
@@ -49,17 +66,14 @@ kotlin {
     watchosDeviceArm64()
 }
 
-val java9 by java.sourceSets.registering
-
-tasks.named("jvmJar", Jar::class) {
-    into("META-INF/versions/9") {
-        from(java9.map { it.output })
-    }
-
-    manifest.attributes("Multi-Release" to true)
-}
-
-tasks.named<JavaCompile>("compileJava9Java") {
+tasks.named<JavaCompile>("compileJvm9MainJava") {
     javaCompiler.set(javaToolchains.compilerFor {})
     options.release.set(9)
+}
+
+plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsPlugin> {
+    the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec>().downloadBaseUrl = null
+}
+plugins.withType<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsPlugin> {
+    the<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsEnvSpec>().downloadBaseUrl = null
 }

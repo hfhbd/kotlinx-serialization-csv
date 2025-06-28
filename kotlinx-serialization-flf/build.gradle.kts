@@ -21,7 +21,7 @@ kotlin {
     }
 }
 
-tasks.compileJava9Java {
+tasks.compileJvm9MainJava {
     options.compilerArgumentProviders += object : CommandLineArgumentProvider {
 
         @InputFiles
