@@ -4,11 +4,10 @@ plugins {
     id("io.github.hfhbd.mavencentral")
 }
 
-val emptyJar by tasks.registering(Jar::class) { }
+val emptyJar by tasks.registering(Jar::class)
 
 publishing {
-    publications.configureEach {
-        this as MavenPublication
+    publications.withType(MavenPublication::class).configureEach {
         artifact(emptyJar) {
             classifier = "javadoc"
         }
