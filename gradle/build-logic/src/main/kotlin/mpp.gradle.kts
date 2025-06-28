@@ -70,6 +70,14 @@ kotlin {
     androidNativeX64()
     mingwX64()
     watchosDeviceArm64()
+
+    sourceSets {
+        commonTest {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+    }
 }
 
 tasks.check {
