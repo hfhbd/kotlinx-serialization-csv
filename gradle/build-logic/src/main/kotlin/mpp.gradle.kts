@@ -1,4 +1,6 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
+@file:OptIn(ExperimentalAbiValidation::class)
+
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
     kotlin("multiplatform")
@@ -12,6 +14,10 @@ kotlin {
         allWarningsAsErrors.set(true)
         progressiveMode.set(true)
         extraWarnings.set(true)
+    }
+
+    abiValidation {
+        enabled.set(true)
     }
 
     jvm {
@@ -66,14 +72,18 @@ kotlin {
     watchosDeviceArm64()
 }
 
+tasks.check {
+    dependsOn(tasks.checkLegacyAbi)
+}
+
 tasks.named<JavaCompile>("compileJvm9MainJava") {
     javaCompiler.set(javaToolchains.compilerFor {})
     options.release.set(9)
 }
 
 plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsPlugin> {
-    the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec>().downloadBaseUrl = null
+    the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec>().downloadBaseUrl.set(null)
 }
 plugins.withType<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsPlugin> {
-    the<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsEnvSpec>().downloadBaseUrl = null
+    the<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsEnvSpec>().downloadBaseUrl.set(null)
 }
