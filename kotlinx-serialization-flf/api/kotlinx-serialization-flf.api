@@ -10,7 +10,7 @@ public final class app/softwork/serialization/flf/Ebcdic$Format : java/lang/Enum
 	public static fun values ()[Lapp/softwork/serialization/flf/Ebcdic$Format;
 }
 
-public synthetic class app/softwork/serialization/flf/Ebcdic$Impl : app/softwork/serialization/flf/Ebcdic {
+public final synthetic class app/softwork/serialization/flf/Ebcdic$Impl : app/softwork/serialization/flf/Ebcdic {
 	public fun <init> (Lapp/softwork/serialization/flf/Ebcdic$Format;)V
 	public final synthetic fun format ()Lapp/softwork/serialization/flf/Ebcdic$Format;
 }
@@ -19,7 +19,7 @@ public abstract interface annotation class app/softwork/serialization/flf/FixedL
 	public abstract fun length ()I
 }
 
-public synthetic class app/softwork/serialization/flf/FixedLength$Impl : app/softwork/serialization/flf/FixedLength {
+public final synthetic class app/softwork/serialization/flf/FixedLength$Impl : app/softwork/serialization/flf/FixedLength {
 	public fun <init> (I)V
 	public final synthetic fun length ()I
 }
@@ -61,6 +61,7 @@ public final class app/softwork/serialization/flf/FixedLengthDecoder : app/softw
 	public fun decodeNullableSerializableValue (Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
 	public fun decodeSequentially ()Z
 	public fun decodeSerializableElement (Lkotlinx/serialization/descriptors/SerialDescriptor;ILkotlinx/serialization/DeserializationStrategy;Ljava/lang/Object;)Ljava/lang/Object;
+	public fun decodeSerializableValue (Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
 	public fun decodeShort ()Ljava/lang/Void;
 	public synthetic fun decodeShort ()S
 	public fun decodeShortElement (Lkotlinx/serialization/descriptors/SerialDescriptor;I)S
@@ -92,15 +93,19 @@ public final class app/softwork/serialization/flf/FixedLengthEncoder : app/softw
 	public fun encodeIntElement (Lkotlinx/serialization/descriptors/SerialDescriptor;II)V
 	public fun encodeLong (J)V
 	public fun encodeLongElement (Lkotlinx/serialization/descriptors/SerialDescriptor;IJ)V
+	public fun encodeNotNullMark ()V
 	public fun encodeNull ()V
 	public fun encodeNullableSerializableElement (Lkotlinx/serialization/descriptors/SerialDescriptor;ILkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
+	public fun encodeNullableSerializableValue (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
 	public fun encodeSerializableElement (Lkotlinx/serialization/descriptors/SerialDescriptor;ILkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
+	public fun encodeSerializableValue (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
 	public fun encodeShort (S)V
 	public fun encodeShortElement (Lkotlinx/serialization/descriptors/SerialDescriptor;IS)V
 	public fun encodeString (Ljava/lang/String;)V
 	public fun encodeStringElement (Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/String;)V
 	public fun endStructure (Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 	public fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
+	public fun shouldEncodeElementDefault (Lkotlinx/serialization/descriptors/SerialDescriptor;I)Z
 }
 
 public abstract class app/softwork/serialization/flf/FixedLengthFormat : kotlinx/serialization/StringFormat {
@@ -135,7 +140,7 @@ public abstract interface annotation class app/softwork/serialization/flf/FixedL
 	public abstract fun serialName ()Ljava/lang/String;
 }
 
-public synthetic class app/softwork/serialization/flf/FixedLengthList$Impl : app/softwork/serialization/flf/FixedLengthList {
+public final synthetic class app/softwork/serialization/flf/FixedLengthList$Impl : app/softwork/serialization/flf/FixedLengthList {
 	public fun <init> (Ljava/lang/String;)V
 	public final synthetic fun serialName ()Ljava/lang/String;
 }
@@ -144,7 +149,7 @@ public abstract interface annotation class app/softwork/serialization/flf/FixedL
 	public abstract fun serialName ()Ljava/lang/String;
 }
 
-public synthetic class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminator$Impl : app/softwork/serialization/flf/FixedLengthSealedClassDiscriminator {
+public final synthetic class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminator$Impl : app/softwork/serialization/flf/FixedLengthSealedClassDiscriminator {
 	public fun <init> (Ljava/lang/String;)V
 	public final synthetic fun serialName ()Ljava/lang/String;
 }
@@ -153,7 +158,7 @@ public abstract interface annotation class app/softwork/serialization/flf/FixedL
 	public abstract fun length ()I
 }
 
-public synthetic class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength$Impl : app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength {
+public final synthetic class app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength$Impl : app/softwork/serialization/flf/FixedLengthSealedClassDiscriminatorLength {
 	public fun <init> (I)V
 	public final synthetic fun length ()I
 }

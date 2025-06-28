@@ -27,8 +27,23 @@ public abstract interface class app/softwork/serialization/csv/CSVDecoder : kotl
 	public abstract fun getConfiguration ()Lapp/softwork/serialization/csv/CSVConfiguration;
 }
 
+public final class app/softwork/serialization/csv/CSVDecoder$DefaultImpls {
+	public static fun decodeCollectionSize (Lapp/softwork/serialization/csv/CSVDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)I
+	public static fun decodeNullableSerializableValue (Lapp/softwork/serialization/csv/CSVDecoder;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
+	public static fun decodeSequentially (Lapp/softwork/serialization/csv/CSVDecoder;)Z
+	public static fun decodeSerializableValue (Lapp/softwork/serialization/csv/CSVDecoder;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
+}
+
 public abstract interface class app/softwork/serialization/csv/CSVEncoder : kotlinx/serialization/encoding/CompositeEncoder, kotlinx/serialization/encoding/Encoder {
 	public abstract fun getConfiguration ()Lapp/softwork/serialization/csv/CSVConfiguration;
+}
+
+public final class app/softwork/serialization/csv/CSVEncoder$DefaultImpls {
+	public static fun beginCollection (Lapp/softwork/serialization/csv/CSVEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I)Lkotlinx/serialization/encoding/CompositeEncoder;
+	public static fun encodeNotNullMark (Lapp/softwork/serialization/csv/CSVEncoder;)V
+	public static fun encodeNullableSerializableValue (Lapp/softwork/serialization/csv/CSVEncoder;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
+	public static fun encodeSerializableValue (Lapp/softwork/serialization/csv/CSVEncoder;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
+	public static fun shouldEncodeElementDefault (Lapp/softwork/serialization/csv/CSVEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I)Z
 }
 
 public abstract class app/softwork/serialization/csv/CSVFormat : kotlinx/serialization/StringFormat {
