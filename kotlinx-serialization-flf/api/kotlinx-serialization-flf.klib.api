@@ -1,0 +1,125 @@
+// Klib ABI Dump
+// Targets: [androidNativeArm32, androidNativeArm64, androidNativeX64, androidNativeX86, iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, wasmWasi, watchosArm32, watchosArm64, watchosDeviceArm64, watchosSimulatorArm64, watchosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <app.softwork:kotlinx-serialization-flf>
+open annotation class app.softwork.serialization.flf/Ebcdic : kotlin/Annotation { // app.softwork.serialization.flf/Ebcdic|null[0]
+    constructor <init>(app.softwork.serialization.flf/Ebcdic.Format) // app.softwork.serialization.flf/Ebcdic.<init>|<init>(app.softwork.serialization.flf.Ebcdic.Format){}[0]
+
+    final val format // app.softwork.serialization.flf/Ebcdic.format|{}format[0]
+        final fun <get-format>(): app.softwork.serialization.flf/Ebcdic.Format // app.softwork.serialization.flf/Ebcdic.format.<get-format>|<get-format>(){}[0]
+
+    abstract enum class Format : kotlin/Enum<app.softwork.serialization.flf/Ebcdic.Format> { // app.softwork.serialization.flf/Ebcdic.Format|null[0]
+        enum entry Zoned // app.softwork.serialization.flf/Ebcdic.Format.Zoned|null[0]
+
+        final val entries // app.softwork.serialization.flf/Ebcdic.Format.entries|#static{}entries[0]
+            final fun <get-entries>(): kotlin.enums/EnumEntries<app.softwork.serialization.flf/Ebcdic.Format> // app.softwork.serialization.flf/Ebcdic.Format.entries.<get-entries>|<get-entries>#static(){}[0]
+
+        final fun valueOf(kotlin/String): app.softwork.serialization.flf/Ebcdic.Format // app.softwork.serialization.flf/Ebcdic.Format.valueOf|valueOf#static(kotlin.String){}[0]
+        final fun values(): kotlin/Array<app.softwork.serialization.flf/Ebcdic.Format> // app.softwork.serialization.flf/Ebcdic.Format.values|values#static(){}[0]
+    }
+}
+
+open annotation class app.softwork.serialization.flf/FixedLength : kotlin/Annotation { // app.softwork.serialization.flf/FixedLength|null[0]
+    constructor <init>(kotlin/Int) // app.softwork.serialization.flf/FixedLength.<init>|<init>(kotlin.Int){}[0]
+
+    final val length // app.softwork.serialization.flf/FixedLength.length|{}length[0]
+        final fun <get-length>(): kotlin/Int // app.softwork.serialization.flf/FixedLength.length.<get-length>|<get-length>(){}[0]
+}
+
+open annotation class app.softwork.serialization.flf/FixedLengthList : kotlin/Annotation { // app.softwork.serialization.flf/FixedLengthList|null[0]
+    constructor <init>(kotlin/String) // app.softwork.serialization.flf/FixedLengthList.<init>|<init>(kotlin.String){}[0]
+
+    final val serialName // app.softwork.serialization.flf/FixedLengthList.serialName|{}serialName[0]
+        final fun <get-serialName>(): kotlin/String // app.softwork.serialization.flf/FixedLengthList.serialName.<get-serialName>|<get-serialName>(){}[0]
+}
+
+open annotation class app.softwork.serialization.flf/FixedLengthSealedClassDiscriminator : kotlin/Annotation { // app.softwork.serialization.flf/FixedLengthSealedClassDiscriminator|null[0]
+    constructor <init>(kotlin/String) // app.softwork.serialization.flf/FixedLengthSealedClassDiscriminator.<init>|<init>(kotlin.String){}[0]
+
+    final val serialName // app.softwork.serialization.flf/FixedLengthSealedClassDiscriminator.serialName|{}serialName[0]
+        final fun <get-serialName>(): kotlin/String // app.softwork.serialization.flf/FixedLengthSealedClassDiscriminator.serialName.<get-serialName>|<get-serialName>(){}[0]
+}
+
+open annotation class app.softwork.serialization.flf/FixedLengthSealedClassDiscriminatorLength : kotlin/Annotation { // app.softwork.serialization.flf/FixedLengthSealedClassDiscriminatorLength|null[0]
+    constructor <init>(kotlin/Int) // app.softwork.serialization.flf/FixedLengthSealedClassDiscriminatorLength.<init>|<init>(kotlin.Int){}[0]
+
+    final val length // app.softwork.serialization.flf/FixedLengthSealedClassDiscriminatorLength.length|{}length[0]
+        final fun <get-length>(): kotlin/Int // app.softwork.serialization.flf/FixedLengthSealedClassDiscriminatorLength.length.<get-length>|<get-length>(){}[0]
+}
+
+final class app.softwork.serialization.flf/FixedLengthDecoder : app.softwork.serialization.flf/FailingPrimitiveDecoder, kotlinx.serialization.encoding/CompositeDecoder { // app.softwork.serialization.flf/FixedLengthDecoder|null[0]
+    constructor <init>(kotlin/Function0<kotlin/Unit>, kotlin/Function1<kotlin/Int, kotlin/CharSequence>, kotlinx.serialization.modules/SerializersModule, kotlin/Int) // app.softwork.serialization.flf/FixedLengthDecoder.<init>|<init>(kotlin.Function0<kotlin.Unit>;kotlin.Function1<kotlin.Int,kotlin.CharSequence>;kotlinx.serialization.modules.SerializersModule;kotlin.Int){}[0]
+
+    final val serializersModule // app.softwork.serialization.flf/FixedLengthDecoder.serializersModule|{}serializersModule[0]
+        final fun <get-serializersModule>(): kotlinx.serialization.modules/SerializersModule // app.softwork.serialization.flf/FixedLengthDecoder.serializersModule.<get-serializersModule>|<get-serializersModule>(){}[0]
+
+    final fun <#A1: kotlin/Any> decodeNullableSerializableElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlinx.serialization/DeserializationStrategy<#A1?>, #A1?): #A1? // app.softwork.serialization.flf/FixedLengthDecoder.decodeNullableSerializableElement|decodeNullableSerializableElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlinx.serialization.DeserializationStrategy<0:0?>;0:0?){0§<kotlin.Any>}[0]
+    final fun <#A1: kotlin/Any> decodeNullableSerializableValue(kotlinx.serialization/DeserializationStrategy<#A1?>): #A1? // app.softwork.serialization.flf/FixedLengthDecoder.decodeNullableSerializableValue|decodeNullableSerializableValue(kotlinx.serialization.DeserializationStrategy<0:0?>){0§<kotlin.Any>}[0]
+    final fun <#A1: kotlin/Any?> decodeSerializableElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlinx.serialization/DeserializationStrategy<#A1>, #A1?): #A1 // app.softwork.serialization.flf/FixedLengthDecoder.decodeSerializableElement|decodeSerializableElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlinx.serialization.DeserializationStrategy<0:0>;0:0?){0§<kotlin.Any?>}[0]
+    final fun beginStructure(kotlinx.serialization.descriptors/SerialDescriptor): kotlinx.serialization.encoding/CompositeDecoder // app.softwork.serialization.flf/FixedLengthDecoder.beginStructure|beginStructure(kotlinx.serialization.descriptors.SerialDescriptor){}[0]
+    final fun decodeBooleanElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlin/Boolean // app.softwork.serialization.flf/FixedLengthDecoder.decodeBooleanElement|decodeBooleanElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun decodeByteElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlin/Byte // app.softwork.serialization.flf/FixedLengthDecoder.decodeByteElement|decodeByteElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun decodeCharElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlin/Char // app.softwork.serialization.flf/FixedLengthDecoder.decodeCharElement|decodeCharElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun decodeCollectionSize(kotlinx.serialization.descriptors/SerialDescriptor): kotlin/Int // app.softwork.serialization.flf/FixedLengthDecoder.decodeCollectionSize|decodeCollectionSize(kotlinx.serialization.descriptors.SerialDescriptor){}[0]
+    final fun decodeDoubleElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlin/Double // app.softwork.serialization.flf/FixedLengthDecoder.decodeDoubleElement|decodeDoubleElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun decodeElementIndex(kotlinx.serialization.descriptors/SerialDescriptor): kotlin/Nothing // app.softwork.serialization.flf/FixedLengthDecoder.decodeElementIndex|decodeElementIndex(kotlinx.serialization.descriptors.SerialDescriptor){}[0]
+    final fun decodeEnum(kotlinx.serialization.descriptors/SerialDescriptor): kotlin/Int // app.softwork.serialization.flf/FixedLengthDecoder.decodeEnum|decodeEnum(kotlinx.serialization.descriptors.SerialDescriptor){}[0]
+    final fun decodeFloatElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlin/Float // app.softwork.serialization.flf/FixedLengthDecoder.decodeFloatElement|decodeFloatElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun decodeInline(kotlinx.serialization.descriptors/SerialDescriptor): kotlinx.serialization.encoding/Decoder // app.softwork.serialization.flf/FixedLengthDecoder.decodeInline|decodeInline(kotlinx.serialization.descriptors.SerialDescriptor){}[0]
+    final fun decodeInlineElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlinx.serialization.encoding/Decoder // app.softwork.serialization.flf/FixedLengthDecoder.decodeInlineElement|decodeInlineElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun decodeIntElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlin/Int // app.softwork.serialization.flf/FixedLengthDecoder.decodeIntElement|decodeIntElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun decodeLongElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlin/Long // app.softwork.serialization.flf/FixedLengthDecoder.decodeLongElement|decodeLongElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun decodeNotNullMark(): kotlin/Nothing // app.softwork.serialization.flf/FixedLengthDecoder.decodeNotNullMark|decodeNotNullMark(){}[0]
+    final fun decodeSequentially(): kotlin/Boolean // app.softwork.serialization.flf/FixedLengthDecoder.decodeSequentially|decodeSequentially(){}[0]
+    final fun decodeShortElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlin/Short // app.softwork.serialization.flf/FixedLengthDecoder.decodeShortElement|decodeShortElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun decodeStringElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlin/String // app.softwork.serialization.flf/FixedLengthDecoder.decodeStringElement|decodeStringElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun endStructure(kotlinx.serialization.descriptors/SerialDescriptor) // app.softwork.serialization.flf/FixedLengthDecoder.endStructure|endStructure(kotlinx.serialization.descriptors.SerialDescriptor){}[0]
+}
+
+final class app.softwork.serialization.flf/FixedLengthEncoder : app.softwork.serialization.flf/FailingPrimitiveEncoder, kotlinx.serialization.encoding/CompositeEncoder { // app.softwork.serialization.flf/FixedLengthEncoder|null[0]
+    constructor <init>(kotlin.text/StringBuilder, kotlinx.serialization.modules/SerializersModule, kotlin/String, kotlin/Boolean) // app.softwork.serialization.flf/FixedLengthEncoder.<init>|<init>(kotlin.text.StringBuilder;kotlinx.serialization.modules.SerializersModule;kotlin.String;kotlin.Boolean){}[0]
+
+    final val serializersModule // app.softwork.serialization.flf/FixedLengthEncoder.serializersModule|{}serializersModule[0]
+        final fun <get-serializersModule>(): kotlinx.serialization.modules/SerializersModule // app.softwork.serialization.flf/FixedLengthEncoder.serializersModule.<get-serializersModule>|<get-serializersModule>(){}[0]
+
+    final fun <#A1: kotlin/Any> encodeNullableSerializableElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlinx.serialization/SerializationStrategy<#A1>, #A1?) // app.softwork.serialization.flf/FixedLengthEncoder.encodeNullableSerializableElement|encodeNullableSerializableElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlinx.serialization.SerializationStrategy<0:0>;0:0?){0§<kotlin.Any>}[0]
+    final fun <#A1: kotlin/Any?> encodeSerializableElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlinx.serialization/SerializationStrategy<#A1>, #A1) // app.softwork.serialization.flf/FixedLengthEncoder.encodeSerializableElement|encodeSerializableElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlinx.serialization.SerializationStrategy<0:0>;0:0){0§<kotlin.Any?>}[0]
+    final fun beginCollection(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlinx.serialization.encoding/CompositeEncoder // app.softwork.serialization.flf/FixedLengthEncoder.beginCollection|beginCollection(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun beginStructure(kotlinx.serialization.descriptors/SerialDescriptor): kotlinx.serialization.encoding/CompositeEncoder // app.softwork.serialization.flf/FixedLengthEncoder.beginStructure|beginStructure(kotlinx.serialization.descriptors.SerialDescriptor){}[0]
+    final fun encodeBooleanElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlin/Boolean) // app.softwork.serialization.flf/FixedLengthEncoder.encodeBooleanElement|encodeBooleanElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlin.Boolean){}[0]
+    final fun encodeByteElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlin/Byte) // app.softwork.serialization.flf/FixedLengthEncoder.encodeByteElement|encodeByteElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlin.Byte){}[0]
+    final fun encodeCharElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlin/Char) // app.softwork.serialization.flf/FixedLengthEncoder.encodeCharElement|encodeCharElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlin.Char){}[0]
+    final fun encodeDoubleElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlin/Double) // app.softwork.serialization.flf/FixedLengthEncoder.encodeDoubleElement|encodeDoubleElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlin.Double){}[0]
+    final fun encodeEnum(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int) // app.softwork.serialization.flf/FixedLengthEncoder.encodeEnum|encodeEnum(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun encodeFloatElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlin/Float) // app.softwork.serialization.flf/FixedLengthEncoder.encodeFloatElement|encodeFloatElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlin.Float){}[0]
+    final fun encodeInline(kotlinx.serialization.descriptors/SerialDescriptor): kotlinx.serialization.encoding/Encoder // app.softwork.serialization.flf/FixedLengthEncoder.encodeInline|encodeInline(kotlinx.serialization.descriptors.SerialDescriptor){}[0]
+    final fun encodeInlineElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int): kotlinx.serialization.encoding/Encoder // app.softwork.serialization.flf/FixedLengthEncoder.encodeInlineElement|encodeInlineElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int){}[0]
+    final fun encodeIntElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlin/Int) // app.softwork.serialization.flf/FixedLengthEncoder.encodeIntElement|encodeIntElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlin.Int){}[0]
+    final fun encodeLongElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlin/Long) // app.softwork.serialization.flf/FixedLengthEncoder.encodeLongElement|encodeLongElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlin.Long){}[0]
+    final fun encodeShortElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlin/Short) // app.softwork.serialization.flf/FixedLengthEncoder.encodeShortElement|encodeShortElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlin.Short){}[0]
+    final fun encodeStringElement(kotlinx.serialization.descriptors/SerialDescriptor, kotlin/Int, kotlin/String) // app.softwork.serialization.flf/FixedLengthEncoder.encodeStringElement|encodeStringElement(kotlinx.serialization.descriptors.SerialDescriptor;kotlin.Int;kotlin.String){}[0]
+    final fun endStructure(kotlinx.serialization.descriptors/SerialDescriptor) // app.softwork.serialization.flf/FixedLengthEncoder.endStructure|endStructure(kotlinx.serialization.descriptors.SerialDescriptor){}[0]
+}
+
+sealed class app.softwork.serialization.flf/FixedLengthFormat : kotlinx.serialization/StringFormat { // app.softwork.serialization.flf/FixedLengthFormat|null[0]
+    final val lineSeparator // app.softwork.serialization.flf/FixedLengthFormat.lineSeparator|{}lineSeparator[0]
+        final fun <get-lineSeparator>(): kotlin/String // app.softwork.serialization.flf/FixedLengthFormat.lineSeparator.<get-lineSeparator>|<get-lineSeparator>(){}[0]
+    open val serializersModule // app.softwork.serialization.flf/FixedLengthFormat.serializersModule|{}serializersModule[0]
+        open fun <get-serializersModule>(): kotlinx.serialization.modules/SerializersModule // app.softwork.serialization.flf/FixedLengthFormat.serializersModule.<get-serializersModule>|<get-serializersModule>(){}[0]
+
+    final fun <#A1: kotlin/Any?> decodeAsSequence(kotlinx.serialization/DeserializationStrategy<#A1>, kotlin.sequences/Sequence<kotlin/String>): kotlin.sequences/Sequence<#A1> // app.softwork.serialization.flf/FixedLengthFormat.decodeAsSequence|decodeAsSequence(kotlinx.serialization.DeserializationStrategy<0:0>;kotlin.sequences.Sequence<kotlin.String>){0§<kotlin.Any?>}[0]
+    final fun <#A1: kotlin/Any?> encodeAsSequence(kotlinx.serialization/SerializationStrategy<#A1>, kotlin.sequences/Sequence<#A1>): kotlin.sequences/Sequence<kotlin/String> // app.softwork.serialization.flf/FixedLengthFormat.encodeAsSequence|encodeAsSequence(kotlinx.serialization.SerializationStrategy<0:0>;kotlin.sequences.Sequence<0:0>){0§<kotlin.Any?>}[0]
+    open fun <#A1: kotlin/Any?> decodeFromString(kotlinx.serialization/DeserializationStrategy<#A1>, kotlin/String): #A1 // app.softwork.serialization.flf/FixedLengthFormat.decodeFromString|decodeFromString(kotlinx.serialization.DeserializationStrategy<0:0>;kotlin.String){0§<kotlin.Any?>}[0]
+    open fun <#A1: kotlin/Any?> encodeToString(kotlinx.serialization/SerializationStrategy<#A1>, #A1): kotlin/String // app.softwork.serialization.flf/FixedLengthFormat.encodeToString|encodeToString(kotlinx.serialization.SerializationStrategy<0:0>;0:0){0§<kotlin.Any?>}[0]
+
+    final object Default : app.softwork.serialization.flf/FixedLengthFormat { // app.softwork.serialization.flf/FixedLengthFormat.Default|null[0]
+        final fun invoke(kotlin/String = ..., kotlin/Boolean = ..., kotlinx.serialization.modules/SerializersModule = ...): app.softwork.serialization.flf/FixedLengthFormat // app.softwork.serialization.flf/FixedLengthFormat.Default.invoke|invoke(kotlin.String;kotlin.Boolean;kotlinx.serialization.modules.SerializersModule){}[0]
+    }
+}
+
+final fun <#A: kotlin/Any?> (kotlin.sequences/Sequence<#A>).app.softwork.serialization.flf/encode(kotlinx.serialization/SerializationStrategy<#A>, app.softwork.serialization.flf/FixedLengthFormat = ...): kotlin.sequences/Sequence<kotlin/String> // app.softwork.serialization.flf/encode|encode@kotlin.sequences.Sequence<0:0>(kotlinx.serialization.SerializationStrategy<0:0>;app.softwork.serialization.flf.FixedLengthFormat){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (kotlin.sequences/Sequence<kotlin/String>).app.softwork.serialization.flf/decode(kotlinx.serialization/DeserializationStrategy<#A>, app.softwork.serialization.flf/FixedLengthFormat = ...): kotlin.sequences/Sequence<#A> // app.softwork.serialization.flf/decode|decode@kotlin.sequences.Sequence<kotlin.String>(kotlinx.serialization.DeserializationStrategy<0:0>;app.softwork.serialization.flf.FixedLengthFormat){0§<kotlin.Any?>}[0]
