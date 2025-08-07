@@ -624,4 +624,34 @@ class CsvDecoderTest {
             actual = CSVFormat { includeHeader = false }.decodeFromString(ListSerializer(Sealed.serializer()), csv)
         )
     }
+
+    @Serializable
+    data class Municipality(
+        val id: String,
+        val de: String,
+    )
+
+    @Test
+    fun issues298() {
+        val csvNonNullableStringWithoutNewLine = """
+            id,de
+            1008,
+        """.trimIndent()
+
+        assertEquals(listOf(
+            Municipality("1008", "")
+        ), CSVFormat.decodeFromString(ListSerializer(Municipality.serializer()), csvNonNullableStringWithoutNewLine))
+
+        val csvNonNullableStringWithNewLine = """
+            id,de
+            1008,
+
+        """.trimIndent()
+
+        assertEquals(listOf(
+            Municipality("1008", "")
+        ),
+            CSVFormat.decodeFromString(ListSerializer<Municipality>(Municipality.serializer()), csvNonNullableStringWithNewLine)
+        )
+    }
 }

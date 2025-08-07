@@ -126,9 +126,13 @@ internal class CSVDecoderImpl(
 
     override fun decodeString(): String {
         index += 1
-        return when (val nextNode = nodes.next()) {
-            is CSVNode.Element -> nextNode.value
-            CSVNode.NewLine -> throwUnknownValue()
+        return if (nodes.peek() == null) {
+            ""
+        } else {
+            when (val nextNode = nodes.next()) {
+                is CSVNode.Element -> nextNode.value
+                CSVNode.NewLine -> throwUnknownValue()
+            }
         }
     }
 
