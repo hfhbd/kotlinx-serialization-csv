@@ -638,9 +638,12 @@ class CsvDecoderTest {
             1008,
         """.trimIndent()
 
-        assertEquals(listOf(
-            Municipality("1008", "")
-        ), CSVFormat.decodeFromString(ListSerializer(Municipality.serializer()), csvNonNullableStringWithoutNewLine))
+        assertEquals(
+            listOf(
+                Municipality("1008", "")
+            ),
+            CSVFormat.decodeFromString(ListSerializer(Municipality.serializer()), csvNonNullableStringWithoutNewLine)
+        )
 
         val csvNonNullableStringWithNewLine = """
             id,de
@@ -648,10 +651,14 @@ class CsvDecoderTest {
 
         """.trimIndent()
 
-        assertEquals(listOf(
-            Municipality("1008", "")
-        ),
-            CSVFormat.decodeFromString(ListSerializer<Municipality>(Municipality.serializer()), csvNonNullableStringWithNewLine)
+        assertEquals(
+            listOf(
+                Municipality("1008", "")
+            ),
+            CSVFormat.decodeFromString(
+                ListSerializer<Municipality>(Municipality.serializer()),
+                csvNonNullableStringWithNewLine
+            )
         )
     }
 }
