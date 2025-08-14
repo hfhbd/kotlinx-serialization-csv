@@ -1,9 +1,11 @@
 package app.softwork.serialization.flf
 
-import kotlinx.serialization.*
-import java.io.*
-import java.util.stream.*
-import kotlin.test.*
+import kotlinx.serialization.ExperimentalSerializationApi
+import java.io.File
+import java.util.stream.Collectors
+import java.util.stream.Stream
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @ExperimentalSerializationApi
 class JvmExtensionsTest {

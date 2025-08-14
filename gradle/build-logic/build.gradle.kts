@@ -9,6 +9,8 @@ dependencies {
     implementation(libs.plugins.mavencentral.toDep())
     implementation(libs.plugins.dokka.toDep())
     implementation(libs.plugins.detekt.toDep())
+    implementation(libs.plugins.foojay.toDep())
+    implementation(libs.plugins.develocity.toDep())
 }
 
 fun Provider<PluginDependency>.toDep() = map {

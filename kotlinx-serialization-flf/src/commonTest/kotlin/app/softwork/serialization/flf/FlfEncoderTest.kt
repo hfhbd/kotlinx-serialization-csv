@@ -1,10 +1,14 @@
 package app.softwork.serialization.flf
 
-import app.softwork.serialization.flf.Seal.*
-import kotlinx.serialization.*
-import kotlinx.serialization.builtins.*
-import kotlin.test.*
-import kotlin.time.*
+import app.softwork.serialization.flf.Seal.A
+import app.softwork.serialization.flf.Seal.B
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.encodeToString
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.time.Instant
 
 @ExperimentalSerializationApi
 class FlfEncoderTest {

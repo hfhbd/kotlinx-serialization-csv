@@ -1,8 +1,9 @@
 package app.softwork.serialization.flf
 
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
-import kotlin.test.*
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @ExperimentalSerializationApi
 class JsonTest {

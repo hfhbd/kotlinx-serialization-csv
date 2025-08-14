@@ -1,6 +1,7 @@
 package app.softwork.serialization.flf
 
-import kotlinx.serialization.*
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialInfo
 
 @ExperimentalSerializationApi
 @Target(AnnotationTarget.CLASS)

@@ -1,13 +1,17 @@
 package app.softwork.serialization.flf
 
-import kotlinx.serialization.*
-import java.io.*
-import java.nio.*
-import java.nio.charset.*
-import java.util.Spliterators.*
-import java.util.function.*
-import java.util.stream.*
-import kotlin.streams.*
+import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationStrategy
+import java.io.File
+import java.io.FileOutputStream
+import java.nio.CharBuffer
+import java.nio.charset.Charset
+import java.util.Spliterators.AbstractSpliterator
+import java.util.function.Consumer
+import java.util.stream.Stream
+import java.util.stream.StreamSupport
+import kotlin.streams.asSequence
 
 @JvmOverloads
 public fun Sequence<String>.appendLines(file: File, charset: Charset = Charsets.UTF_8, lineSeparator: String = "\n") {

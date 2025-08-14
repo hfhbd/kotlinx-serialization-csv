@@ -1,7 +1,9 @@
 package app.softwork.serialization.flf
 
-import kotlinx.serialization.*
-import kotlin.jvm.*
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlin.jvm.JvmInline
 import kotlin.time.Instant
 
 @ExperimentalSerializationApi
@@ -41,7 +43,7 @@ data class Sample(
             double = 42.3,
             nil = null,
             date = Instant.fromEpochSeconds(0L),
-            enum = Sample.Testing.Two,
+            enum = Testing.Two,
             inline = Foo(1),
             inlineS = FooS("foo"),
             inlineD = FooD(4.2),

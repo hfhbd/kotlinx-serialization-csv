@@ -1,7 +1,8 @@
 package app.softwork.serialization.flf
 
-import kotlinx.serialization.*
-import kotlin.math.*
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialInfo
+import kotlin.math.absoluteValue
 
 @ExperimentalSerializationApi
 @SerialInfo
