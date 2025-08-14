@@ -1,8 +1,9 @@
 package app.softwork.serialization.csv
 
-import kotlinx.serialization.*
-import kotlin.jvm.*
-import kotlin.time.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlin.jvm.JvmInline
+import kotlin.time.Instant
 
 @Serializable
 data class Foo(val bar: Int)

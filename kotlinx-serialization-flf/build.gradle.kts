@@ -1,12 +1,8 @@
 plugins {
     id("mpp")
-    id("setup")
-    id("publish")
 }
 
 kotlin {
-    compilerOptions.optIn.add("kotlin.time.ExperimentalTime")
-
     sourceSets {
         commonMain {
             dependencies {

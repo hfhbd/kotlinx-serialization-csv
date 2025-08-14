@@ -2,10 +2,14 @@ package app.softwork.serialization.csv
 
 import app.softwork.serialization.csv.CSVNode.Element
 import app.softwork.serialization.csv.CSVNode.NewLine
-import kotlinx.serialization.*
-import kotlinx.serialization.builtins.*
-import kotlin.test.*
-import kotlin.time.*
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.time.Instant
 
 @ExperimentalSerializationApi
 class CsvDecoderTest {

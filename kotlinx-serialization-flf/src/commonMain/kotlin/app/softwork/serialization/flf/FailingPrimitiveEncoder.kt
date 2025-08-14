@@ -1,7 +1,7 @@
 package app.softwork.serialization.flf
 
-import kotlinx.serialization.*
-import kotlinx.serialization.encoding.*
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.encoding.Encoder
 
 internal interface FailingPrimitiveEncoder : Encoder {
     override fun encodeBoolean(value: Boolean) {

@@ -1,9 +1,11 @@
 package app.softwork.serialization.flf
 
-import app.softwork.serialization.flf.Ebcdic.Format.*
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
-import kotlin.test.*
+import app.softwork.serialization.flf.Ebcdic.Format.Zoned
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @ExperimentalSerializationApi
 class EbcdicTest {
