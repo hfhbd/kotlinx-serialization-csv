@@ -14,4 +14,4 @@ dokka = { id = "org.jetbrains.dokka", version = "2.0.0" }
 licensee = { id = "app.cash.licensee", version = "1.13.0" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.8" }
 foojay = { id = "org.gradle.toolchains.foojay-resolver-convention", version = "1.0.0" }
-develocity = { id = "com.gradle.develocity", version = "4.1" }
+develocity = { id = "com.gradle.develocity", version = "4.1.1" }
