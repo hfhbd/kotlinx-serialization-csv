@@ -9,7 +9,7 @@ serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-jso
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-mavencentral = { id = "io.github.hfhbd.mavencentral", version = "0.0.17" }
+mavencentral = { id = "io.github.hfhbd.mavencentral", version = "0.0.19" }
 dokka = { id = "org.jetbrains.dokka", version = "2.0.0" }
 licensee = { id = "app.cash.licensee", version = "1.13.0" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.8" }
