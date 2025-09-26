@@ -185,23 +185,4 @@ internal fun SerialDescriptor.checkForMaps() {
     }
 }
 
-@ExperimentalSerializationApi
-internal fun SerialDescriptor.ebcdic(index: Int): Ebcdic? {
-    for (anno in getElementAnnotations(index)) {
-        if (anno is Ebcdic) {
-            return anno
-        }
-    }
-    return null
-}
 
-@ExperimentalSerializationApi
-internal val SerialDescriptor.ebcdic: Ebcdic?
-    get() {
-        for (anno in annotations) {
-            if (anno is Ebcdic) {
-                return anno
-            }
-        }
-        return null
-    }

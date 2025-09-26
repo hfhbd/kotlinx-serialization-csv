@@ -10,8 +10,7 @@ internal class FixedLengthPrimitiveEncoder(
     override val serializersModule: SerializersModule,
     private val length: Int,
     private val builder: StringBuilder,
-    private val fillLeadingZero: Boolean,
-    private val ebcdic: Ebcdic?
+    private val fillLeadingZero: Boolean
 ) : Encoder {
     private fun encode(value: String, length: Int) {
         require(value.length <= length) { "$value was longer as $length" }
@@ -60,13 +59,11 @@ internal class FixedLengthPrimitiveEncoder(
     override fun encodeInline(descriptor: SerialDescriptor) = this
 
     override fun encodeInt(value: Int) {
-        val stringValue = ebcdic?.format?.toString(value) ?: value.toString()
-        encodeNumber(stringValue.toString(), length)
+        encodeNumber(value.toString(), length)
     }
 
     override fun encodeLong(value: Long) {
-        val stringValue = ebcdic?.format?.toString(value) ?: value.toString()
-        encodeNumber(stringValue.toString(), length)
+        encodeNumber(value.toString(), length)
     }
 
     @ExperimentalSerializationApi

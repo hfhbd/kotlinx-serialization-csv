@@ -39,7 +39,7 @@ public class FixedLengthDecoder(
 
     override fun decodeIntElement(descriptor: SerialDescriptor, index: Int): Int {
         val decoded = decode(descriptor.fixedLength(index))
-        return (descriptor.ebcdic(index)?.format?.toInt(decoded) ?: decoded.toString().toInt()).also {
+        return decoded.toString().toInt().also {
             if (index == lengthElementIndex) {
                 currentLength = it
             }
@@ -48,7 +48,7 @@ public class FixedLengthDecoder(
 
     override fun decodeLongElement(descriptor: SerialDescriptor, index: Int): Long {
         val decoded = decode(descriptor.fixedLength(index))
-        return descriptor.ebcdic(index)?.format?.toLong(decoded) ?: decoded.toString().toLong()
+        return decoded.toString().toLong()
     }
 
     @ExperimentalSerializationApi
@@ -61,8 +61,7 @@ public class FixedLengthDecoder(
         val data = decode(descriptor.fixedLength(index))
         val decoder = FixedLengthPrimitiveDecoder(
             serializersModule,
-            data,
-            ebcdic = descriptor.ebcdic(index)
+            data
         )
         return if (data.isBlank()) {
             decoder.decodeNull()
@@ -104,7 +103,7 @@ public class FixedLengthDecoder(
             deserializer.deserialize(this)
         } else {
             val data = decode(descriptor.fixedLength(index))
-            deserializer.deserialize(FixedLengthPrimitiveDecoder(serializersModule, data, descriptor.ebcdic(index)))
+            deserializer.deserialize(FixedLengthPrimitiveDecoder(serializersModule, data))
         }
     }
 
@@ -170,7 +169,7 @@ public class FixedLengthDecoder(
     override fun decodeInline(descriptor: SerialDescriptor): Decoder {
         val fixedLength = descriptor.fixedLength
         val data = decode(fixedLength)
-        return FixedLengthPrimitiveDecoder(serializersModule, data, descriptor.ebcdic)
+        return FixedLengthPrimitiveDecoder(serializersModule, data)
     }
 
     @ExperimentalSerializationApi

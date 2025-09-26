@@ -71,13 +71,11 @@ public class FixedLengthEncoder(
     ): Encoder = encodeInline(descriptor.getElementDescriptor(index))
 
     override fun encodeIntElement(descriptor: SerialDescriptor, index: Int, value: Int) {
-        val stringValue = descriptor.ebcdic(index)?.format?.toString(value) ?: value.toString()
-        encodeNumber(stringValue.toString(), descriptor.fixedLength(index))
+        encodeNumber(value.toString(), descriptor.fixedLength(index))
     }
 
     override fun encodeLongElement(descriptor: SerialDescriptor, index: Int, value: Long) {
-        val stringValue = descriptor.ebcdic(index)?.format?.toString(value) ?: value.toString()
-        encodeNumber(stringValue.toString(), descriptor.fixedLength(index))
+        encodeNumber(value.toString(), descriptor.fixedLength(index))
     }
 
     @ExperimentalSerializationApi
@@ -91,8 +89,7 @@ public class FixedLengthEncoder(
             serializersModule,
             descriptor.fixedLength(index),
             builder,
-            fillLeadingZero,
-            descriptor.ebcdic(index)
+            fillLeadingZero
         )
         if (value == null) {
             encoder.encodeNull()
@@ -130,8 +127,7 @@ public class FixedLengthEncoder(
                     serializersModule,
                     descriptor.fixedLength(index),
                     builder,
-                    fillLeadingZero,
-                    descriptor.ebcdic(index)
+                    fillLeadingZero
                 ),
                 value
             )
@@ -165,6 +161,6 @@ public class FixedLengthEncoder(
     override fun encodeInline(descriptor: SerialDescriptor): Encoder {
         maybeAddLine()
         val fixedLength = descriptor.fixedLength
-        return FixedLengthPrimitiveEncoder(serializersModule, fixedLength, builder, fillLeadingZero, descriptor.ebcdic)
+        return FixedLengthPrimitiveEncoder(serializersModule, fixedLength, builder, fillLeadingZero)
     }
 }
