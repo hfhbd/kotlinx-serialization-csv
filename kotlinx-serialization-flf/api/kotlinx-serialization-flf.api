@@ -2,7 +2,7 @@ public abstract interface annotation class app/softwork/serialization/flf/Ebcdic
 	public abstract fun format ()Lapp/softwork/serialization/flf/Ebcdic$Format;
 }
 
-public final class app/softwork/serialization/flf/Ebcdic$Format : java/lang/Enum {
+public abstract class app/softwork/serialization/flf/Ebcdic$Format : java/lang/Enum {
 	public static final field Zoned Lapp/softwork/serialization/flf/Ebcdic$Format;
 	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
