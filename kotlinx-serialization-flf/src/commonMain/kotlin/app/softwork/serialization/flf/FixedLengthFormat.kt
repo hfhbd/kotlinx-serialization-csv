@@ -53,7 +53,7 @@ public sealed class FixedLengthFormat(
                 currentRow = data[currentRowIndex]
                 index = 0
             }, { length ->
-                currentRow!!.substring(index, min(index + length, currentRow!!.length)).also {
+                currentRow!!.substring(index, min(index + length, currentRow.length)).also {
                     index += length
                 }
             }, serializersModule, data.size)
@@ -73,7 +73,7 @@ public sealed class FixedLengthFormat(
                 currentRow = iterator.next()
                 index = 0
             }, { length ->
-                val r = currentRow!!.substring(index, min(index + length, currentRow!!.length))
+                val r = currentRow!!.substring(index, min(index + length, currentRow.length))
                 index += length
                 r
             }, serializersModule, size = -1)
