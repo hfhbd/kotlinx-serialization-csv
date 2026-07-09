@@ -14,9 +14,9 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@v5
+        uses: gradle/actions/dependency-submission@v6
 
   dependency-review:
     runs-on: ubuntu-latest
@@ -24,4 +24,4 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - name: Perform dependency review
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v5

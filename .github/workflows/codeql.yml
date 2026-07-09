@@ -14,11 +14,11 @@ jobs:
       security-events: write
 
     steps:
-      - uses: actions/checkout@v6
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: actions/checkout@v7
+      - uses: gradle/actions/setup-gradle@v6
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: kotlin
           build-mode: manual
@@ -27,4 +27,4 @@ jobs:
         run: ./gradlew --no-build-cache jvmMainClasses
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
