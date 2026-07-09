@@ -12,6 +12,9 @@ dokka {
             dokka(s)
         }
     }
+    pluginsConfiguration.html {
+        homepageLink = "https://github.com/hfhbd/kotlinx-serialization-csv"
+    }
 }
 
 detekt {
@@ -26,7 +29,7 @@ detekt {
     autoCorrect = true
     buildUponDefaultConfig = true
     reports {
-        sarif.required.set(true)
+        sarif.required = true
     }
 
     dependencies {

@@ -1,0 +1,69 @@
+public final class io/github/hfhbd/kotlinx/serialization/csv/CSVConfiguration {
+	public final fun getAlwaysEmitQuotes ()Z
+	public final fun getIncludeHeader ()Z
+	public final fun getLineSeparator ()Ljava/lang/String;
+	public final fun getNumberFormat ()Lio/github/hfhbd/kotlinx/serialization/csv/CSVFormat$NumberFormat;
+	public final fun getSeparator ()C
+	public final fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
+}
+
+public final class io/github/hfhbd/kotlinx/serialization/csv/CSVConfiguration$Builder {
+	public fun <init> ()V
+	public final fun getAlwaysEmitQuotes ()Z
+	public final fun getIncludeHeader ()Z
+	public final fun getLineSeparator ()Ljava/lang/String;
+	public final fun getNumberFormat ()Lio/github/hfhbd/kotlinx/serialization/csv/CSVFormat$NumberFormat;
+	public final fun getSeparator ()C
+	public final fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
+	public final fun setAlwaysEmitQuotes (Z)V
+	public final fun setIncludeHeader (Z)V
+	public final fun setLineSeparator (Ljava/lang/String;)V
+	public final fun setNumberFormat (Lio/github/hfhbd/kotlinx/serialization/csv/CSVFormat$NumberFormat;)V
+	public final fun setSeparator (C)V
+	public final fun setSerializersModule (Lkotlinx/serialization/modules/SerializersModule;)V
+}
+
+public abstract interface class io/github/hfhbd/kotlinx/serialization/csv/CSVDecoder : kotlinx/serialization/encoding/CompositeDecoder, kotlinx/serialization/encoding/Decoder {
+	public abstract fun getConfiguration ()Lio/github/hfhbd/kotlinx/serialization/csv/CSVConfiguration;
+}
+
+public final class io/github/hfhbd/kotlinx/serialization/csv/CSVDecoder$DefaultImpls {
+	public static fun decodeCollectionSize (Lio/github/hfhbd/kotlinx/serialization/csv/CSVDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)I
+	public static fun decodeNullableSerializableValue (Lio/github/hfhbd/kotlinx/serialization/csv/CSVDecoder;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
+	public static fun decodeSequentially (Lio/github/hfhbd/kotlinx/serialization/csv/CSVDecoder;)Z
+	public static fun decodeSerializableValue (Lio/github/hfhbd/kotlinx/serialization/csv/CSVDecoder;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
+}
+
+public abstract interface class io/github/hfhbd/kotlinx/serialization/csv/CSVEncoder : kotlinx/serialization/encoding/CompositeEncoder, kotlinx/serialization/encoding/Encoder {
+	public abstract fun getConfiguration ()Lio/github/hfhbd/kotlinx/serialization/csv/CSVConfiguration;
+}
+
+public final class io/github/hfhbd/kotlinx/serialization/csv/CSVEncoder$DefaultImpls {
+	public static fun beginCollection (Lio/github/hfhbd/kotlinx/serialization/csv/CSVEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I)Lkotlinx/serialization/encoding/CompositeEncoder;
+	public static fun encodeNotNullMark (Lio/github/hfhbd/kotlinx/serialization/csv/CSVEncoder;)V
+	public static fun encodeNullableSerializableValue (Lio/github/hfhbd/kotlinx/serialization/csv/CSVEncoder;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
+	public static fun encodeSerializableValue (Lio/github/hfhbd/kotlinx/serialization/csv/CSVEncoder;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
+	public static fun shouldEncodeElementDefault (Lio/github/hfhbd/kotlinx/serialization/csv/CSVEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I)Z
+}
+
+public abstract class io/github/hfhbd/kotlinx/serialization/csv/CSVFormat : kotlinx/serialization/StringFormat {
+	public static final field Default Lio/github/hfhbd/kotlinx/serialization/csv/CSVFormat$Default;
+	public synthetic fun <init> (Lio/github/hfhbd/kotlinx/serialization/csv/CSVConfiguration;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun decodeFromString (Lkotlinx/serialization/DeserializationStrategy;Ljava/lang/String;)Ljava/lang/Object;
+	public fun encodeToString (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Ljava/lang/String;
+	public final fun getConfiguration ()Lio/github/hfhbd/kotlinx/serialization/csv/CSVConfiguration;
+	public fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
+}
+
+public final class io/github/hfhbd/kotlinx/serialization/csv/CSVFormat$Default : io/github/hfhbd/kotlinx/serialization/csv/CSVFormat {
+	public final fun invoke (Lkotlin/jvm/functions/Function1;)Lio/github/hfhbd/kotlinx/serialization/csv/CSVFormat;
+}
+
+public final class io/github/hfhbd/kotlinx/serialization/csv/CSVFormat$NumberFormat : java/lang/Enum {
+	public static final field Comma Lio/github/hfhbd/kotlinx/serialization/csv/CSVFormat$NumberFormat;
+	public static final field Dot Lio/github/hfhbd/kotlinx/serialization/csv/CSVFormat$NumberFormat;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/hfhbd/kotlinx/serialization/csv/CSVFormat$NumberFormat;
+	public static fun values ()[Lio/github/hfhbd/kotlinx/serialization/csv/CSVFormat$NumberFormat;
+}
+

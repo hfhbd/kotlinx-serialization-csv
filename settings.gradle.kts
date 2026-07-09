@@ -13,7 +13,6 @@ plugins {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
-rootProject.name = "kotlinx-serialization-csv-flf"
+rootProject.name = "kotlinx-serialization-csv"
 
-include("kotlinx-serialization-csv")
-include("kotlinx-serialization-flf")
+include("core")
