@@ -113,7 +113,7 @@ publishing {
             classifier = "javadoc"
         }
         pom {
-            name = "app.softwork CSV and FLF kotlinx.serialization")
+            name = "app.softwork CSV and FLF kotlinx.serialization"
             description = "A multiplatform Kotlin CSV and FLF kotlinx.serialization library"
             url = "https://github.com/hfhbd/kotlinx-serialization-csv"
             licenses {
