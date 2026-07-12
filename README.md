@@ -1,13 +1,10 @@
 # kotlinx-serialization-csv-flf
 
-Serialize and deserialize ordered CSV and Fixed Length Format Files with kotlinx-serialization.
-
-- [Source code](https://github.com/hfhbd/kotlinx-serialization-csv)
-- [Docs](https://csv.softwork.app)
+Serialize and deserialize ordered CSV with kotlinx-serialization.
 
 ## Install
 
-This package is uploaded to MavenCentral and supports JVM, JS(IR) and all native targets as well.
+This package is uploaded to MavenCentral and supports JVM, JS and all native targets as well.
 
 ````kotlin
 repositories {
@@ -16,7 +13,6 @@ repositories {
 
 dependencies {
     implementation("app.softwork:kotlinx-serialization-csv:LATEST")
-    implementation("app.softwork:kotlinx-serialization-flf:LATEST")
 }
 ````
 

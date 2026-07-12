@@ -18,15 +18,15 @@ kotlin {
 
     explicitApi()
     compilerOptions {
-        allWarningsAsErrors.set(true)
-        progressiveMode.set(true)
-        extraWarnings.set(true)
+        allWarningsAsErrors = true
+        progressiveMode = true
+        extraWarnings = true
 
         optIn.add("kotlin.time.ExperimentalTime")
     }
 
     abiValidation {
-        enabled.set(true)
+        enabled = true
     }
 
     jvm {
@@ -94,18 +94,18 @@ tasks.check {
 }
 
 tasks.named<JavaCompile>("compileJvm9MainJava") {
-    javaCompiler.set(javaToolchains.compilerFor {})
-    options.release.set(9)
+    javaCompiler = javaToolchains.compilerFor {}
+    options.release = 9
 }
 
 plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsPlugin> {
-    the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec>().downloadBaseUrl.set(null)
+    the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec>().downloadBaseUrl = null
 }
 plugins.withType<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsPlugin> {
-    the<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsEnvSpec>().downloadBaseUrl.set(null)
+    the<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsEnvSpec>().downloadBaseUrl = null
 }
 
-val emptyJar by tasks.registering(Jar::class)
+val emptyJar = tasks.register("emptyJar",Jar::class)
 
 publishing {
     publications.withType(MavenPublication::class).configureEach {
@@ -113,26 +113,26 @@ publishing {
             classifier = "javadoc"
         }
         pom {
-            name.set("app.softwork CSV and FLF kotlinx.serialization")
-            description.set("A multiplatform Kotlin CSV and FLF kotlinx.serialization library")
-            url.set("https://github.com/hfhbd/kotlinx-serialization-csv")
+            name = "app.softwork CSV and FLF kotlinx.serialization"
+            description = "A multiplatform Kotlin CSV and FLF kotlinx.serialization library"
+            url = "https://github.com/hfhbd/kotlinx-serialization-csv"
             licenses {
                 license {
-                    name.set("Apache-2.0")
-                    url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    name = "Apache-2.0"
+                    url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
                 }
             }
             developers {
                 developer {
-                    id.set("hfhbd")
-                    name.set("Philip Wedemann")
-                    email.set("mybztg+mavencentral@icloud.com")
+                    id = "hfhbd"
+                    name = "Philip Wedemann"
+                    email = "mybztg+mavencentral@icloud.com"
                 }
             }
             scm {
-                connection.set("scm:git://github.com/hfhbd/kotlinx-serialization-csv.git")
-                developerConnection.set("scm:git://github.com/hfhbd/kotlinx-serialization-csv.git")
-                url.set("https://github.com/hfhbd/kotlinx-serialization-csv")
+                connection = "scm:git://github.com/hfhbd/kotlinx-serialization-csv.git"
+                developerConnection = "scm:git://github.com/hfhbd/kotlinx-serialization-csv.git"
+                url = "https://github.com/hfhbd/kotlinx-serialization-csv"
             }
         }
     }
@@ -160,13 +160,13 @@ dokka {
     val module = project.name
     dokkaSourceSets.configureEach {
         includes.from("README.md")
-        reportUndocumented.set(true)
+        reportUndocumented = true
         val sourceSetName = name
         File("$module/src/$sourceSetName").takeIf { it.exists() }?.let {
             sourceLink {
-                localDirectory.set(file("src/$sourceSetName/kotlin"))
-                remoteUrl.set(uri("https://github.com/hfhbd/kotlinx-serialization-csv/tree/main/$module/src/$sourceSetName/kotlin"))
-                remoteLineSuffix.set("#L")
+                localDirectory = file("src/$sourceSetName/kotlin")
+                remoteUrl = uri("https://github.com/hfhbd/kotlinx-serialization-csv/tree/main/$module/src/$sourceSetName/kotlin")
+                remoteLineSuffix = "#L"
             }
         }
         externalDocumentationLinks {
