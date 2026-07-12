@@ -1,4 +1,4 @@
-# kotlinx-serialization-csv-flf
+# kotlinx-serialization-csv
 
 Serialize and deserialize ordered CSV with kotlinx-serialization.
 
@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation("app.softwork:kotlinx-serialization-csv:LATEST")
+    implementation("io.github.hfhbd.kotlinx-serialization-csv:core:LATEST")
 }
 ````
 
