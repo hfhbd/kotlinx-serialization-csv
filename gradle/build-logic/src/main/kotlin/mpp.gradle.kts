@@ -1,6 +1,5 @@
 @file:OptIn(ExperimentalAbiValidation::class)
 
-import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
@@ -25,9 +24,7 @@ kotlin {
         optIn.add("kotlin.time.ExperimentalTime")
     }
 
-    abiValidation {
-        enabled = true
-    }
+    abiValidation {}
 
     jvm {
         val main = compilations.getByName("main")
@@ -87,10 +84,6 @@ kotlin {
             }
         }
     }
-}
-
-tasks.check {
-    dependsOn(tasks.checkLegacyAbi)
 }
 
 tasks.named<JavaCompile>("compileJvm9MainJava") {
